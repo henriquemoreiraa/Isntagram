@@ -10,8 +10,11 @@ const io = new Server(serverHttp, {
     cors: { origin: 'http://localhost:3000', methods: ['GET', 'POST', 'PUT'] }
 });
 const { errorHandler } = require('./middleware/errorMiddleware');
+const connectDB = require('./database/connect');
 
 app.use(cors());
+
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

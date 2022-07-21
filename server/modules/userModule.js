@@ -27,7 +27,6 @@ const userSchema = mongoose.Schema({
     },
     bio: {
         type: String,
-        required: true
     }, 
 }, {
     timestamps: true

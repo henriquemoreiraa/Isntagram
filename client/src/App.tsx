@@ -4,6 +4,7 @@ const socket = io('http://localhost:5000')
 
 function App() {
   const [message, setMessage] = useState('')
+  
   const sendMessage = () => {
     socket.emit('send_message', 'Hello' )
   }
