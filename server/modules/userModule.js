@@ -17,14 +17,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    followers: {
-        type: Array,
-        required: true
-    },
-    following: {
-        type: Array,
-        required: true
-    },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     bio: {
         type: String,
     }, 

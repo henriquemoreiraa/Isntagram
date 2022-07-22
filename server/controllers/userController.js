@@ -65,7 +65,8 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    res.status(200).json({ message: 'GET USER' });
+    const users = await User.find()
+    res.status(200).json(users);
 });
 
 const updateUser = asyncHandler( async (req, res) => {
@@ -80,15 +81,31 @@ const followUser = asyncHandler( async (req, res) => {
         throw new Error('User not found');
     };
 
-    const updateFollowersUser = await User.findByIdAndUpdate(req.params.id, { followers: { id: req.body.user_id, name: req.body.name, user_img: req.body.user_img } }, {
-        new: true
-    });
+    await userId.followers.push(req.body.id)
 
-    const updateFollowingUser = await User.findByIdAndUpdate(req.body.follower_id, { following: { id: userId.id, name: userId.name, user_img: userId.user_img } }, {
-        new: true
-    })
+    userId.save()
+    res.status(200).json(userId)
+});
 
-    res.status(200).json(updateFollowersUser)
+const unfollowUser = asyncHandler( async (req, res) => {
+    const userId = await User.findById(req.params.id);
+
+    if (!userId) {
+        res.status(400);
+        throw new Error('User not found');
+    };
+
+    // const unfollowUser = await User.findById(req.params.id, { followers: { id: req.body.user_id }});
+
+    const test = await userId.followers.filter(userId => req.body.id === userId)
+    userId.followers = test
+
+    // const updateFollowingUser = await User.findByIdAndUpdate(req.body.follower_id, { following: { id: userId.id, name: userId.name, user_img: userId.user_img } }, {
+    //     new: true
+    // })
+
+    await userId.save();
+    res.status(200).json(test)
 });
 
 const deleteUser = asyncHandler( async (req, res) => {
@@ -107,5 +124,6 @@ module.exports = {
     getUser,
     updateUser,
     followUser,
+    unfollowUser,
     deleteUser
 };

@@ -6,7 +6,7 @@ const postSchema = mongoose.Schema({
     },
     post_img: {
         type: String,
-        required: true
+        require: true
     },
     likes: {
         type: String,
@@ -16,12 +16,9 @@ const postSchema = mongoose.Schema({
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        require: true,
         ref: 'User' 
     },
-    user_name: {
-        type: String
-    }
 }, {
     timestamps: true 
 });
