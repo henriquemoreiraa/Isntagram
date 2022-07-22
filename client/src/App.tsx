@@ -5,19 +5,22 @@ const socket = io('http://localhost:5000')
 function App() {
   const [message, setMessage] = useState('')
   
-  const sendMessage = () => {
-    socket.emit('send_message', 'Hello' )
+  const sendNotification = () => {
+    socket.emit('notification', '123456')
+    socket.emit('notification_send', {id: '123456', message: 'ESSE E UM DADO'})
   }
 
   useEffect(() => {
-    socket.on('received_message', (data) => {
+    socket.emit('notification', '123456' )
+
+    socket.on('send_notification', (data) => {
       setMessage(data)
     })
-  }, [socket])
+  }, [])
 
   return (
     <div>
-      <button onClick={sendMessage}>AQUI</button>
+      <button onClick={sendNotification}>AQUI</button>
       <h1>{message}</h1>
     </div>
   );

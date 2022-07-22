@@ -11,6 +11,7 @@ const io = new Server(serverHttp, {
 });
 const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./database/connect');
+const { Socket } = require('dgram');
 
 app.use(cors());
 
@@ -27,9 +28,13 @@ app.use('/api/users', require('./routes/userRoutes'));
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
-    socket.on('send_message', (data) => {
-        socket.broadcast.emit('received_message', data);
+    socket.on('notification', (data) => {
+        socket.join(data)
     });
+    socket.on('notification_send', data => {
+        socket.to(data.id).emit('send_notification', data.message)
+    })
 });
+
 
 serverHttp.listen(port, () => console.log(`Server started on port ${port}`));
