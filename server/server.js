@@ -19,17 +19,17 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.use('/api/users', require('./routes/userRoutes'));
 // app.use('/api/posts', require(''));
 
 io.on('connection', (socket) => {
-    console.log(`User Connected: ${socket.id}`)
+    console.log(`User Connected: ${socket.id}`);
 
     socket.on('send_message', (data) => {
-        socket.broadcast.emit('received_message', data)
-    })
-})
+        socket.broadcast.emit('received_message', data);
+    });
+});
 
 serverHttp.listen(port, () => console.log(`Server started on port ${port}`));

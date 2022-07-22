@@ -65,7 +65,7 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    const users = await User.find()
+    const users = await User.find().populate(['followers', 'following'])
     res.status(200).json(users);
 });
 
@@ -75,37 +75,39 @@ const updateUser = asyncHandler( async (req, res) => {
 
 const followUser = asyncHandler( async (req, res) => {
     const userId = await User.findById(req.params.id);
+    const userFollowing = await User.findById(req.body.id);
 
     if (!userId) {
         res.status(400);
         throw new Error('User not found');
     };
 
-    await userId.followers.push(req.body.id)
+    await userId.followers.push(req.body.id);
+    await userFollowing.following.push(req.params.id);
 
-    userId.save()
-    res.status(200).json(userId)
+    userId.save();
+    userFollowing.save();
+    res.status(200).json(userId);
 });
 
 const unfollowUser = asyncHandler( async (req, res) => {
-    const userId = await User.findById(req.params.id);
+    const userFollowed = await User.findById(req.params.id);
+    const userFollower = await User.findById(req.body.id);
 
-    if (!userId) {
+    if (!userFollowed) {
         res.status(400);
         throw new Error('User not found');
     };
 
-    // const unfollowUser = await User.findById(req.params.id, { followers: { id: req.body.user_id }});
+    const deleteUserFollowed = await userFollowed.followers.filter(userId => userId.toString() !== req.body.id);
+    userFollowed.followers = deleteUserFollowed;
 
-    const test = await userId.followers.filter(userId => req.body.id === userId)
-    userId.followers = test
+    const deleteUserFollower = await userFollower.following.filter(userId => userId.toString() !== req.params.id);
+    userFollower.following = deleteUserFollower;
 
-    // const updateFollowingUser = await User.findByIdAndUpdate(req.body.follower_id, { following: { id: userId.id, name: userId.name, user_img: userId.user_img } }, {
-    //     new: true
-    // })
-
-    await userId.save();
-    res.status(200).json(test)
+    await userFollowed.save();
+    await userFollower.save();
+    res.status(200).json(userFollowed);
 });
 
 const deleteUser = asyncHandler( async (req, res) => {
