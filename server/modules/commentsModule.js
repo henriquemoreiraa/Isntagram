@@ -1,28 +1,25 @@
 const mongoose = require('mongoose');
 
-const postSchema = mongoose.Schema({
-    title: {
-        type: String
-    },
-    post_img: {
+const commentsShema = mongoose.Schema({
+    comment: {
         type: String,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User'
     }],
-    comments: [{
+    answers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comments',
-    }],
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User' 
-    },
+        ref: 'Answers'
+    }]
 }, {
     timestamps: true 
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Comments', commentsShema);

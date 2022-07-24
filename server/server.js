@@ -23,17 +23,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
 app.use('/api/users', require('./routes/userRoutes'));
-// app.use('/api/posts', require(''));
+app.use('/api/posts', require('./routes/postRoutes'));
 
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
     socket.on('notification', (data) => {
-        socket.join(data)
+        socket.join(data);
     });
     socket.on('notification_send', data => {
-        socket.to(data.id).emit('send_notification', data.message)
-    })
+        socket.to(data.id).emit('send_notification', data.message);
+    });
 });
 
 
