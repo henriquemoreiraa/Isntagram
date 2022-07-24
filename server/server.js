@@ -24,6 +24,7 @@ app.use(errorHandler);
 
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/posts', require('./routes/postRoutes'));
+app.use('/api/comments', require('./routes/commentRoutes'));
 
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`);
