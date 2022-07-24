@@ -16,6 +16,14 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comments',
     }],
+    tagged: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    shares: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

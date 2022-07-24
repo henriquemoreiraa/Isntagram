@@ -8,7 +8,7 @@ const createComment = asyncHandler( async (req, res) => {
 
     if (!req.body.comment) {
         res.status(400);
-        throw new Error('Please add an comment');
+        throw new Error('Please add a comment');
     };
 
     const comment = await Comments.create({
