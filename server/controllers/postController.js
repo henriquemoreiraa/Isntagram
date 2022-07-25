@@ -76,6 +76,12 @@ const sharePost = asyncHandler( async (req, res) => {
     res.status(200).json(postId); 
 });
 
+const postImg = asyncHandler( async (req, res) => {
+    console.log(req.file);
+
+    res.status(200).json({ message: 'POST IMG' });
+});
+
 const updatePost = asyncHandler( async (req, res) => {
     res.status(200).json({ message: 'UPDATE POST' });
 });
@@ -91,5 +97,6 @@ module.exports = {
     likePost,
     deletePost,
     sharePost,
-    tagUser
+    tagUser,
+    postImg
 };
