@@ -14,8 +14,8 @@ const userSchema = mongoose.Schema({
         required: true
     },
     user_img: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ProfileImg'
     },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,

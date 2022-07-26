@@ -10,6 +10,6 @@ router.route('/:id').put(updatePost).delete(deletePost);
 router.route('/like/:id').put(likePost);
 router.route('/share/:id').put(sharePost)
 router.route('/tagUser/:id').put(tagUser)
-router.route('/post/img').post(multer(multerConfig).single('file'), postImg)
+router.route('/post/:id').put(multer(multerConfig).single('file'), postImg)
 
 module.exports = router;

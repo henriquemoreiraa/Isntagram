@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require("../modules/userModule");
 const Post = require("../modules/postModule");
+const PostImg = require('../modules/postImg')
 
 const createPost = asyncHandler( async (req, res) => {
     if (!req.body.img) {
@@ -22,7 +23,7 @@ const createPost = asyncHandler( async (req, res) => {
 });
 
 const getPosts = asyncHandler( async (req, res) => {
-    const posts = await Post.find().populate(['tagged'])
+    const posts = await Post.find().populate(['post_img'])
     res.status(200).json(posts);  
 });
 
@@ -77,9 +78,26 @@ const sharePost = asyncHandler( async (req, res) => {
 });
 
 const postImg = asyncHandler( async (req, res) => {
-    console.log(req.file);
+    const post = await Post.findById(req.params.id);
 
-    res.status(200).json({ message: 'POST IMG' });
+    if (!post) {
+        res.status(400);
+        throw new Error('Post not found');
+    };
+
+    const postImg = await PostImg.create({
+        name: req.file.originalname,
+        size: req.file.size,
+        key: req.file.filename,
+    });
+
+    const updatePostImg = await Post.findByIdAndUpdate(req.params.id, {
+        post_img: postImg._id
+    }, {
+        new: true,
+    });
+    
+    res.status(200).json(updatePostImg);
 });
 
 const updatePost = asyncHandler( async (req, res) => {

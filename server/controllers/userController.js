@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require("../modules/userModule");
+const ProfileImg = require('../modules/profileImg')
 
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password } = req.body;
@@ -67,7 +68,7 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    const users = await User.find().populate(['followers', 'following'])
+    const users = await User.find().populate(['user_img'])
     res.status(200).json(users);
 });
 
@@ -112,6 +113,29 @@ const unfollowUser = asyncHandler( async (req, res) => {
     res.status(200).json(userFollowed);
 });
 
+const updateUserImg = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        res.status(400);
+        throw new Error('User not found');
+    };
+
+    const profileImg = await ProfileImg.create({
+        name: req.file.originalname,
+        size: req.file.size,
+        key: req.file.filename,
+    });
+
+    const updateProfileImg = await User.findByIdAndUpdate(req.params.id, {
+        user_img: profileImg._id
+    }, {
+        new: true,
+    });
+    
+    res.status(200).json(updateProfileImg);
+});
+
 const deleteUser = asyncHandler( async (req, res) => {
     res.status(200).json({ message: 'DELETE USER' });
 });
@@ -129,5 +153,6 @@ module.exports = {
     updateUser,
     followUser,
     unfollowUser,
+    updateUserImg,
     deleteUser
 };

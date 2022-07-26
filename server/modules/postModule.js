@@ -5,8 +5,8 @@ const postSchema = mongoose.Schema({
         type: String
     },
     post_img: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PostImg'
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
