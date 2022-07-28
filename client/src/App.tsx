@@ -1,28 +1,40 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import Login from './routes/Login';
+import { AuthContext } from './context/AuthContext';
 import io from 'socket.io-client';
-const socket = io('http://localhost:5000')
+
+const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000'
+const socket = io(url)
 
 function App() {
-  const [message, setMessage] = useState('')
+  // const [message, setMessage] = useState('')
   
-  const sendNotification = () => {
-    socket.emit('notification', '123456')
-    socket.emit('notification_send', {id: '123456', message: 'ESSE E UM DADO'})
-  }
+  // const sendNotification = () => {
+  //   socket.emit('notification', '123456')
+  //   socket.emit('notification_send', {id: '123456', message: 'ESSE E UM DADO'})
+  // }
 
-  useEffect(() => {
-    socket.emit('notification', '123456' )
+  // useEffect(() => {
+  //   socket.emit('notification', '123456' )
 
-    socket.on('send_notification', (data) => {
-      setMessage(data)
-    })
-  }, [])
+  //   socket.on('send_notification', (data) => {
+  //     setMessage(data)
+  //   })
+  // }, [])
 
+  // <button onClick={sendNotification}>AQUI</button>
+  // <h1>{message}</h1>
   return (
-    <div>
-      <button onClick={sendNotification}>AQUI</button>
-      <h1>{message}</h1>
-    </div>
+    <AuthContext>
+      <Router>
+        <div className="container">
+          <Routes>
+            <Route path='/login' element={<Login />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthContext>
   );
 }
 

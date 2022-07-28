@@ -4,14 +4,20 @@ const Post = require("../modules/postModule");
 const PostImg = require('../modules/postImg')
 
 const createPost = asyncHandler( async (req, res) => {
-    if (!req.body.img) {
+    if (!req.file) {
         res.status(400);
-        throw new Error('Please add an image')
-    };
+        throw new Error('Please add a file')
+    }
+
+    const postImg = await PostImg.create({
+        name: req.file.originalname,
+        size: req.file.size,
+        key: req.file.filename,
+    });
 
     const post = await Post.create({
         title: req.body.title,
-        post_img: req.body.img,
+        post_img: postImg._id,
         likes: [],
         comments: [],
         tagged: [],
@@ -85,11 +91,7 @@ const postImg = asyncHandler( async (req, res) => {
         throw new Error('Post not found');
     };
 
-    const postImg = await PostImg.create({
-        name: req.file.originalname,
-        size: req.file.size,
-        key: req.file.filename,
-    });
+    
 
     const updatePostImg = await Post.findByIdAndUpdate(req.params.id, {
         post_img: postImg._id

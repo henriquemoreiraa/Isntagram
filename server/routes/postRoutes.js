@@ -4,7 +4,7 @@ const { createPost, getPosts, updatePost, likePost, deletePost, sharePost, tagUs
 const multer = require('multer');
 const multerConfig = require('../config/multer')
 
-router.route('/create').post(createPost);
+router.route('/create').post(multer(multerConfig).single('file'), createPost);
 router.route('/post').get(getPosts);
 router.route('/:id').put(updatePost).delete(deletePost);
 router.route('/like/:id').put(likePost);
