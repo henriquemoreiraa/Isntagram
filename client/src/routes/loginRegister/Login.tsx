@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as C from './styles'
-import { UserForm, UserData } from '../../context/types'
+import { UserForm, UserData } from './types'
 import { Context } from '../../context/AuthContext'
 import api from '../../api'
 

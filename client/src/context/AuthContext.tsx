@@ -1,8 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import api from '../api';
-import { FormProviderProps, UserForm } from './types';
+import { UserForm } from '../routes/loginRegister/types';
 
 const Context = createContext<any | undefined>(undefined);
+
+type FormProviderProps = {
+    children: ReactNode;
+}
 
 function AuthContext({ children }: FormProviderProps) {
     const [authenticated, setAuthenticated] = useState<boolean>(false) 

@@ -1,9 +1,3 @@
-import { ReactNode } from "react";
-
-export type FormProviderProps = {
-    children: ReactNode;
-}
-
 export type UserForm = {
     name: string;
     email: string;
