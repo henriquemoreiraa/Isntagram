@@ -28,7 +28,7 @@ const registerUser = asyncHandler( async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        user_img: 'test',
+        user_img: undefined,
         bio: '',
         followers: [],
         following: [],

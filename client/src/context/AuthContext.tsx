@@ -1,31 +1,14 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
 import api from '../api';
-
-type FormProviderProps = {
-    children: ReactNode;
-}
-
-type UserForm = {
-    name: string;
-    email: string;
-    password: string;
-    password2: string   
-}
-
-type UserData = {
-    _id: string;
-    name: string;
-    email: string;
-    user_img: string;
-    token: string
-}
+import { FormProviderProps, UserForm, UserData } from './types';
 
 const Context = createContext<any | undefined>(undefined);
 
 function AuthContext({ children }: FormProviderProps) {
     const [authenticated, setAuthenticated] = useState<boolean>(false) 
-    const [userForm, setUserForm] = useState<UserForm>({ name: '', email: '', password: '', password2: '' })
+    const [userForm, setUserForm] = useState<UserForm>({ 
+        name: 'Rodrigo', email: 'rodrigo@gmail.com', password: '123456', password2: '123456' 
+    })
 
     const { name, email, password } = userForm
 
@@ -37,11 +20,13 @@ function AuthContext({ children }: FormProviderProps) {
         })
 
         localStorage.setItem('token', JSON.stringify(data.token))
-        api.defaults.headers.Authorization = `Bearer ${data.token}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+
+        console.log(data)
     }
 
   return (
-    <Context.Provider value={{ userForm, setUserForm }}>
+    <Context.Provider value={{ userForm, setUserForm, handleRegister }}>
         { children }
     </Context.Provider>
   )

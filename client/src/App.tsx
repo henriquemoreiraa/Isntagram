@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './routes/Login';
+import Register from './routes/Register';
 import { AuthContext } from './context/AuthContext';
 import io from 'socket.io-client';
 
@@ -30,7 +31,8 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
-            <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
           </Routes>
         </div>
       </Router>
