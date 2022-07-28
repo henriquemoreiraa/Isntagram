@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import Login from './routes/Login';
-import Register from './routes/Register';
+import Login from './routes/loginRegister/Login';
+import Register from './routes/loginRegister/Register';
 import { AuthContext } from './context/AuthContext';
 import io from 'socket.io-client';
 

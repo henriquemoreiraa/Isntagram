@@ -8,7 +8,7 @@ const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-        res.status(400);
+        res.status(400).send('Please add all fields');
         throw new Error('Please add all fields');
     };
 
@@ -17,7 +17,7 @@ const registerUser = asyncHandler( async (req, res) => {
     
 
     if (userEmailExists || userNameExists) {
-        res.status(400);
+        res.status(400).send('User already exists');
         throw new Error('User already exists');
     };
 
@@ -62,7 +62,7 @@ const loginUser = asyncHandler( async (req, res) => {
             token: generateToken(user._id)
         });
     } else {
-        res.status(400);
+        res.status(400).send('Invalid credentials');
         throw new Error('Invalid credentials');
     };
 });

@@ -1,32 +1,31 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import api from '../api';
-import { FormProviderProps, UserForm, UserData } from './types';
+import { FormProviderProps, UserForm } from './types';
 
 const Context = createContext<any | undefined>(undefined);
 
 function AuthContext({ children }: FormProviderProps) {
     const [authenticated, setAuthenticated] = useState<boolean>(false) 
     const [userForm, setUserForm] = useState<UserForm>({ 
-        name: 'Rodrigo', email: 'rodrigo@gmail.com', password: '123456', password2: '123456' 
+        name: '', email: '', password: '', password2: '' 
     })
 
-    const { name, email, password } = userForm
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        
+        if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(token)}`
+            setAuthenticated(true)
+        }
+    }, [])
 
-    const handleRegister = async () => {
-        const { data } = await api.post<UserData>('/users/register', {
-            name,
-            email,
-            password,
-        })
-
-        localStorage.setItem('token', JSON.stringify(data.token))
-        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-
-        console.log(data)
+    const handleLogout = () => {
+        setAuthenticated(false)
+        localStorage.removeItem('token')
     }
 
   return (
-    <Context.Provider value={{ userForm, setUserForm, handleRegister }}>
+    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated }}>
         { children }
     </Context.Provider>
   )
