@@ -29,8 +29,16 @@ const createPost = asyncHandler( async (req, res) => {
 });
 
 const getPosts = asyncHandler( async (req, res) => {
-    const posts = await Post.find().populate(['post_img'])
+    const userId = await User.findById(req.params.id)
+
+    if (!userId) {
+        const posts = await Post.find()
+        res.status(200).json(posts)
+    }
+    
+    const posts = await Post.find({ user_id: userId.following }).populate(['post_img'])
     res.status(200).json(posts);  
+
 });
 
 const likePost = asyncHandler( async (req, res) => {

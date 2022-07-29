@@ -12,6 +12,7 @@ const io = new Server(serverHttp, {
 const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./database/connect');
 const { Socket } = require('dgram');
+const path = require('path');
 
 app.use(cors());
 
@@ -19,9 +20,9 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+// app.use('files', express.static(path.resolve(__dirname, '..', 'client', 'public', 'test' )))
 app.use(errorHandler);
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));

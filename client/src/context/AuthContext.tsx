@@ -26,10 +26,11 @@ function AuthContext({ children }: FormProviderProps) {
     const handleLogout = () => {
         setAuthenticated(false)
         localStorage.removeItem('token')
+        localStorage.removeItem('userId')
     }
 
   return (
-    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated }}>
+    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout }}>
         { children }
     </Context.Provider>
   )
