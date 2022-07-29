@@ -9,19 +9,40 @@ const socket = io(url);
 
 // post.post_img.key
 type PostImg = {
-    createdAt: string;
-    key: string;
-    name: string;
-    size: number;
-    updatedAt: string;
-    _id: string
+  createdAt: string;
+  key: string;
+  name: string;
+  size: number;
+  updatedAt: string;
+  _id: string
 };
+
+type Comments = {
+  answers: string[];
+  comment: string;
+  createdAt: string;
+  likes: Likes;
+  updatedAt: string[];
+  user: {
+    name: string;
+    user_id: string;
+    user_img: string
+  };
+  _id: string;
+}[]
+
+type Likes = {
+  bio: string;
+  name: string;
+  user_img: string;
+  _id: string;
+}[]
 
 type Posts = {
   title: string;
-  comments: string[];
+  comments: Comments;
   createdAt: string;
-  likes: string[];
+  likes: Likes;
   post_img: PostImg;
   shares: string[];
   tagged: string[];
@@ -36,8 +57,6 @@ function Home() {
     const { authenticated, setAuthenticated } = useContext(Context)
     const navigate = useNavigate()
     const id = localStorage.getItem('userId')
-    const token = localStorage.getItem('token')
-
 
     useEffect(() => {
       if (authenticated) {
@@ -73,9 +92,17 @@ function Home() {
         {
           posts.map(post => (
             <div>
-              <h1>{post.title}</h1>
-              <h2>{post._id}</h2>
               <img src={`${process.env.REACT_APP_API_URL}${post.post_img.key}`}  height='100px' alt="" />
+              <h1>{post.title}</h1>
+              <h4>{post.likes.length}Likes</h4>
+                {post.comments.map(comment => (
+              <div>
+                  <img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" />
+                  <h5>{comment.user.name}</h5>
+                  <p>{comment.comment}</p>
+              </div>                 
+                ))}
+
             </div>
             
             ))

@@ -36,7 +36,9 @@ const getPosts = asyncHandler( async (req, res) => {
         res.status(200).json(posts)
     }
     
-    const posts = await Post.find({ user_id: userId.following }).populate(['post_img'])
+    const posts = await Post.find({ user_id: userId.following }).populate(['post_img', 'comments', 'likes', 'shares', 'tagged', 'user_id'])
+
+   
     res.status(200).json(posts);  
 
 });

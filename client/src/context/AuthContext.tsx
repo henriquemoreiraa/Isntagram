@@ -13,18 +13,21 @@ function AuthContext({ children }: FormProviderProps) {
     const [userForm, setUserForm] = useState<UserForm>({ 
         name: '', email: '', password: '', password2: '' 
     })
-
+    
     useEffect(() => {
         const token = localStorage.getItem('token')
-        
+    
         if (token) {
             api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(token)}`
             setAuthenticated(true)
+
         }
     }, [])
 
     const handleLogout = () => {
         setAuthenticated(false)
+        // setUserId(undefined)
+        // setUserToken(undefined)
         localStorage.removeItem('token')
         localStorage.removeItem('userId')
     }

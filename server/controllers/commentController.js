@@ -2,9 +2,13 @@ const asyncHandler = require('express-async-handler');
 const Comments = require("../modules/commentsModule");
 const Answers = require('../modules/answerModule')
 const Post = require("../modules/postModule");
+const User = require("../modules/userModule");
+const ProfileImg = require('../modules/profileImg')
 
 const createComment = asyncHandler( async (req, res) => {
     const post = await Post.findById(req.params.id);
+    const userId = await User.findById(req.body.id);
+    const userImg = await ProfileImg.findById(userId.user_img)
 
     if (!req.body.comment) {
         res.status(400);
@@ -13,7 +17,11 @@ const createComment = asyncHandler( async (req, res) => {
 
     const comment = await Comments.create({
         comment: req.body.comment,
-        user_id: req.body.id,
+        user: {
+            name: userId.name,
+            user_img: userImg.key,
+            user_id: userId._id
+        },
         likes: [],
         answer: [],
     });

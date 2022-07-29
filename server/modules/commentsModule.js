@@ -5,10 +5,10 @@ const commentsSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    user: {
+        name: { type: String, required: true },     
+        user_img: { type: String, required: true },
+        user_id: { type: String, required: true } 
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
