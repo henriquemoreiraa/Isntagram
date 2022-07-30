@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require("../modules/userModule");
-const ProfileImg = require('../modules/profileImg')
+const ProfileImg = require('../modules/profileImgModule')
 
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password } = req.body;
@@ -28,7 +28,7 @@ const registerUser = asyncHandler( async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        user_img: undefined,
+        user_img: null,
         bio: '',
         followers: [],
         following: [],
@@ -43,7 +43,7 @@ const registerUser = asyncHandler( async (req, res) => {
             token: generateToken(user._id)
         });
     } else {
-        res.status(400);
+        res.status(400).send('test');
         throw new Error('Invalid user data');
     };
 });
@@ -68,7 +68,7 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    const users = await User.find().populate(['user_img'])
+    const users = await User.find()
     res.status(200).json(users);
 });
 

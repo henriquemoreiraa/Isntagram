@@ -3,14 +3,14 @@ const Comments = require("../modules/commentsModule");
 const Answers = require('../modules/answerModule')
 const Post = require("../modules/postModule");
 const User = require("../modules/userModule");
-const ProfileImg = require('../modules/profileImg')
+const ProfileImg = require('../modules/profileImgModule')
 
 const createComment = asyncHandler( async (req, res) => {
     const post = await Post.findById(req.params.id);
     const userId = await User.findById(req.body.id);
     const userImg = await ProfileImg.findById(userId.user_img)
 
-    if (!req.body.comment) {
+    if (!req.body.comment || !req.body.id) {
         res.status(400);
         throw new Error('Please add a comment');
     };
@@ -58,36 +58,40 @@ const deleteComment = asyncHandler( async (req, res) => {
 
 const answerComment = asyncHandler ( async (req, res) => {
     const comment = await Comments.findById(req.params.id);
+    const userId = await User.findById(req.body.id);
+    const userImg = await ProfileImg.findById(userId.user_img)
 
     if (!req.body.answer) {
         res.status(400);
         throw new Error('Please add a answer');
     };
 
-    const answer = await Answers.create({
+    await comment.answers.push({
         answer: req.body.answer,
-        user_id: req.body.id,
+        user: {
+            name: userId.name,
+            user_img: userImg.key,
+            user_id: userId._id
+        },
         likes: []
     });
-
-    await comment.answers.push(answer._id);
     comment.save();
 
-    res.status(200).json(answer);  
+    res.status(200).json(comment);  
 });
 
 const likeAnswer = asyncHandler( async (req, res) => {
-    const answer = await Answers.findById(req.params.id);
+    const comment = await Comments.findById(req.params.id);
     
-    if (!answer) {
+    if (!comment) {
         res.status(400);
         throw new Error('Answer not found');
     };
     
-    await answer.likes.push(req.body.id);
+    await comment.answers.likes.push(req.body.id);
     
-    answer.save();
-    res.status(200).json(answer);
+    comment.save();
+    res.status(200).json(comment);
     
 });
 

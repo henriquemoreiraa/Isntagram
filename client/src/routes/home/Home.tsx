@@ -4,52 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../../context/AuthContext';
 import Header from '../../components/header/Header';
 import io from 'socket.io-client';
+import { PostImg, Answers, Comments, Likes, Posts } from './types'
 const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000';
 const socket = io(url);
-
 // post.post_img.key
-type PostImg = {
-  createdAt: string;
-  key: string;
-  name: string;
-  size: number;
-  updatedAt: string;
-  _id: string
-};
 
-type Comments = {
-  answers: string[];
-  comment: string;
-  createdAt: string;
-  likes: Likes;
-  updatedAt: string[];
-  user: {
-    name: string;
-    user_id: string;
-    user_img: string
-  };
-  _id: string;
-}[]
-
-type Likes = {
-  bio: string;
-  name: string;
-  user_img: string;
-  _id: string;
-}[]
-
-type Posts = {
-  title: string;
-  comments: Comments;
-  createdAt: string;
-  likes: Likes;
-  post_img: PostImg;
-  shares: string[];
-  tagged: string[];
-  updatedAt: string;
-  user_id: string;
-  _id: string; 
-}[];
 
 function Home() {
     const [posts, setPosts] = useState<Posts>([])
@@ -96,11 +55,25 @@ function Home() {
               <h1>{post.title}</h1>
               <h4>{post.likes.length}Likes</h4>
                 {post.comments.map(comment => (
-              <div>
-                  <img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" />
-                  <h5>{comment.user.name}</h5>
-                  <p>{comment.comment}</p>
-              </div>                 
+              <>
+                <div>
+                  <h3>Comments</h3>
+                    <img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" height='60px' />
+                    <h5>{comment.user.name}</h5>
+                    <p>{comment.comment}</p>
+                </div>
+                  <>
+                    {comment.answers.map(answer => (
+                      <div>
+                        <h4>Answers</h4>
+                        <img src={`${process.env.REACT_APP_API_URL}${answer.user.user_img}`} alt="" height='40px'/>
+                        <h6>{answer.user.name}</h6>
+                        <p>{answer.answer}</p>
+                      </div>
+                    ))}
+                  </>
+              </>
+                
                 ))}
 
             </div>

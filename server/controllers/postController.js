@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require("../modules/userModule");
 const Post = require("../modules/postModule");
-const PostImg = require('../modules/postImg')
+const PostImg = require('../modules/postImgModule')
 
 const createPost = asyncHandler( async (req, res) => {
     if (!req.file) {
@@ -29,14 +29,16 @@ const createPost = asyncHandler( async (req, res) => {
 });
 
 const getPosts = asyncHandler( async (req, res) => {
-    const userId = await User.findById(req.params.id)
+    const userId = await User.findById(req.params.id);
 
     if (!userId) {
-        const posts = await Post.find()
-        res.status(200).json(posts)
-    }
-    
-    const posts = await Post.find({ user_id: userId.following }).populate(['post_img', 'comments', 'likes', 'shares', 'tagged', 'user_id'])
+        const posts = await Post.find();
+        res.status(200).json(posts);
+    };
+    // shares: userId.following, $or
+    //         tagged: userId.following
+    const posts = await Post.find({ 
+        user_id: userId.following}).populate(['post_img', 'comments', 'shares', 'tagged', 'user_id']);
 
    
     res.status(200).json(posts);  
@@ -100,8 +102,6 @@ const postImg = asyncHandler( async (req, res) => {
         res.status(400);
         throw new Error('Post not found');
     };
-
-    
 
     const updatePostImg = await Post.findByIdAndUpdate(req.params.id, {
         post_img: postImg._id
