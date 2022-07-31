@@ -15,7 +15,7 @@ function Home() {
     const [posts, setPosts] = useState<Posts>([])
     const [user, setUser] = useState<User>()
 
-    const { authenticated, setAuthenticated } = useContext(Context)
+    const { authenticated, handleUnfollow } = useContext(Context)
     const navigate = useNavigate()
     const id = localStorage.getItem('userId')
 
@@ -63,7 +63,7 @@ function Home() {
                 <div className='post'>
                   <div className='user'>
                     <div className='userImg-name'>
-                      <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" height={'33px'}/></div>
+                      <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></div>
                       <p>{post.user.name}</p>
                     </div>
                     <div>
@@ -109,23 +109,26 @@ function Home() {
                   <div className='divImg'>
                      <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`} alt="" />
                   </div>
-                  <p>{user.name}</p>
+                  <p className='userName'>{user.name}</p>
                 </div>
               </div>
-              <div className='followedUsers'>
-              <p>Followed users</p>
-              <div className='user'>
-                <div className='userImg-name'>
-                  {user.following.map(user => (
-                    <>
-                      <div className='divImg1'>
-                        <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`} alt="" />
-                        </div>
-                        <p>{user.name}</p>
-                    </>
-                  ))}
+              <div className=''>
+              <p className='followedUsers'>Followed users</p>
+              {user.following.map(user => (
+                <div className='user'>
+                  <div className='userImg-name'>
+                      <>
+                        <div className='divImg1'>
+                          <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img}`} alt="" />
+                          </div>
+                          <p>{user.name}</p>
+                      </>
+                  </div>
+                  <div onClick={() => handleUnfollow(user.user_id, id)}>
+                      unfollow
+                  </div>
                 </div>
-              </div>
+              ))}
               </div>
           </div>
                 : ''

@@ -61,7 +61,15 @@ export type User = {
 name: string;
 email: string;
 user_img: PostImg;
-followers: User[];
-following: User[];
+followers: {
+    name: string;
+    user_img: string;
+    user_id: string
+}[];
+following: {
+    name: string;
+    user_img: string;
+    user_id: string
+}[];
 bio: string;
 };

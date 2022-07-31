@@ -66,9 +66,7 @@ strong {
     margin-left: 1em;
 }
 
-.userFollowing p {
-    font-size: 1.5em;
-}
+
 
 .divImg {
     width: 70px;
@@ -84,7 +82,13 @@ strong {
 
 }
 
-.followedUsers p {
+.userName {
+    font-size: 1.5em;
+}
+
+.followedUsers {
+    font-size: 1.5em;
     color: #777777;
     font-size: 1.1em;
+    margin-left: 0.9em;
 }

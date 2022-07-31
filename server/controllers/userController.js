@@ -80,14 +80,24 @@ const updateUser = asyncHandler( async (req, res) => {
 const followUser = asyncHandler( async (req, res) => {
     const userId = await User.findById(req.params.id);
     const userFollowing = await User.findById(req.body.id);
+    const userFollowedImg = await ProfileImg.findById(userId.user_img)
+    const userFollowingImg = await ProfileImg.findById(userFollowing.user_img)
 
     if (!userId) {
         res.status(400);
         throw new Error('User not found');
     };
 
-    await userId.followers.push(req.body.id);
-    await userFollowing.following.push(req.params.id);
+    await userId.followers.push({
+        name: userFollowing.name,
+        user_img: userFollowingImg.key,
+        user_id: userFollowing._id
+    });
+    await userFollowing.following.push({
+        name: userId.name,
+        user_img: userFollowedImg.key,
+        user_id: userId._id
+    });
 
     userId.save();
     userFollowing.save();
@@ -103,10 +113,10 @@ const unfollowUser = asyncHandler( async (req, res) => {
         throw new Error('User not found');
     };
 
-    const deleteUserFollowed = await userFollowed.followers.filter(userId => userId.toString() !== req.body.id);
+    const deleteUserFollowed = await userFollowed.followers.filter(userId => userId.user_id !== req.body.id);
     userFollowed.followers = deleteUserFollowed;
 
-    const deleteUserFollower = await userFollower.following.filter(userId => userId.toString() !== req.params.id);
+    const deleteUserFollower = await userFollower.following.filter(userId => userId.user_id !== req.params.id);
     userFollower.following = deleteUserFollower;
 
     await userFollowed.save();

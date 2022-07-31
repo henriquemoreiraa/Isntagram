@@ -32,8 +32,16 @@ function AuthContext({ children }: FormProviderProps) {
         localStorage.removeItem('userId')
     }
 
+    const handleUnfollow = async (unfollowedId: string, unfollowerId: string) => {
+        const { data } = await api.put(`/users/unfollow/${unfollowedId}`, {
+            id: unfollowerId 
+        })
+    console.log(data)
+    }
+    
+
   return (
-    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout }}>
+    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout, handleUnfollow }}>
         { children }
     </Context.Provider>
   )

@@ -18,12 +18,14 @@ const userSchema = mongoose.Schema({
         ref: 'ProfileImg'
     },
     followers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        name: { type: String, required: true },     
+        user_img: { type: String, required: true },
+        user_id: { type: String, required: true }
     }],
     following: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        name: { type: String, required: true },     
+        user_img: { type: String, required: true },
+        user_id: { type: String, required: true }
     }],
     bio: {
         type: String,
