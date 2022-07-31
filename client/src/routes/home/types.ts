@@ -49,6 +49,19 @@ post_img: PostImg;
 shares: string[];
 tagged: string[];
 updatedAt: string;
-user_id: string;
+user: {
+    name: string;
+    user_img: string
+    user_id: string; 
+};
 _id: string; 
 }[];
+
+export type User = {
+name: string;
+email: string;
+user_img: PostImg;
+followers: User[];
+following: User[];
+bio: string;
+};

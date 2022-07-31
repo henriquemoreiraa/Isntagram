@@ -24,10 +24,10 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User' 
+    user: {
+        name: { type: String, required: true },     
+        user_img: { type: String, required: true },
+        user_id: { type: String, required: true }
     },
 }, {
     timestamps: true 

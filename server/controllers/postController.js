@@ -1,9 +1,13 @@
 const asyncHandler = require('express-async-handler');
 const User = require("../modules/userModule");
 const Post = require("../modules/postModule");
-const PostImg = require('../modules/postImgModule')
+const PostImg = require('../modules/postImgModule');
+const ProfileImg = require('../modules/profileImgModule')
 
 const createPost = asyncHandler( async (req, res) => {
+    const userId = await User.findById(req.body.id);
+    const userImg = await ProfileImg.findById(userId.user_img);
+
     if (!req.file) {
         res.status(400);
         throw new Error('Please add a file')
@@ -22,7 +26,11 @@ const createPost = asyncHandler( async (req, res) => {
         comments: [],
         tagged: [],
         shares: [],
-        user_id: req.body.id
+        user: {
+            name: userId.name,
+            user_img: userImg.key,
+            user_id: userId._id
+        } 
     });
 
     res.status(200).json(post);    
@@ -38,7 +46,7 @@ const getPosts = asyncHandler( async (req, res) => {
     // shares: userId.following, $or
     //         tagged: userId.following
     const posts = await Post.find({ 
-        user_id: userId.following}).populate(['post_img', 'comments', 'shares', 'tagged', 'user_id']);
+        user_id: userId.following}).populate(['post_img', 'comments', 'shares', 'tagged']);
 
    
     res.status(200).json(posts);  

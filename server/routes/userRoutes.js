@@ -8,11 +8,13 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
-router.route('/user').get(protect ,getUser);
+router.route('/user/:id').get(protect ,getUser);
 router.route('/:id').put(protect ,updateUser).delete(protect, deleteUser);
 router.route('/follow/:id').put(protect, followUser);
 router.route('/unfollow/:id').delete(protect, unfollowUser)
 router.route('/img/:id').put(protect, multer(multerConfig).single('file'), updateUserImg)
+
+
 
 
 module.exports = router;

@@ -28,7 +28,7 @@ const registerUser = asyncHandler( async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        user_img: null,
+        user_img: '62e6d3bbaf78ad7fc2b88691',
         bio: '',
         followers: [],
         following: [],
@@ -68,8 +68,9 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    const users = await User.find()
-    res.status(200).json(users);
+    const userId = await User.findById(req.params.id).populate(['following', 'user_img'])
+
+    res.status(200).json(userId);
 });
 
 const updateUser = asyncHandler( async (req, res) => {
@@ -154,5 +155,5 @@ module.exports = {
     followUser,
     unfollowUser,
     updateUserImg,
-    deleteUser
+    deleteUser,
 };
