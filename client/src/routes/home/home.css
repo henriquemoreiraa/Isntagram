@@ -56,6 +56,21 @@
     padding: 0.3em 0.9em;
 }
 
+.postLikeCommShare {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 0.3em;
+}
+
+.postLikeCommShare div {
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+.postLikeCommShare div:hover {
+    opacity: 0.6;
+}
+
 strong {
     font-weight: 600;
     margin-right: 0.3em;
@@ -105,3 +120,23 @@ strong {
 .unfollowFollow:hover {
     color: #47afff;
 }
+
+.fixedUserFollowing {
+    position: fixed;
+    width: 320px;
+    height: 84vh;
+    overflow-y: auto;
+}
+
+.fixedUserFollowing::-webkit-scrollbar {
+    width: 8px;               /* width of the entire scrollbar */
+  }
+  
+  .fixedUserFollowing::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+  }
+  
+  .fixedUserFollowing::-webkit-scrollbar-thumb {
+    background-color: rgb(210, 210, 210);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+  }

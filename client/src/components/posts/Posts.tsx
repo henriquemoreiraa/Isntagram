@@ -1,14 +1,21 @@
-import { PostsType } from '../../routes/home/types'
-import {IoEllipsisHorizontalSharp} from 'react-icons/io5'
-
+import { PostsType, User } from '../../routes/home/types'
+import { IoEllipsisHorizontalSharp, IoHeartOutline, IoHeartSharp, IoChatbubbleOutline, IoPaperPlaneOutline } from 'react-icons/io5'
+import { useState } from 'react';
+import Post from './Post'
 
 type Props = {
     posts: PostsType
+    user: User | undefined
 }
 
-function Posts({ posts }: Props) {
+function Posts({ posts, user }: Props) {
+  const [like, setLike] = useState(false)
+  const [singlePost, setSinglePost] = useState(false)
+  const [postId, setPostId] = useState('')
+
   return (
     <div>
+      {singlePost && <Post postId={postId} posts={posts} user={user}/>}
             { posts ?
               posts.map(post => (
                 <div className='post'>
@@ -21,13 +28,30 @@ function Posts({ posts }: Props) {
                       <IoEllipsisHorizontalSharp size={'1.2em'}/>
                     </div>
                   </div>
-                  <div className='postImg'>
+                  <div onClick={() => (setSinglePost(true), setPostId(post._id))} className='postImg'>
                     <img src={`${process.env.REACT_APP_API_URL}${post.post_img.key}`} alt="" />
                   </div>
                   <div className='postTitle'>
+                    <div className='postLikeCommShare'>
+                      <div onClick={() => setLike(!like)}>
+                        {!like ? 
+                          <IoHeartOutline size={'1.9em'} /> :
+                          <IoHeartSharp size={'1.9em'} color={'e84040'}/>
+                        }
+                      </div>
+                      <div onClick={() => (setSinglePost(true), setPostId(post._id))}>
+                        <IoChatbubbleOutline size={'1.8em'} />
+                      </div>
+                      <div>
+                        <IoPaperPlaneOutline size={'1.8em'} />
+                      </div>
+                    </div>
+                  {post.likes.length > 0 && <p><strong>{post.likes.length}</strong>Likes</p>}
                     <p><strong>{post.user.name}</strong> {post.title}</p>
+                    {post.comments.length >= 0 && <div onClick={() => (setSinglePost(true), setPostId(post._id))}>
+                      View all {post.comments.length} comments
+                    </div>}
                   </div>
-                  <h4>{post.likes.length}Likes</h4>
                     {post.comments.map(comment => (
                   <>
                     <div>

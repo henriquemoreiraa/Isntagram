@@ -30,7 +30,8 @@ const createPost = asyncHandler( async (req, res) => {
             name: userId.name,
             user_img: userImg.key,
             user_id: userId._id
-        } 
+        },
+        user_id: req.body.id
     });
 
     res.status(200).json(post);    
@@ -38,17 +39,18 @@ const createPost = asyncHandler( async (req, res) => {
 
 const getPosts = asyncHandler( async (req, res) => {
     const userId = await User.findById(req.params.id);
+    const allPosts = await Post.find();
 
     if (!userId) {
         const posts = await Post.find();
         res.status(200).json(posts);
     };
+    const maptest = userId.following.map(t => t.user_id)
+
     // shares: userId.following, $or
     //         tagged: userId.following
-    const posts = await Post.find({ 
-        user_id: userId.following}).populate(['post_img', 'comments', 'shares', 'tagged']);
-
-   
+    const posts = await Post.find({ user_id: maptest  }).populate(['post_img', 'comments', 'shares', 'tagged']);
+   console.log(maptest)
     res.status(200).json(posts);  
 
 });
