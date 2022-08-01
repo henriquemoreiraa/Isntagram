@@ -1,9 +1,16 @@
+.test {
+
+    
+}
+
 .post {
     /* max-width: 470px; */
     min-width: 470px;
+    min-height: 470px;
     box-shadow: 0px 0px 2px #777;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin-bottom: 2em;
+    background-color: #fff;
 }
 
 .user {
@@ -34,8 +41,8 @@
 }
 
 .postImg {
-    height: 322px;
-    background-color: blue;
+    height: 470px;
+    width: 470px;
 }
 
 .postImg img {
@@ -60,13 +67,10 @@ strong {
 }
 
 .userFollowing {
-    background-color: antiquewhite;
     width: 300px;
     padding: 1em;
     margin-left: 1em;
 }
-
-
 
 .divImg {
     width: 70px;
@@ -91,4 +95,13 @@ strong {
     color: #777777;
     font-size: 1.1em;
     margin-left: 0.9em;
+}
+
+.unfollowFollow {
+    color: #0095f6;
+    cursor: pointer;
+}
+
+.unfollowFollow:hover {
+    color: #47afff;
 }

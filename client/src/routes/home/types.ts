@@ -40,7 +40,7 @@ user_img: string;
 _id: string;
 }[]
 
-export type Posts = {
+export type PostsType = {
 title: string;
 comments: Comments;
 createdAt: string;
@@ -73,3 +73,20 @@ following: {
 }[];
 bio: string;
 };
+
+export type User5 = {
+    name: string;
+    email: string;
+    user_img: PostImg;
+    followers: {
+        name: string;
+        user_img: string;
+        user_id: string
+    }[];
+    following: {
+        name: string;
+        user_img: string;
+        user_id: string
+    }[];
+    bio: string;
+    }[];

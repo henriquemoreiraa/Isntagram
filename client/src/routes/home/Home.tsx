@@ -5,17 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../../context/AuthContext';
 import Header from '../../components/header/Header';
 import io from 'socket.io-client';
-import { Posts, User } from './types'
+import { PostsType, User, User5 } from './types'
+import Posts from '../../components/posts/Posts'
 const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000';
 const socket = io(url);
 // post.post_img.key
 
-
 function Home() {
-    const [posts, setPosts] = useState<Posts>([])
+    const [posts, setPosts] = useState<PostsType>([])
     const [user, setUser] = useState<User>()
+    const [user5, setUser5] = useState<User5>([])
+    const [followUnfUser, setFollowUnfUser] = useState<boolean>(true)
 
-    const { authenticated, handleUnfollow } = useContext(Context)
+    const { authenticated, handleUnfollow, handleFollow } = useContext(Context)
     const navigate = useNavigate()
     const id = localStorage.getItem('userId')
 
@@ -24,7 +26,7 @@ function Home() {
         
         (async () => {
           const { data } = await api.get(`/posts/post/${id}`)
-          const posts: Posts | any = []
+          const posts: PostsType | any = []
           for (let i in data) {
             posts.unshift(data[i])
           }
@@ -35,7 +37,6 @@ function Home() {
         (async () => {
           const { data } = await api.get(`/users/user/${id}`)
           
-  
           setUser(data)
         })();
       }   
@@ -53,93 +54,68 @@ function Home() {
     }
 
     return (
-      <div className='container'>
-        <Header />
-        {/* <button onClick={sendNotification}>AQUI</button> */}
-        <div className='containerPosts-userFollowing'>
-          <div>
-            { posts ?
-              posts.map(post => (
-                <div className='post'>
-                  <div className='user'>
-                    <div className='userImg-name'>
-                      <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></div>
-                      <p>{post.user.name}</p>
-                    </div>
-                    <div>
-                      ...
-                    </div>
-                  </div>
-                  <div className='postImg'>
-                    <img src={`${process.env.REACT_APP_API_URL}${post.post_img.key}`} alt="" />
-                  </div>
-                  <div className='postTitle'>
-                    <p><strong>{post.user.name}</strong> {post.title}</p>
-                  </div>
-                  <h4>{post.likes.length}Likes</h4>
-                    {post.comments.map(comment => (
-                  <>
-                    <div>
-                      <h3>Comments</h3>
-                        <img className='userImg' src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" height='33px' />
-                        <p>{comment.user.name}</p>
-                        <p>{comment.comment}</p>
-                    </div>
-                      <>
-                        {comment.answers.map(answer => (
-                          <div>
-                            <h4>Answers</h4>
-                            <img src={`${process.env.REACT_APP_API_URL}${answer.user.user_img}`} alt="" height='40px'/>
-                            <h6>{answer.user.name}</h6>
-                            <p>{answer.answer}</p>
-                          </div>
-                        ))}
-                      </>
-                  </>
-            
-                    ))}
-                </div>
-            
-                )) : '' } 
-          </div>
-              { user ?
-          <div className='userFollowing'>               
-              <div className='user'>
-                <div className='userImg-name'>
-                  <div className='divImg'>
-                     <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`} alt="" />
-                  </div>
-                  <p className='userName'>{user.name}</p>
-                </div>
-              </div>
-              <div className=''>
-              <p className='followedUsers'>Followed users</p>
-              {user.following.map(user => (
+      <>
+        <div className='test'></div>
+        <div className='container'>
+          <Header user={user}/>
+          {/* <button onClick={sendNotification}>AQUI</button> */}
+          <div className='containerPosts-userFollowing'>
+            <Posts posts={posts} />
+        
+                { user ?
+            <div className='userFollowing'>
                 <div className='user'>
                   <div className='userImg-name'>
-                      <>
-                        <div className='divImg1'>
-                          <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img}`} alt="" />
-                          </div>
-                          <p>{user.name}</p>
-                      </>
-                  </div>
-                  <div onClick={() => handleUnfollow(user.user_id, id)}>
-                      unfollow
+                    <div className='divImg'>
+                       <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`} alt="" />
+                    </div>
+                    <p className='userName'>{user.name}</p>
                   </div>
                 </div>
-              ))}
-              </div>
-          </div>
-                : ''
-              }
-          
-
-        </div>
-
+                <div className=''>
+                <p className='followedUsers'>Your followed users</p>
+                {user.following.map(user => (
+                  <div className='user'>
+                    <div className='userImg-name'>
+                        <>
+                          <div className='divImg1'>
+                            <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img}`} alt="" />
+                            </div>
+                            <p>{user.name}</p>
+                        </>
+                    </div>
+                    {followUnfUser ?  <div className='unfollowFollow' onClick={() => (handleUnfollow(user.user_id, id), setFollowUnfUser(false))}>
+                        Unfollow
+                    </div> :
+                    <div className='unfollowFollow' onClick={() => (handleFollow(user.user_id, id), setFollowUnfUser(true))}>
+                        Follow
+                    </div>}
+                  </div>
+                ))}
+                </div>
+                <p className='followedUsers'>Your Followers</p>
+                {user.following.length < 5 && user.followers.length > 0 &&
+                  user.followers.map(user => (
+                    <div className='user'>
+                    <div className='userImg-name'>
+                        <>
+                          <div className='divImg1'>
+                            <img className="" src={`${process.env.REACT_APP_API_URL}${user.user_img}`} alt="" />
+                            </div>
+                            <p>{user.name}</p>
+                        </>
+                    </div>
+                  </div>
+                  ))
+                }
+            </div>
+                  : ''
+                }
         
-      </div>
-    )
+          </div>
+        </div>        
+      </>
+            )
 }
 
 export default Home

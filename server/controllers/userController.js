@@ -68,10 +68,11 @@ const loginUser = asyncHandler( async (req, res) => {
 });
 
 const getUser = asyncHandler( async (req, res) => {
-    const userId = await User.findById(req.params.id).populate(['following', 'user_img'])
+    const userId = await User.findById(req.params.id).populate(['user_img'])
 
     res.status(200).json(userId);
 });
+
 
 const updateUser = asyncHandler( async (req, res) => {
     res.status(200).json({ message: 'UPDATE USER' });

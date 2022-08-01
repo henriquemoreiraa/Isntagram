@@ -36,12 +36,17 @@ function AuthContext({ children }: FormProviderProps) {
         const { data } = await api.put(`/users/unfollow/${unfollowedId}`, {
             id: unfollowerId 
         })
-    console.log(data)
+    }
+
+    const handleFollow = async (followedId: string, followerId: string) => {
+        const { data } = await api.put(`/users/follow/${followedId}`, {
+            id: followerId 
+        })
     }
     
 
   return (
-    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout, handleUnfollow }}>
+    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout, handleUnfollow, handleFollow }}>
         { children }
     </Context.Provider>
   )

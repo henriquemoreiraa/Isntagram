@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { Context } from '../../context/AuthContext';
 import io from 'socket.io-client';
+import {IoMdNotificationsOutline} from 'react-icons/io'
 const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000';
 const socket = io(url);
 
@@ -17,7 +18,7 @@ function Notification() {
     }, [])
 
     return (
-        <div>Notification {message}</div>
+        <div><IoMdNotificationsOutline size={'1.8em'}/> {message}</div>
     )
 }
 
