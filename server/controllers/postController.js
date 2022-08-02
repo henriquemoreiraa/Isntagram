@@ -66,9 +66,25 @@ const likePost = asyncHandler( async (req, res) => {
     await postId.likes.push(req.body.id);
 
     postId.save();
-    res.status(200).json(postId);
-    
+    res.status(200).json(postId);   
 });
+
+const removeLike = asyncHandler( async (req, res) => {
+    const postId = await Post.findById(req.params.id);
+
+    if (!postId) {
+        res.status(400);
+        throw new Error('Post not found');
+    };
+
+    const removeLike = await postId.likes.filter(userId => userId._id.toString() !== req.body.id);
+    postId.likes = removeLike;
+
+    postId.save();
+    res.status(200).json(postId);  
+});
+
+
 
 const tagUser = asyncHandler( async (req, res) => {
     const postId = await Post.findById(req.params.id);
@@ -138,5 +154,6 @@ module.exports = {
     deletePost,
     sharePost,
     tagUser,
-    postImg
+    postImg,
+    removeLike
 };

@@ -13,6 +13,7 @@ type Props = {
 
 function Post({ postId, posts, user }: Props) {
     const [post, setPost] = useState<PostsType>()
+    const [followUnfUser, setFollowUnfUser] = useState<boolean>(true)
     const id = localStorage.getItem('userId')
 
     useEffect(() => {
@@ -41,11 +42,11 @@ function Post({ postId, posts, user }: Props) {
                                 <BsDot size={'1.3em'}/>
                                    
                                 {post.user.user_id === id ? <p>You</p> :
-                                    user?.following.length === 0 ? <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p> :
+                                    user?.following.length === 0 ? followUnfUser && <p onClick={() => (handleFollow(post.user.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow</p> :
                                     user?.following.map(user => (
-                                          post.user.user_id === user.user_id ?
-                                        <p onClick={() => handleUnfollow(post.user.user_id, id)} className='unfollowFollow'>Following</p> :
-                                        <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p>
+                                          post.user.user_id === user.user_id ? followUnfUser &&
+                                        <p onClick={() => (handleUnfollow(post.user.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Following</p> : followUnfUser &&
+                                        <p onClick={() => (handleFollow(post.user.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow</p>
                                     
                                     
                                     ))

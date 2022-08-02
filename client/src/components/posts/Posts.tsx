@@ -1,17 +1,32 @@
 import { PostsType, User } from '../../routes/home/types'
 import { IoEllipsisHorizontalSharp, IoHeartOutline, IoHeartSharp, IoChatbubbleOutline, IoPaperPlaneOutline } from 'react-icons/io5'
 import { useState } from 'react';
-import Post from './Post'
+import Post from './Post';
+import api from '../../api'
 
 type Props = {
     posts: PostsType
     user: User | undefined
+    id: string | null
 }
 
-function Posts({ posts, user }: Props) {
+function Posts({ posts, user, id }: Props) {
   const [like, setLike] = useState(false)
+  const [removeLikes, setRemoveLikes] = useState(false)
   const [singlePost, setSinglePost] = useState(false)
   const [postId, setPostId] = useState('')
+
+  const handleLike = async (postId: string, userId: string | null) => {
+    const { data } = await api.put(`/posts/like/${postId}`, {
+        id: userId 
+    })
+}
+
+const removeLike = async (postId: string, userId: string | null) => {
+    const { data } = await api.put(`/posts/removeLike/${postId}`, {
+        id: userId, 
+    })
+}
 
   return (
     <div>
@@ -33,11 +48,19 @@ function Posts({ posts, user }: Props) {
                   </div>
                   <div className='postTitle'>
                     <div className='postLikeCommShare'>
-                      <div onClick={() => setLike(!like)}>
-                        {!like ? 
-                          <IoHeartOutline size={'1.9em'} /> :
-                          <IoHeartSharp size={'1.9em'} color={'e84040'}/>
-                        }
+                      <div>
+                        {post.likes.length === 0 ? !like && <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(!like))}/> :
+                          post.likes.map(postUser => (
+                            postUser._id === id ? !like &&
+                            <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(!like))} /> : !removeLikes &&
+                            <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => (removeLike(post._id, id), setRemoveLikes(true))}/>
+                        )) 
+                        
+                      }
+                      {like && <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => (removeLike(post._id, id), setLike(!like))} />}      
+                      {removeLikes && <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(false), setRemoveLikes(false))} />}      
+                                 
+                      
                       </div>
                       <div onClick={() => (setSinglePost(true), setPostId(post._id))}>
                         <IoChatbubbleOutline size={'1.8em'} />

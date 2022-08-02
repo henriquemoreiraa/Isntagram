@@ -59,7 +59,7 @@ function Home() {
           <Header user={user} teste={'test'}/>
           {/* <button onClick={sendNotification}>AQUI</button> */}
           <div className='containerPosts-userFollowing'>
-            <Posts posts={posts} user={user} />
+            <Posts posts={posts} user={user} id={id}/>
         
                 { user ?
             <div className='userFollowing'>
@@ -106,11 +106,11 @@ function Home() {
                               <p>{userf.name}</p>
                           </>
                       </div>
-                        { user.following.length === 0 ? <p onClick={() => handleFollow(userf.user_id, id)} className='unfollowFollow'>Follow back</p> :
+                        { user.following.length === 0 ? followUnfUser && <p onClick={() => (handleFollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow back</p> :
                           user.following.map(user => (
-                              userf.user_id === user.user_id  ?
-                              <p onClick={() => handleUnfollow(userf.user_id, id)} className='unfollowFollow'>Following</p> :
-                              <p onClick={() => handleFollow(userf.user_id, id)} className='unfollowFollow'>Follow</p>                                           
+                              userf.user_id === user.user_id  ? followUnfUser &&
+                              <p onClick={() => (handleUnfollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Following</p> : followUnfUser &&
+                              <p onClick={() => (handleFollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow back</p>                                           
                         ))}
                           
                       </div>
