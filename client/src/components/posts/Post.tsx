@@ -37,7 +37,15 @@ function Post({ postId, posts, user, page }: Props) {
                                 <p>{post.user.name}</p>
                                 <BsDot size={'1.3em'}/>                               
 
-                                {page === 'home' && <p className='unfollowFollow'>Following</p>}                      
+                                { user?.following.map(userfo => (
+                                    userfo.user_id.indexOf(post.user.user_id) === -1 ?
+                                    <p className='unfollowFollow'>Follow</p>
+
+                                    :
+                                    
+                                    <p className='unfollowFollow'>Following</p>
+                                ))
+                                }                      
                                
                             </>
                         </div>

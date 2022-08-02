@@ -13,6 +13,8 @@ function AuthContext({ children }: FormProviderProps) {
     const [userForm, setUserForm] = useState<UserForm>({ 
         name: '', email: '', password: '', password2: '' 
     })
+    const [followUnfUser, setFollowUnfUser] = useState<boolean>(true)
+
     
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -33,19 +35,21 @@ function AuthContext({ children }: FormProviderProps) {
     }
 
     const handleUnfollow = async (unfollowedId: string, unfollowerId: string) => {
-        const { data } = await api.put(`/users/unfollow/${unfollowedId}`, {
+        await api.put(`/users/unfollow/${unfollowedId}`, {
             id: unfollowerId 
         })
+        setFollowUnfUser(!followUnfUser)
     }
 
     const handleFollow = async (followedId: string, followerId: string) => {
-        const { data } = await api.put(`/users/follow/${followedId}`, {
+        await api.put(`/users/follow/${followedId}`, {
             id: followerId 
         })
+        setFollowUnfUser(!followUnfUser)
     }    
 
   return (
-    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout, handleUnfollow, handleFollow }}>
+    <Context.Provider value={{ userForm, setUserForm, authenticated, setAuthenticated, handleLogout, handleUnfollow, handleFollow, followUnfUser }}>
         { children }
     </Context.Provider>
   )

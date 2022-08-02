@@ -35,7 +35,6 @@ function Posts({  user, id }: Props) {
     await api.put(`/posts/like/${postId}`, {
         id: userId 
     })
-
     setLike(!like)
   }
   
@@ -122,7 +121,7 @@ function Posts({  user, id }: Props) {
                     ))}
                 </div>
             
-                )) : '' } 
+                )) : 'loading...' } 
           </div>
   )
 }

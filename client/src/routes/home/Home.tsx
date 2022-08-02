@@ -14,24 +14,20 @@ const socket = io(url);
 function Home() {
   const [posts, setPosts] = useState<PostsType>([])
   const [user, setUser] = useState<User>()
-    const [followUnfUser, setFollowUnfUser] = useState<boolean>(true)
 
-    const { authenticated, handleUnfollow, handleFollow } = useContext(Context)
+    const { authenticated, handleUnfollow, handleFollow, followUnfUser } = useContext(Context)
     const navigate = useNavigate()
     const id = localStorage.getItem('userId')
  
     useEffect(() => {
       if (authenticated) {
-        
-        
-
         (async () => {
           const { data } = await api.get(`/users/user/${id}`)
           
           setUser(data)
         })();
       }   
-    }, [authenticated === true])        
+    }, [followUnfUser])        
 
     useEffect(() => {
       if (authenticated === false) {
@@ -76,8 +72,9 @@ function Home() {
                             <p>{user.name}</p>
                               
                           </>
+                          
                       </div>
-                      
+                      <p onClick={() => handleUnfollow(user.user_id, id) } className='unfollowFollow' >Unfollow</p>
                     </div>
                   ))}
                   </div>
