@@ -12,26 +12,18 @@ const socket = io(url);
 // post.post_img.key
 
 function Home() {
-    const [posts, setPosts] = useState<PostsType>([])
-    const [user, setUser] = useState<User>()
+  const [posts, setPosts] = useState<PostsType>([])
+  const [user, setUser] = useState<User>()
     const [followUnfUser, setFollowUnfUser] = useState<boolean>(true)
 
     const { authenticated, handleUnfollow, handleFollow } = useContext(Context)
     const navigate = useNavigate()
     const id = localStorage.getItem('userId')
-
+ 
     useEffect(() => {
       if (authenticated) {
         
-        (async () => {
-          const { data } = await api.get(`/posts/post/${id}`)
-          const posts: PostsType | any = []
-          for (let i in data) {
-            posts.unshift(data[i])
-          }
-  
-          setPosts(posts)
-        })();
+        
 
         (async () => {
           const { data } = await api.get(`/users/user/${id}`)
@@ -56,10 +48,10 @@ function Home() {
       <>
         <div className='test'></div>
         <div className='container'>
-          <Header user={user} teste={'test'}/>
+          <Header user={user} page={'home'} />
           {/* <button onClick={sendNotification}>AQUI</button> */}
           <div className='containerPosts-userFollowing'>
-            <Posts posts={posts} user={user} id={id}/>
+            <Posts user={user} id={id} page={'home'} />
         
                 { user ?
             <div className='userFollowing'>
@@ -85,12 +77,7 @@ function Home() {
                               
                           </>
                       </div>
-                      {followUnfUser ?  <div className='unfollowFollow' onClick={() => (handleUnfollow(user.user_id, id), setFollowUnfUser(false))}>
-                          Unfollow
-                      </div> :
-                      <div className='unfollowFollow' onClick={() => (handleFollow(user.user_id, id), setFollowUnfUser(true))}>
-                          Follow
-                      </div>}
+                      
                     </div>
                   ))}
                   </div>
@@ -106,12 +93,7 @@ function Home() {
                               <p>{userf.name}</p>
                           </>
                       </div>
-                        { user.following.length === 0 ? followUnfUser && <p onClick={() => (handleFollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow back</p> :
-                          user.following.map(user => (
-                              userf.user_id === user.user_id  ? followUnfUser &&
-                              <p onClick={() => (handleUnfollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Following</p> : followUnfUser &&
-                              <p onClick={() => (handleFollow(userf.user_id, id), setFollowUnfUser(false))} className='unfollowFollow'>Follow back</p>                                           
-                        ))}
+                        
                           
                       </div>
                           ))}

@@ -50,9 +50,8 @@ const getPosts = asyncHandler( async (req, res) => {
     // shares: userId.following, $or
     //         tagged: userId.following
     const posts = await Post.find({ user_id: maptest  }).populate(['post_img', 'comments', 'shares', 'tagged']);
-   console.log(maptest)
-    res.status(200).json(posts);  
 
+    res.status(200).json(posts);  
 });
 
 const likePost = asyncHandler( async (req, res) => {

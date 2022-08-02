@@ -1,38 +1,56 @@
 import { PostsType, User } from '../../routes/home/types'
 import { IoEllipsisHorizontalSharp, IoHeartOutline, IoHeartSharp, IoChatbubbleOutline, IoPaperPlaneOutline } from 'react-icons/io5'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Post from './Post';
 import api from '../../api'
+import { response } from 'express';
 
 type Props = {
-    posts: PostsType
     user: User | undefined
     id: string | null
+    page: string
+
 }
 
-function Posts({ posts, user, id }: Props) {
-  const [like, setLike] = useState(false)
-  const [removeLikes, setRemoveLikes] = useState(false)
+function Posts({  user, id }: Props) {
+  const [posts, setPosts] = useState<PostsType>([])
   const [singlePost, setSinglePost] = useState(false)
   const [postId, setPostId] = useState('')
+  const [like, setLike] = useState(false)
+  const userId = localStorage.getItem('userId')
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await api.get(`/posts/post/${id}`)
+      const posts: PostsType | any = []
+      for (let i in data) {
+        posts.unshift(data[i])
+      }
+
+      setPosts(posts)
+    })();
+  }, [like])
 
   const handleLike = async (postId: string, userId: string | null) => {
-    const { data } = await api.put(`/posts/like/${postId}`, {
+    await api.put(`/posts/like/${postId}`, {
         id: userId 
     })
-}
 
-const removeLike = async (postId: string, userId: string | null) => {
-    const { data } = await api.put(`/posts/removeLike/${postId}`, {
-        id: userId, 
+    setLike(!like)
+  }
+  
+  const removeLike = async (postId: string, userId: string | null) => {
+    await api.put(`/posts/removeLike/${postId}`, {
+      id: userId, 
     })
-}
+    setLike(!like)
+  }
 
   return (
     <div>
-      {singlePost && <Post postId={postId} posts={posts} user={user}/>}
+      {singlePost && <Post postId={postId} posts={posts} user={user} page={'home'}/>}
             { posts ?
-              posts.map(post => (
+              posts?.map(post => (
                 <div className='post'>
                   <div className='user'>
                     <div className='userImg-name'>
@@ -49,16 +67,22 @@ const removeLike = async (postId: string, userId: string | null) => {
                   <div className='postTitle'>
                     <div className='postLikeCommShare'>
                       <div>
-                        {post.likes.length === 0 ? !like && <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(!like))}/> :
-                          post.likes.map(postUser => (
-                            postUser._id === id ? !like &&
-                            <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(!like))} /> : !removeLikes &&
-                            <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => (removeLike(post._id, id), setRemoveLikes(true))}/>
-                        )) 
-                        
-                      }
-                      {like && <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => (removeLike(post._id, id), setLike(!like))} />}      
-                      {removeLikes && <IoHeartOutline size={'1.9em'} onClick={() => (handleLike(post._id, id), setLike(false), setRemoveLikes(false))} />}      
+                        {post.likes.length === 0 ?  <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)}/> :
+                          user? post.likes.indexOf(user._id) === -1 ?  
+                             
+                            <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)} />
+                            : 
+                            
+                            <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => removeLike(post._id, id)}/>
+                            
+                          : ''
+                            
+                            
+                          }
+                          {/* { postId === post._id && <IoHeartSharp size={'1.9em'} color={'e84040'}/>}
+                          {removeLikes && <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)} />} */}
+                          
+                          
                                  
                       
                       </div>

@@ -8,10 +8,10 @@ import { User } from '../../routes/home/types'
 
 type Props = {
     user: User | undefined
-    teste: string
+    page: string
 }
 
-function Header({ user, teste }: Props) {
+function Header({ user, page }: Props) {
     const { handleLogout } = useContext(Context)
 
     return (
@@ -26,7 +26,7 @@ function Header({ user, teste }: Props) {
                     </div>
                     <ul>
                         <li>
-                            {teste === 'test' ? <IoHomeSharp size={'1.7em'} /> : <IoHomeOutline size={'1.7em'} /> }
+                            {page === 'home' ? <IoHomeSharp size={'1.7em'} /> : <IoHomeOutline size={'1.7em'} /> }
                         </li>
                         <li>
                             <IoCompassOutline size={'1.7em'} />
