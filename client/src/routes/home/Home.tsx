@@ -90,7 +90,17 @@ function Home() {
                               <p>{userf.name}</p>
                           </>
                       </div>
-                        
+                        { user.following.length === 0 ? <p onClick={() => handleFollow(userf.user_id, id)} className='unfollowFollow'>Follow</p> :
+                          user.following.some(userfo => (
+                            userfo.user_id === userf.user_id )) === true ?
+                            
+                            <p onClick={() => handleUnfollow(userf.user_id, id)} className='unfollowFollow'>Following</p>  
+                            :
+                            <p onClick={() => handleFollow(userf.user_id, id)} className='unfollowFollow'>Follow</p>
+                            
+                          
+                          
+                        }
                           
                       </div>
                           ))}

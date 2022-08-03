@@ -1,9 +1,10 @@
 import { PostsType, User } from '../../routes/home/types'
 import { IoEllipsisHorizontalSharp, IoHeartOutline, IoHeartSharp, IoChatbubbleOutline, IoPaperPlaneOutline } from 'react-icons/io5'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Post from './Post';
 import api from '../../api'
 import { response } from 'express';
+import { Context } from '../../context/AuthContext';
 
 type Props = {
     user: User | undefined
@@ -19,6 +20,8 @@ function Posts({  user, id }: Props) {
   const [like, setLike] = useState(false)
   const userId = localStorage.getItem('userId')
 
+  const { followUnfUser } = useContext(Context)
+
   useEffect(() => {
     (async () => {
       const { data } = await api.get(`/posts/post/${id}`)
@@ -29,7 +32,7 @@ function Posts({  user, id }: Props) {
 
       setPosts(posts)
     })();
-  }, [like])
+  }, [like, followUnfUser])
 
   const handleLike = async (postId: string, userId: string | null) => {
     await api.put(`/posts/like/${postId}`, {

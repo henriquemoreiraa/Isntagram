@@ -3,6 +3,7 @@ import { PostsType, User } from '../../routes/home/types';
 import './post.css';
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5'
 import { BsDot } from 'react-icons/bs'
+import { Context } from '../../context/AuthContext';
 
 type Props = {
     postId: string;
@@ -13,6 +14,8 @@ type Props = {
 
 function Post({ postId, posts, user, page }: Props) {
     const [post, setPost] = useState<PostsType>()
+    const id = localStorage.getItem('userId')
+    const { handleFollow, handleUnfollow } = useContext(Context)
 
     useEffect(() => {
         const filterPost = posts?.filter(post => post._id === postId)
@@ -37,14 +40,13 @@ function Post({ postId, posts, user, page }: Props) {
                                 <p>{post.user.name}</p>
                                 <BsDot size={'1.3em'}/>                               
 
-                                { user?.following.map(userfo => (
-                                    userfo.user_id.indexOf(post.user.user_id) === -1 ?
-                                    <p className='unfollowFollow'>Follow</p>
-
-                                    :
-                                    
-                                    <p className='unfollowFollow'>Following</p>
-                                ))
+                                { user?.following.length === 0 ? <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p> :
+                                    user?.following.some(userfo => (
+                                        userfo.user_id === post.user.user_id )) === true ?
+                                        
+                                        <p onClick={() => handleUnfollow(post.user.user_id, id)} className='unfollowFollow'>Following</p>  
+                                        :
+                                        <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p>
                                 }                      
                                
                             </>
