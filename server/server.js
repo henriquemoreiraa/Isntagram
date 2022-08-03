@@ -11,8 +11,9 @@ const io = new Server(serverHttp, {
 });
 const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./database/connect');
-const { Socket } = require('dgram');
 const path = require('path');
+const User = require('./modules/userModule')
+const ProfileImg = require('./modules/postImgModule')
 
 app.use(cors());
 
@@ -28,13 +29,17 @@ app.use('/api/posts', require('./routes/postRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
 
 io.on('connection', (socket) => {
-    console.log(`User Connected: ${socket.id}`);
-
     socket.on('notification', (data) => {
         socket.join(data);
     });
-    socket.on('notification_send', data => {
-        socket.to(data.id).emit('send_notification', data.message);
+    socket.on('notification_send', async data => {
+        // const user = await User.findById(data.userId)
+        // const userImg = await ProfileImg.findById(user.user_img)
+
+        socket.to(data.id).emit('send_notification', {
+            userName: data.userName,
+            userImg: data.userImg
+        });
     });
 });
 

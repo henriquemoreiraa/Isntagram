@@ -44,7 +44,7 @@ export type PostsType = {
 title: string;
 comments: Comments;
 createdAt: string;
-likes: string[];
+likes: Likes;
 post_img: PostImg;
 shares: string[];
 tagged: string[];

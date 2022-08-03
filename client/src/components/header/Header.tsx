@@ -32,7 +32,7 @@ function Header({ user, page }: Props) {
                             <IoCompassOutline size={'1.7em'} />
                         </li>
                         <li>
-                            <Notification />
+                            <Notification /> 
                         </li>
                         {user ? <li>
                             <div className="divImg2"><img src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`} alt="" /></div>

@@ -4,11 +4,10 @@ import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../context/AuthContext';
 import Header from '../../components/header/Header';
-import io from 'socket.io-client';
+
 import { PostsType, User } from './types'
 import Posts from '../../components/posts/Posts'
-const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000';
-const socket = io(url);
+
 // post.post_img.key
 
 function Home() {
@@ -35,14 +34,10 @@ function Home() {
       }
     }, [])
 
-    const sendNotification = () => {
-      socket.emit('notification', '62dd8f175932bdb3c4c40e1f')
-      socket.emit('notification_send', {id: '62dd8f175932bdb3c4c40e1f', message: 'ESSA E UMA NOTIFICACAO'})
-    }
+    
 
     return (
       <>
-        <div className='test'></div>
         <div className='container'>
           <Header user={user} page={'home'} />
           {/* <button onClick={sendNotification}>AQUI</button> */}

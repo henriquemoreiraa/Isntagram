@@ -3,22 +3,25 @@ import { IoEllipsisHorizontalSharp, IoHeartOutline, IoHeartSharp, IoChatbubbleOu
 import { useEffect, useState, useContext } from 'react';
 import Post from './Post';
 import api from '../../api'
-import { response } from 'express';
 import { Context } from '../../context/AuthContext';
+import Comment from '../comment/Comment'
+import io from 'socket.io-client';
+const url = `${process.env.REACT_APP_API_URL}` || 'http://localhost:5000';
+const socket = io(url);
 
 type Props = {
     user: User | undefined
     id: string | null
     page: string
-
 }
 
-function Posts({  user, id }: Props) {
+function Posts({ user, id }: Props) {
   const [posts, setPosts] = useState<PostsType>([])
   const [singlePost, setSinglePost] = useState(false)
   const [postId, setPostId] = useState('')
   const [like, setLike] = useState(false)
   const userId = localStorage.getItem('userId')
+  const [commentPost, setCommentPost] = useState(false)
 
   const { followUnfUser } = useContext(Context)
 
@@ -32,13 +35,14 @@ function Posts({  user, id }: Props) {
 
       setPosts(posts)
     })();
-  }, [like, followUnfUser])
+  }, [like, followUnfUser, commentPost])
 
-  const handleLike = async (postId: string, userId: string | null) => {
+  const handleLike = async (postId: string, userId: string | null, postUserId: string) => {
     await api.put(`/posts/like/${postId}`, {
         id: userId 
     })
     setLike(!like)
+    sendNotification(postUserId, user?.name, user?.user_img.key )
   }
   
   const removeLike = async (postId: string, userId: string | null) => {
@@ -48,9 +52,14 @@ function Posts({  user, id }: Props) {
     setLike(!like)
   }
 
+  const sendNotification = (postUserId: string, userName: string | undefined, userImg: string | undefined ) => {
+    socket.emit('notification', postUserId)
+    socket.emit('notification_send', {id: postUserId, userName, userImg })
+  }
+
   return (
     <div>
-      {singlePost && <Post postId={postId} posts={posts} user={user} page={'home'}/>}
+      {singlePost && <Post postId={postId} posts={posts} user={user} page={'home'}  setSinglePost={setSinglePost} />}
             { posts ?
               posts?.map(post => (
                 <div className='post'>
@@ -69,24 +78,17 @@ function Posts({  user, id }: Props) {
                   <div className='postTitle'>
                     <div className='postLikeCommShare'>
                       <div>
-                        {post.likes.length === 0 ?  <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)}/> :
-                          user? post.likes.indexOf(user._id) === -1 ?  
+                        {post.likes.length === 0 ?  <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id, post.user.user_id)}/> :
+                        post?.likes.some(postLike => (
+                          postLike._id === id )) === true ?
+                          // user? post.likes.indexOf(user._id) === -1 ?  
+                          <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => removeLike(post._id, id)}/>
                              
-                            <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)} />
-                            : 
-                            
-                            <IoHeartSharp size={'1.9em'} color={'e84040'} onClick={() => removeLike(post._id, id)}/>
-                            
-                          : ''
-                            
-                            
+                          : 
+                          <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id, post.user.user_id)} />
+                                              
                           }
-                          {/* { postId === post._id && <IoHeartSharp size={'1.9em'} color={'e84040'}/>}
-                          {removeLikes && <IoHeartOutline size={'1.9em'} onClick={() => handleLike(post._id, id)} />} */}
-                          
-                          
-                                 
-                      
+                   
                       </div>
                       <div onClick={() => (setSinglePost(true), setPostId(post._id))}>
                         <IoChatbubbleOutline size={'1.8em'} />
@@ -95,33 +97,44 @@ function Posts({  user, id }: Props) {
                         <IoPaperPlaneOutline size={'1.8em'} />
                       </div>
                     </div>
-                  {post.likes.length > 0 && <p><strong>{post.likes.length}</strong>Likes</p>}
-                    <p><strong>{post.user.name}</strong> {post.title}</p>
-                    {post.comments.length >= 0 && <div onClick={() => (setSinglePost(true), setPostId(post._id))}>
-                      View all {post.comments.length} comments
-                    </div>}
-                  </div>
-                    {post.comments.map(comment => (
-                  <>
-                    <div>
-                      <h3>Comments</h3>
-                        <img className='userImg' src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" height='33px' />
-                        <p>{comment.user.name}</p>
-                        <p>{comment.comment}</p>
+                  {post.likes.length > 0 && 
+                    <div className='likes'>
+                      <IoHeartSharp color='e84040' />
+                      
+                      <p>
+                        Liked by <strong>{post.likes[0].name}</strong>
+                        {post.likes.length > 1 && `and ${post.likes.length - 1} more 
+                        ${post.likes.length - 1 > 1 ? 'users' : 'user'}`
+                        }
+                        
+                        
+                      </p>
                     </div>
-                      <>
-                        {comment.answers.map(answer => (
-                          <div>
-                            <h4>Answers</h4>
-                            <img src={`${process.env.REACT_APP_API_URL}${answer.user.user_img}`} alt="" height='40px'/>
-                            <h6>{answer.user.name}</h6>
-                            <p>{answer.answer}</p>
-                          </div>
-                        ))}
-                      </>
-                  </>
-            
-                    ))}
+                  }
+
+                    <p><strong>{post.user.name}</strong>{post.title}</p>
+
+                    {post.comments.length > 0 && 
+                    <p className='viewComments' onClick={() => (setSinglePost(true), setPostId(post._id))}>
+                       View {post.comments.length} {post.comments.length > 1 ? 'comments' : 'comment'}
+                    </p>}
+
+                      { post.comments.map(comment => (
+                        comment.user.user_id === id ?
+                        
+                          <p><strong>{comment.user.name}</strong>{comment.comment}</p>
+                        
+                        
+                        : ''
+                      ))
+
+                      }
+
+                      <p className='postDate'>{new Date(post.createdAt).toLocaleString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                  </div>
+                  
+                  
+                    <Comment postId={post._id} commentPost={commentPost} setCommentPost={setCommentPost}/>
                 </div>
             
                 )) : 'loading...' } 

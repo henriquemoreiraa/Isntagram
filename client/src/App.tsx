@@ -7,9 +7,6 @@ import { AuthContext } from './context/AuthContext';
 
 
 function App() {
-  
-
-  
   return (
     <AuthContext>
       <Router>
