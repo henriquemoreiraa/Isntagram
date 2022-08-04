@@ -13,7 +13,7 @@ type Props = {
 
 function Header({ user, page }: Props) {
     const { handleLogout } = useContext(Context)
-
+    
     return (
         <header>
             <div className="header">

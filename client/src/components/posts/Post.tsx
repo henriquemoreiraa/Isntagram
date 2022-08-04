@@ -16,6 +16,7 @@ type Props = {
 
 function Post({ postId, posts, user, page, setSinglePost }: Props) {
     const [post, setPost] = useState<PostsType>()
+    const [commentPost, setCommentPost] = useState(false)
     const id = localStorage.getItem('userId')
     const { handleFollow, handleUnfollow } = useContext(Context)
 
@@ -62,7 +63,46 @@ function Post({ postId, posts, user, page, setSinglePost }: Props) {
                     
                     </div>
                     
-                    {/* <Comment postId={post._id}/> */}
+                    <div className='comments'>
+                        {/* <div></div> */}
+                    <div className='userTitleComments'>
+                        <div className='userImg-name'>
+                            <div className='divImg1'>
+                                <img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" />
+                            </div>
+                            <p><strong>{post.user.name}</strong>{post.title}</p>
+                        </div>
+                        { post.comments.map(comment => (
+                        
+                        
+                              <div className='userImg-name'>
+                                <div className='divImg1' >
+                                    <img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" /></div>
+                                  <p><strong>{comment.user.name}</strong>{comment.comment}</p>
+                              </div>
+                        
+                        
+                        
+                          ))
+                          }
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+                          <p>f</p>
+      
+                    </div>
+                        <div className='postLikeComment'>
+                            <div>teste</div>
+                            <Comment postId={post._id}  commentPost={commentPost} setCommentPost={setCommentPost}/>
+                        </div>
+                    </div>
                     
                 </div>
             </div>
