@@ -6,6 +6,7 @@ import { BsDot } from 'react-icons/bs'
 import { Context } from '../../context/AuthContext';
 import Comment from '../comment/Comment'
 import api from '../../api'
+import { Link } from 'react-router-dom'
 
 type Props = {
     postId: string;
@@ -37,14 +38,14 @@ function Post({ postId, posts, user, page, commentPost, setCommentPost, setSingl
         })
         setLike(!like)
         sendNotification(postUserId, user?.name, user?.user_img.key, 'liked your comment')
-      }
+    }
       
-      const commentRemoveLike = async (commentId: string, userId: string | null) => {
-        await api.put(`/comments/removeLike/${commentId}`, {
-          id: userId, 
-        })
-        setLike(!like)
-      }
+    const commentRemoveLike = async (commentId: string, userId: string | null) => {
+      await api.put(`/comments/removeLike/${commentId}`, {
+        id: userId, 
+      })
+      setLike(!like)
+    }
 
   return (
     <div className='singlePostContainer'>
@@ -59,13 +60,14 @@ function Post({ postId, posts, user, page, commentPost, setCommentPost, setSingl
                     <div className='commentsDiv'>
                         <div className='user uimgName-comment'>
                             <div className='userImg-name'>
-                                <>
                                     <div className='divImg1'>
-                                    <img className="" src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" />
+                                    <Link to={`/user/${post.user.user_id}`}><img className="" src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></Link>
                                     </div>
-                                    <p>{post.user.name}</p>
+                                    <p><Link to={`/user/${post.user.user_id}`}>{post.user.name}</Link></p>
+                                <>
                                     <BsDot size={'1.3em'}/>
-                                    { user?.following.length === 0 ? <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p> :
+                                    { user?._id === post.user.user_id ? 'You' :
+                                    user?.following.length === 0 ? <p onClick={() => handleFollow(post.user.user_id, id)} className='unfollowFollow'>Follow</p> :
                                         user?.following.some(userfo => (
                                             userfo.user_id === post.user.user_id )) === true ?
                     
@@ -89,9 +91,9 @@ function Post({ postId, posts, user, page, commentPost, setCommentPost, setSingl
                     <div className='userTitleComments'>
                         <div className='userImg-name postUser'>
                             <div className='divImg4'>
-                                <img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" />
+                                <Link to={`${post.user.user_id}`}><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></Link>
                             </div>
-                            <p><strong>{post.user.name}</strong>{post.title}</p>
+                            <p><strong><Link to={`${post.user.user_id}`}>{post.user.name}</Link></strong>{post.title}</p>
                         </div>
                         { post.comments.map(comment => (
                         
@@ -100,9 +102,9 @@ function Post({ postId, posts, user, page, commentPost, setCommentPost, setSingl
                                 <div className='divCommentsOptions'>
                                     <div className='userImg-name'>
                                         <div className='divImg4' >
-                                            <img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" />
+                                            <Link to={`${comment.user.user_id}`}><img src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`} alt="" /></Link>
                                         </div>
-                                          <p><strong>{comment.user.name}</strong>{comment.comment}</p>
+                                          <p><strong><Link to={`${comment.user.user_id}`}>{comment.user.name}</Link></strong>{comment.comment}</p>
                                     </div>
                                       <div className='commentsOptions'> 
                                       <p className='postDate'>{new Date(comment.createdAt).toLocaleString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>

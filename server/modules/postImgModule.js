@@ -1,20 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const postImgSchema = mongoose.Schema({
+const postImgSchema = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     size: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     key: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-}, {
-    timestamps: true 
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model('PostImg', postImgSchema);
+module.exports = mongoose.model("PostImg", postImgSchema);

@@ -1,144 +1,143 @@
 .post {
-    /* max-width: 470px; */
-    min-width: 470px;
-    min-height: 470px;
-    box-shadow: 0px 0px 2px #777;
-    border-radius: 0.5em;
-    margin-bottom: 2em;
-    background-color: #fff;
+  /* max-width: 470px; */
+  min-width: 470px;
+  min-height: 470px;
+  box-shadow: 0px 0px 2px #777;
+  border-radius: 0.5em;
+  margin-bottom: 2em;
+  background-color: #fff;
 }
 
 .user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9em;
-    font-weight: 600;
-    padding: 0.5em 0.9em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 0.5em 0.9em;
 }
 
 .divImg1 {
-    width: 35px;
-    height: 35px;
-    margin-right: 0.7em;
-    cursor: pointer;
+  width: 35px;
+  height: 35px;
+  margin-right: 0.7em;
+  cursor: pointer;
 }
 
 .divImg1 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .userImg-name {
-    display: flex;
-    align-items: center;
-    width: 95%;
+  display: flex;
+  align-items: center;
+  width: 95%;
 }
 
 .postImg {
-    height: 470px;
-    width: 470px;
-    cursor: pointer;
+  height: 470px;
+  width: 470px;
+  cursor: pointer;
 }
 
 .postImg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .postTitle {
-    font-size: 0.9em;
-    padding: 0.3em 0.9em;
+  font-size: 0.9em;
+  padding: 0.3em 0.9em;
 }
 
 .postTitle p {
-    margin: 0.6em 0;
+  margin: 0.6em 0;
 }
 
 .viewComments {
-    cursor: pointer;
-    color: rgb(111, 111, 111);
+  cursor: pointer;
+  color: rgb(111, 111, 111);
 }
 
 .postLikeCommShare {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 0.3em;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 0.3em;
 }
 
 .postLikeCommShare div {
-    margin-right: 0.5em;
-    cursor: pointer;
+  margin-right: 0.5em;
+  cursor: pointer;
 }
 .postLikeCommShare div:hover {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 strong {
-    font-weight: 600;
-    margin-right: 0.3em;
+  font-weight: 600;
+  margin-right: 0.3em;
 }
 
 .containerPosts-userFollowing {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .userFollowing {
-    width: 300px;
-    padding: 1em;
-    margin-left: 1em;
+  width: 300px;
+  padding: 1em;
+  margin-left: 1em;
 }
 
 .divImg {
-    width: 70px;
-    height: 70px;
-    margin-right: 0.9em;
+  width: 70px;
+  height: 70px;
+  margin-right: 0.9em;
 }
 
 .divImg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .userName {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 .followedUsers {
-    font-size: 1.5em;
-    color: #777777;
-    font-size: 1.1em;
-    margin-left: 0.9em;
+  font-size: 1.5em;
+  color: #777777;
+  font-size: 1.1em;
+  margin-left: 0.9em;
 }
 
 .unfollowFollow {
-    color: #0095f6;
-    cursor: pointer;
+  color: #0095f6;
+  cursor: pointer;
 }
 
 .unfollowFollow:hover {
-    color: #47afff;
+  color: #47afff;
 }
 
 .fixedUserFollowing {
-    position: fixed;
-    width: 320px;
-    height: 84vh;
-    overflow-y: auto;
+  position: fixed;
+  width: 320px;
+  height: 84vh;
+  overflow-y: auto;
 }
 
 .fixedUserFollowing::-webkit-scrollbar {
-    width: 8px;  
-  }
-  
-  .fixedUserFollowing::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  width: 8px;
+}
+
+.fixedUserFollowing::-webkit-scrollbar-track {
+  background: transparent;
+}

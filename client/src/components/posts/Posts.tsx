@@ -5,6 +5,7 @@ import Post from './Post';
 import api from '../../api'
 import { Context } from '../../context/AuthContext';
 import Comment from '../comment/Comment'
+import { Link } from 'react-router-dom'
 
 
 type Props = {
@@ -40,10 +41,12 @@ function Posts({ user, id }: Props) {
               posts?.map(post => (
                 <div className='post'>
                   <div className='user'>
-                    <div className='userImg-name'>
-                      <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></div>
-                      <p>{post.user.name}</p>
-                    </div>
+                    <Link className='userImg-name' to={`/user/${post.user.user_id}`}>
+                      <>
+                        <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`} alt="" /></div>
+                        <p>{post.user.name}</p>
+                      </>
+                    </Link>
                     <div>
                       <IoEllipsisHorizontalSharp size={'1.2em'}/>
                     </div>
@@ -77,7 +80,7 @@ function Posts({ user, id }: Props) {
                       <IoHeartSharp color='e84040' />
                       
                       <p>
-                        Liked by <strong>{post.likes[0].name}</strong>
+                        Liked by <strong><Link to={`${post.likes[0]._id}`}>{post.likes[0].name}</Link></strong>
                         {post.likes.length > 1 && `and ${post.likes.length - 1} more 
                         ${post.likes.length - 1 > 1 ? 'users' : 'user'}`
                         }
@@ -87,7 +90,7 @@ function Posts({ user, id }: Props) {
                     </div>
                   }
 
-                    <p><strong>{post.user.name}</strong>{post.title}</p>
+                    <p><strong><Link to={`${post.user.user_id}`}>{post.user.name}</Link></strong>{post.title}</p>
 
                     { post.comments.length > 0 && 
                     <p className='viewComments' onClick={() => (setSinglePost(true), setPostId(post._id))}>

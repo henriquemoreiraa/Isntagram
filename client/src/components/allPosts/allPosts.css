@@ -1,30 +1,30 @@
 .allPostsImgs {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5em;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  justify-content: center;
 }
 
 .allPostsImgsDiv {
-    width: 320px;
-    height: 320px;
+  width: 320px;
+  height: 320px;
 }
 
 .allPostsImgsDiv img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
 }
 
-@media only screen and (max-width: 680px)  {
-.allPostsImgsDiv {
+@media only screen and (max-width: 680px) {
+  .allPostsImgsDiv {
     width: 180px;
     height: 180px;
-}
+  }
 
-.allPostsImgs {
+  .allPostsImgs {
     gap: 0.5em;
-}
+  }
 }
