@@ -10,6 +10,7 @@ const socket = io(url);
 type Notification = {
     userName: string,
     userImg: string
+    message: string
 }
 
 function Notification() {
@@ -43,10 +44,10 @@ function Notification() {
             {newNotification && <BsDot className='dotnot' color='#f76363' size={'1.5em'}/>}
             </div>
             {notification && <div className='notificationDiv'>
-                <div className='userImg-name'>
+                <div className='userImg-name2'>
                     <div className='divImg1'><img src={`${process.env.REACT_APP_API_URL}${notification?.userImg}`} alt="" /></div>
                     <p><strong>{notification?.userName}</strong></p>
-                    <p>liked your post</p>
+                    <p>{notification?.message}</p>
                 </div>
             </div>}
         </div>

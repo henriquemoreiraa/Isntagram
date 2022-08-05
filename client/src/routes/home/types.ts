@@ -22,7 +22,7 @@ export type Comments = {
 answers: Answers;
 comment: string;
 createdAt: string;
-likes: Likes;
+likes: string[];
 updatedAt: string;
 user: {
     name: string;
@@ -74,20 +74,3 @@ following: {
 }[];
 bio: string;
 };
-
-export type User5 = {
-    name: string;
-    email: string;
-    user_img: PostImg;
-    followers: {
-        name: string;
-        user_img: string;
-        user_id: string
-    }[];
-    following: {
-        name: string;
-        user_img: string;
-        user_id: string
-    }[];
-    bio: string;
-    }[];

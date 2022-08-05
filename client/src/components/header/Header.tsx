@@ -3,7 +3,7 @@ import { Context } from '../../context/AuthContext';
 import { useContext } from 'react';
 import Notification from "./Notification";
 import './header.css'
-import { IoCompassOutline, IoHomeOutline, IoHomeSharp } from 'react-icons/io5'
+import { IoCompassOutline, IoHomeOutline, IoHomeSharp, IoCompassSharp } from 'react-icons/io5'
 import { User } from '../../routes/home/types'
 
 type Props = {
@@ -25,12 +25,16 @@ function Header({ user, page }: Props) {
                         <input className="search" type="text" placeholder="Search" />
                     </div>
                     <ul>
-                        <li>
-                            {page === 'home' ? <IoHomeSharp size={'1.7em'} /> : <IoHomeOutline size={'1.7em'} /> }
-                        </li>
-                        <li>
-                            <IoCompassOutline size={'1.7em'} />
-                        </li>
+                        <Link to={'/'}>
+                            <li>
+                                {page === 'home' ? <IoHomeSharp size={'1.7em'}  color={'#212121'}/> : <IoHomeOutline size={'1.7em'} /> }
+                            </li>
+                        </Link>
+                        <Link to={'/explore'}>
+                            <li>
+                                {page === 'explore' ?<IoCompassSharp size={'1.7em'} color={'#212121'} /> :<IoCompassOutline size={'1.7em'}  />}
+                            </li>
+                        </Link>
                         <li>
                             <Notification /> 
                         </li>

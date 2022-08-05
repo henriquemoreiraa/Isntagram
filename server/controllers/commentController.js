@@ -47,6 +47,22 @@ const likeComment = asyncHandler( async (req, res) => {
     
 });
 
+const removelikeComment = asyncHandler( async (req, res) => {
+    const comment = await Comments.findById(req.params.id);
+
+    if (!comment) {
+        res.status(400);
+        throw new Error('Post not found');
+    };
+
+    const removeLike = await comment.likes.filter(commentId => commentId._id.toString() !== req.body.id);
+    comment.likes = removeLike;
+
+    comment.save();
+    res.status(200).json(comment);  
+});
+
+
 const updateComment = asyncHandler( async (req, res) => {
     res.status(200).json({ message: 'UPDATE POST' });
 });
@@ -112,5 +128,6 @@ module.exports = {
     answerComment,
     likeAnswer,
     updateAnswer,
-    deleteAnswer
+    deleteAnswer,
+    removelikeComment
 };

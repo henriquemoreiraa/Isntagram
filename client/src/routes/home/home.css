@@ -34,6 +34,7 @@
 .userImg-name {
     display: flex;
     align-items: center;
+    width: 95%;
 }
 
 .postImg {
@@ -132,18 +133,12 @@ strong {
     width: 320px;
     height: 84vh;
     overflow-y: auto;
-    z-index: -1;
 }
 
 .fixedUserFollowing::-webkit-scrollbar {
-    width: 8px;               /* width of the entire scrollbar */
+    width: 8px;  
   }
   
   .fixedUserFollowing::-webkit-scrollbar-track {
-    background: transparent;        /* color of the tracking area */
-  }
-  
-  .fixedUserFollowing::-webkit-scrollbar-thumb {
-    background-color: rgb(210, 210, 210);    /* color of the scroll thumb */
-    border-radius: 20px;       /* roundness of the scroll thumb */
+    background: transparent;
   }

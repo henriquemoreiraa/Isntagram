@@ -49,7 +49,13 @@ const getPosts = asyncHandler( async (req, res) => {
 
     // shares: userId.following, $or
     //         tagged: userId.following
-    const posts = await Post.find({ user_id: maptest  }).populate(['post_img', 'comments', 'shares', 'tagged', 'likes']);
+    const posts = await Post.find({ user_id: maptest  }).sort({createdAt: -1}).populate(['post_img', 'comments', 'shares', 'tagged', 'likes']);
+
+    res.status(200).json(posts);  
+});
+
+const getAllPosts = asyncHandler( async (req, res) => {
+    const posts = await Post.find().sort({likes: 1}).populate(['post_img', 'comments', 'shares', 'tagged', 'likes']);
 
     res.status(200).json(posts);  
 });
@@ -154,5 +160,6 @@ module.exports = {
     sharePost,
     tagUser,
     postImg,
+    getAllPosts,
     removeLike
 };

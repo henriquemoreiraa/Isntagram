@@ -38,7 +38,8 @@ io.on('connection', (socket) => {
 
         socket.to(data.id).emit('send_notification', {
             userName: data.userName,
-            userImg: data.userImg
+            userImg: data.userImg,
+            message: data.message
         });
     });
 });

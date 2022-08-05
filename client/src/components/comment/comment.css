@@ -12,6 +12,7 @@
     padding: 0.6em 0 0.6em 0.9em;
     font-family: 'Nunito', sans-serif;
     font-size: 0.9em;
+    
 }
 
 .commentBtn {
@@ -27,9 +28,11 @@
 .commentBtn:hover {
     cursor: pointer;
     color: #47afff;
+    
 }
 
 .commentBtn:disabled {
-    opacity: 0.5;
+    opacity: 0;
     cursor: auto;
+    z-index: -1;
 }

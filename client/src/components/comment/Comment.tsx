@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import './comment.css';
 import api from '../../api';
+import { Context } from '../../context/AuthContext'
 
 type Props = {
     postId: string
     commentPost: boolean
     setCommentPost: (e: boolean) => void
+    postUser: string
+    userName: string | undefined
+    userImg: string | undefined
 }
 
-function Comment({ postId, commentPost, setCommentPost}: Props) {
+function Comment({ postId, commentPost, setCommentPost, postUser, userName, userImg }: Props) {
     const [comment, setComment] = useState('')
     const id = localStorage.getItem('userId')
+    const { sendNotification } = useContext(Context)
 
     const handleComment = async () => {
         await api.post(`/comments/post/${postId}`, {
@@ -19,6 +24,7 @@ function Comment({ postId, commentPost, setCommentPost}: Props) {
         })
         setCommentPost(!commentPost)
         setComment('')
+        sendNotification(postUser, userName, userImg, 'commented your post')
     }
 
   return (
