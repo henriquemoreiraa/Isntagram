@@ -24,6 +24,7 @@ function AuthContext({ children }: FormProviderProps) {
   const [commentPost, setCommentPost] = useState(false);
   const [user, setUser] = useState<User>();
   const [like, setLike] = useState(false);
+  const [uploadData, setUploadData] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,7 +42,7 @@ function AuthContext({ children }: FormProviderProps) {
         setUser(data);
       })();
     }
-  }, [followUnfUser]);
+  }, [followUnfUser, uploadData]);
 
   const handleLogout = () => {
     setAuthenticated(false);
@@ -129,6 +130,8 @@ function AuthContext({ children }: FormProviderProps) {
         like,
         sendNotification,
         user,
+        uploadData,
+        setUploadData,
       }}
     >
       {children}

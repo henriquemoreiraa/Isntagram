@@ -51,6 +51,7 @@
 
 .followersFollowing p {
   margin-right: 1em;
+  cursor: pointer;
 }
 
 .followersFollowingCel {

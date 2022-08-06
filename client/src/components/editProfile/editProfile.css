@@ -1,0 +1,105 @@
+.editProfileDiv {
+  width: 500px;
+  height: 90%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5em;
+  overflow-y: auto;
+}
+
+.userImg-name1 {
+  display: flex;
+}
+
+.formUserData {
+  margin-top: 3em;
+}
+
+.changePass {
+  color: #0095f6;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btnSubmitDiv {
+  text-align: center;
+  margin: 0.2em 0 1em;
+}
+
+.btnSubmitDiv button {
+  padding: 0.8em;
+  border-radius: 0.5em;
+  border: none;
+  background-color: #2ba3f3;
+  font-size: 1em;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+  color: #fff;
+  cursor: pointer;
+}
+
+.name,
+.email,
+.password {
+  margin-bottom: 1em;
+  border: 1px solid rgb(195, 195, 195);
+  font-size: 1em;
+  padding: 0.3em;
+  width: 100%;
+  font-family: "Nunito", sans-serif;
+  border-radius: 0.3em;
+  outline: none;
+}
+
+.spans {
+  font-weight: 600;
+}
+
+.editContainer {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+
+  flex-direction: column;
+}
+
+.divImg3 {
+  width: 50px;
+  height: 50px;
+  margin-right: 1em;
+}
+
+.divImg3 img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.uploadImg {
+  margin-left: 1em;
+  border: 1px solid #777;
+  outline: none;
+  background-color: transparent;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9em;
+  font-weight: 700;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.nameChangeProfPhoto h3,
+h4 {
+  margin: 0;
+}
+
+input[type="file"] {
+  display: none;
+}
+label {
+  color: #0095f6;
+  cursor: pointer;
+}

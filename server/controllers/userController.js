@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400).send("test");
+    res.status(400);
     throw new Error("Invalid user data");
   }
 });
@@ -73,7 +73,35 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "UPDATE USER" });
+  const user = await User.findById(req.params.id);
+  const { password, name, email, bio } = req.body;
+  let salt;
+  let hashedPassword;
+
+  if (password) {
+    salt = await bcrypt.genSalt(10);
+    hashedPassword = await bcrypt.hash(password, salt);
+  }
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      email,
+      bio,
+      password: hashedPassword,
+    },
+    {
+      new: true,
+    }
+  );
+
+  res.status(200).json(updatedUser);
 });
 
 const followUser = asyncHandler(async (req, res) => {

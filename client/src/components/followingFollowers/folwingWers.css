@@ -1,0 +1,22 @@
+.folDiv {
+  background-color: #fff;
+  width: 300px;
+  height: 50vh;
+  border-radius: 0.5em;
+  overflow-y: auto;
+}
+
+.userFolwingWed {
+  border-bottom: 1px solid #d7d7d7;
+}
+.userFolwingWed h3 {
+  margin-left: 1em;
+}
+
+.folDiv::-webkit-scrollbar {
+  width: 8px;
+}
+
+.folDiv::-webkit-scrollbar-track {
+  background: transparent;
+}

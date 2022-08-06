@@ -61,11 +61,11 @@ function Header({ user, page }: Props) {
             ) : (
               ""
             )}
-            {/* <li>
+            <li>
               <Link onClick={() => handleLogout()} to={"/login"}>
                 Logout
               </Link>
-            </li> */}
+            </li>
           </ul>
         </div>
       </div>

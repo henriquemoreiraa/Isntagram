@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
 import { Context } from "../../context/AuthContext";
 import api from "../../api";
-import { PostsType, User } from "../home/types";
+import { PostsType, User, FollowersFollowing } from "../home/types";
 import AllPosts from "../../components/allPosts/AllPosts";
+import FollowingFollowers from "../../components/followingFollowers/FollowingFollowers";
+import EditProfile from "../../components/editProfile/EditProfile";
 import "./user.css";
 import {
   IoGridOutline,
@@ -15,6 +17,10 @@ import {
 function UserProfile() {
   const [userProfileData, setUserProfileData] = useState<User>();
   const [posts, setPosts] = useState<PostsType>([]);
+  const [userFol, setUserFol] = useState(false);
+  const [folUsers, setFolUsers] = useState<FollowersFollowing>([]);
+  const [isFolwedWers, setIsFolwedWers] = useState("");
+  const [editProfile, setEditProfile] = useState(false);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
   const {
@@ -52,7 +58,18 @@ function UserProfile() {
   return (
     <div className="container">
       <Header user={user} page={"user"} />
-
+      {userFol && (
+        <FollowingFollowers
+          userFol={userFol}
+          setUserFol={setUserFol}
+          folUsers={folUsers}
+          user={userProfileData?.name}
+          isFolwedWers={isFolwedWers}
+        />
+      )}
+      {editProfile && (
+        <EditProfile setEditProfile={setEditProfile} user={user} />
+      )}
       <div className="userProfile">
         {userProfileData ? (
           <div className="userInfo">
@@ -66,7 +83,11 @@ function UserProfile() {
             <div className="userInfo2">
               <div className="name-Followbtn">
                 <h2>{userProfileData?.name}</h2>
-                {user?.following.length === 0 ? (
+                {id === userId ? (
+                  <button onClick={() => setEditProfile(true)}>
+                    Edit Profile
+                  </button>
+                ) : user?.following.length === 0 ? (
                   <button
                     onClick={() => handleFollow(userProfileData._id, userId)}
                   >
@@ -93,10 +114,22 @@ function UserProfile() {
                 <p>
                   <strong>{posts.length}</strong>posts
                 </p>
-                <p>
+                <p
+                  onClick={() => (
+                    setUserFol(true),
+                    setFolUsers(userProfileData.followers),
+                    setIsFolwedWers("followers")
+                  )}
+                >
                   <strong>{userProfileData?.followers.length}</strong>followers
                 </p>
-                <p>
+                <p
+                  onClick={() => (
+                    setUserFol(true),
+                    setFolUsers(userProfileData.following),
+                    setIsFolwedWers("followed")
+                  )}
+                >
                   <strong>{userProfileData?.following.length}</strong>following
                 </p>
               </div>
