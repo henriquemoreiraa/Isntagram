@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
 header {
   width: 100%;
   height: 4em;
@@ -41,6 +42,12 @@ li {
   cursor: pointer;
 }
 
+.SiteName {
+  font-family: "Patrick Hand", cursive;
+  margin-left: 1em;
+  font-size: 1.5em;
+}
+
 .divImg2 {
   width: 30px;
   height: 30px;
@@ -60,7 +67,7 @@ li {
   outline: none;
   background-color: #f0f0f0;
   padding: 0.7em;
-  min-width: 18em;
+  width: 100%;
   border-radius: 0.8em;
   font-size: 1em;
 }

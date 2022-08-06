@@ -1,6 +1,6 @@
 .post {
   /* max-width: 470px; */
-  min-width: 470px;
+  width: 470px;
   min-height: 470px;
   box-shadow: 0px 0px 2px #777;
   border-radius: 0.5em;
@@ -140,4 +140,22 @@ strong {
 
 .fixedUserFollowing::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@media only screen and (max-width: 968px) {
+  .userFollowing {
+    display: none;
+  }
+  .containerPosts-userFollowing {
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .post {
+    width: 100%;
+  }
+  .postImg {
+    width: 100%;
+  }
 }

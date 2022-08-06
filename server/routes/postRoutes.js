@@ -12,6 +12,8 @@ const {
   removeLike,
   getAllPosts,
   getUserPosts,
+  getTaggedUserPosts,
+  getSharedPosts,
 } = require("../controllers/postController");
 const multer = require("multer");
 const multerConfig = require("../config/multer");
@@ -23,6 +25,8 @@ router
 router.route("/post/:id").get(protect, getPosts);
 router.route("/").get(protect, getAllPosts);
 router.route("/user/:id").get(protect, getUserPosts);
+router.route("/user/tagged/:id").get(protect, getTaggedUserPosts);
+router.route("/user/shared/:id").get(protect, getSharedPosts);
 router.route("/:id").put(protect, updatePost).delete(protect, deletePost);
 router.route("/like/:id").put(protect, likePost);
 router.route("/removeLike/:id").put(protect, removeLike);

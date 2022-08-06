@@ -67,7 +67,23 @@ const getAllPosts = asyncHandler(async (req, res) => {
 const getUserPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user_id: req.params.id })
     .sort({ createdAt: -1 })
-    .populate(["post_img", "comments", "shares", "tagged", "likes"]);
+    .populate(["post_img", "comments", "likes"]);
+
+  res.status(200).json(posts);
+});
+
+const getTaggedUserPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ tagged: req.params.id })
+    .sort({ createdAt: -1 })
+    .populate(["post_img", "comments", "likes"]);
+
+  res.status(200).json(posts);
+});
+
+const getSharedPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ shares: req.params.id })
+    .sort({ createdAt: -1 })
+    .populate(["post_img", "comments", "likes"]);
 
   res.status(200).json(posts);
 });
@@ -177,5 +193,7 @@ module.exports = {
   postImg,
   getAllPosts,
   getUserPosts,
+  getTaggedUserPosts,
+  getSharedPosts,
   removeLike,
 };

@@ -23,9 +23,9 @@ function Header({ user, page }: Props) {
     <header>
       <div className="header">
         <div className="headerItems">
-          <div>Cringegram</div>
+          <div className="SiteName">Cringegram</div>
           <div>
-            <input className="search" type="text" placeholder="Search" />
+            {/* <input className="search" type="text" placeholder="Search" /> */}
           </div>
           <ul>
             <Link to={"/"}>
@@ -61,11 +61,11 @@ function Header({ user, page }: Props) {
             ) : (
               ""
             )}
-            <li>
+            {/* <li>
               <Link onClick={() => handleLogout()} to={"/login"}>
                 Logout
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

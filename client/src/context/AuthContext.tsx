@@ -41,7 +41,7 @@ function AuthContext({ children }: FormProviderProps) {
         setUser(data);
       })();
     }
-  }, []);
+  }, [followUnfUser]);
 
   const handleLogout = () => {
     setAuthenticated(false);

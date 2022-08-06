@@ -1,0 +1,130 @@
+.userProfile {
+  width: 100%;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.userImgDiv {
+  width: 200px;
+  height: 200px;
+  margin-right: 2em;
+}
+
+.userImg5 {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.name-Followbtn {
+  display: flex;
+  align-items: center;
+}
+
+.name-Followbtn button {
+  margin-left: 3em;
+  box-shadow: 0px 0px 2px #676767;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  border-radius: 0.3em;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.name-Followbtn button:hover {
+  opacity: 0.9;
+}
+
+.followersFollowing {
+  display: flex;
+}
+
+.followersFollowing p {
+  margin-right: 1em;
+}
+
+.followersFollowingCel {
+  display: none;
+}
+
+.postsfilters {
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  border-top: 1px solid rgb(201, 201, 201);
+  width: 100%;
+}
+
+.filteroptions {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filteroptions:hover {
+  opacity: 0.8;
+}
+
+.filteroptions p {
+  font-size: 0.8em;
+  margin-left: 0.4em;
+  font-weight: 700;
+  color: #787878;
+}
+
+@media only screen and (max-width: 680px) {
+  .userImgDiv {
+    width: 150px;
+    height: 150px;
+  }
+  .userImg5 {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media only screen and (max-width: 468px) {
+  .userImgDiv {
+    width: 100px;
+    height: 100px;
+  }
+
+  .userImg5 {
+    width: 100px;
+    height: 100px;
+  }
+
+  .postsfilters {
+    border-top: none;
+  }
+  .filteroptions p {
+    display: none;
+  }
+
+  .followersFollowing {
+    display: none;
+  }
+
+  .followersFollowingCel {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgb(201, 201, 201);
+    border-bottom: 1px solid rgb(201, 201, 201);
+    margin-top: 3em;
+  }
+}
