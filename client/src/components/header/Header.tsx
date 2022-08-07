@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Context } from "../../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Notification from "./Notification";
 import "./header.css";
 import {
@@ -8,8 +8,10 @@ import {
   IoHomeOutline,
   IoHomeSharp,
   IoCompassSharp,
+  IoSearchOutline,
 } from "react-icons/io5";
 import { User } from "../../routes/home/types";
+import SearchUsers from "./SearchUsers";
 
 type Props = {
   user: User | undefined;
@@ -18,16 +20,20 @@ type Props = {
 
 function Header({ user, page }: Props) {
   const { handleLogout } = useContext(Context);
+  const [search, setSearch] = useState(false);
 
   return (
     <header>
+      {search && <SearchUsers setSearch={setSearch} user={user} />}
       <div className="header">
         <div className="headerItems">
-          <div className="SiteName">Cringegram</div>
-          <div>
-            {/* <input className="search" type="text" placeholder="Search" /> */}
-          </div>
+          <Link to={"/"} className="SiteName">
+            Cringegram
+          </Link>
           <ul>
+            <li>
+              <IoSearchOutline size={"1.7em"} onClick={() => setSearch(true)} />
+            </li>
             <Link to={"/"}>
               <li>
                 {page === "home" ? (
@@ -61,11 +67,11 @@ function Header({ user, page }: Props) {
             ) : (
               ""
             )}
-            <li>
+            {/* <li>
               <Link onClick={() => handleLogout()} to={"/login"}>
                 Logout
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -99,3 +99,26 @@ li {
   display: flex;
   align-items: center;
 }
+
+.searchUsersDiv {
+  background-color: #fff;
+  width: 300px;
+  height: 50vh;
+  border-radius: 0.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.searchInput {
+  text-align: center;
+}
+
+.searchInput input {
+  margin-bottom: 1em;
+  border: 1px solid rgb(195, 195, 195);
+  font-size: 1em;
+  padding: 0.3em;
+  width: 99%;
+  font-family: "Nunito", sans-serif;
+  outline: none;
+}

@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../modules/userModule");
 const ProfileImg = require("../modules/profileImgModule");
+const Comments = require("../modules/commentsModule");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -72,8 +73,15 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json(userId);
 });
 
+const getUsers = asyncHandler(async (req, res) => {
+  const userId = await User.find().populate(["user_img"]);
+
+  res.status(200).json(userId);
+});
+
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
+  const test = await Comments.find({ user: req.params.id });
   const { password, name, email, bio } = req.body;
   let salt;
   let hashedPassword;
@@ -101,6 +109,7 @@ const updateUser = asyncHandler(async (req, res) => {
     }
   );
 
+  console.log(test);
   res.status(200).json(updatedUser);
 });
 
@@ -196,6 +205,7 @@ module.exports = {
   registerUser,
   loginUser,
   getUser,
+  getUsers,
   updateUser,
   followUser,
   unfollowUser,

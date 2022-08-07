@@ -46,7 +46,7 @@ function Home() {
             <div className="userFollowing">
               <div className="fixedUserFollowing">
                 <div className="user">
-                  <div className="userImg-name">
+                  <Link to={`/user/${user._id}`} className="userImg-name">
                     <div className="divImg">
                       <img
                         className=""
@@ -55,7 +55,7 @@ function Home() {
                       />
                     </div>
                     <p className="userName">{user.name}</p>
-                  </div>
+                  </Link>
                 </div>
                 <div className="">
                   <p className="followedUsers">Your followed users</p>

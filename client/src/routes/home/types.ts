@@ -66,6 +66,16 @@ export type User = {
   bio: string;
 };
 
+export type Users = {
+  _id: string;
+  name: string;
+  email: string;
+  user_img: PostImg;
+  followers: FollowersFollowing;
+  following: FollowersFollowing;
+  bio: string;
+}[];
+
 export type FollowersFollowing = {
   name: string;
   user_img: string;
