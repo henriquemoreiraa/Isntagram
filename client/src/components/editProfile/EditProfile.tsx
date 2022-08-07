@@ -30,7 +30,7 @@ function EditProfile({ setEditProfile, user }: Props) {
     confirNewPass: "",
   });
 
-  const { setUploadData, uploadData, handleLogout } = useContext(Context);
+  const { setUploadData, uploadData } = useContext(Context);
 
   function handleChange(e: any) {
     setFile(e.target.files[0]);

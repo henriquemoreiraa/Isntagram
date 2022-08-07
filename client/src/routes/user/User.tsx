@@ -31,6 +31,7 @@ function UserProfile() {
     handleUnfollow,
     handleFollow,
     followUnfUser,
+    uploadData,
   } = useContext(Context);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ function UserProfile() {
         setPosts(data);
       })();
     }
-  }, [authenticated, commentPost, like, followUnfUser]);
+  }, [authenticated, commentPost, like, followUnfUser, uploadData]);
 
   const getPosts = async (url: string) => {
     const { data } = await api.get(`${url}${id}`);

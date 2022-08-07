@@ -12,6 +12,8 @@ import {
 } from "react-icons/io5";
 import { User } from "../../routes/home/types";
 import SearchUsers from "./SearchUsers";
+import CreatePost from "./CreatePost";
+import { BsPlusSquare } from "react-icons/bs";
 
 type Props = {
   user: User | undefined;
@@ -21,19 +23,17 @@ type Props = {
 function Header({ user, page }: Props) {
   const { handleLogout } = useContext(Context);
   const [search, setSearch] = useState(false);
-
+  const [createPost, setCreatePost] = useState(false);
   return (
     <header>
       {search && <SearchUsers setSearch={setSearch} user={user} />}
+      {createPost && <CreatePost setCreatePost={setCreatePost} user={user} />}
       <div className="header">
         <div className="headerItems">
           <Link to={"/"} className="SiteName">
-            Cringegram
+            Isn'tagram
           </Link>
           <ul>
-            <li>
-              <IoSearchOutline size={"1.7em"} onClick={() => setSearch(true)} />
-            </li>
             <Link to={"/"}>
               <li>
                 {page === "home" ? (
@@ -43,12 +43,21 @@ function Header({ user, page }: Props) {
                 )}
               </li>
             </Link>
+            <li>
+              <IoSearchOutline size={"1.7em"} onClick={() => setSearch(true)} />
+            </li>
+            <li>
+              <BsPlusSquare
+                size={"1.5em"}
+                onClick={() => setCreatePost(true)}
+              />
+            </li>
             <Link to={"/explore"}>
               <li>
                 {page === "explore" ? (
-                  <IoCompassSharp size={"1.7em"} color={"#212121"} />
+                  <IoCompassSharp size={"1.9em"} color={"#212121"} />
                 ) : (
-                  <IoCompassOutline size={"1.7em"} />
+                  <IoCompassOutline size={"1.9em"} />
                 )}
               </li>
             </Link>

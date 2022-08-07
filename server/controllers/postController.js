@@ -7,6 +7,7 @@ const ProfileImg = require("../modules/profileImgModule");
 const createPost = asyncHandler(async (req, res) => {
   const userId = await User.findById(req.body.id);
   const userImg = await ProfileImg.findById(userId.user_img);
+  const taggedUsers = await User.find({ name: req.body.tagged });
 
   if (!req.file) {
     res.status(400);
@@ -24,7 +25,7 @@ const createPost = asyncHandler(async (req, res) => {
     post_img: postImg._id,
     likes: [],
     comments: [],
-    tagged: [],
+    tagged: taggedUsers._id,
     shares: [],
     user: {
       name: userId.name,
@@ -33,13 +34,12 @@ const createPost = asyncHandler(async (req, res) => {
     },
     user_id: req.body.id,
   });
-
+  console.log("req:", req.body.tagged, "mongo:", taggedUsers);
   res.status(200).json(post);
 });
 
 const getPosts = asyncHandler(async (req, res) => {
   const userId = await User.findById(req.params.id);
-  const allPosts = await Post.find();
 
   if (!userId) {
     const posts = await Post.find();
@@ -58,7 +58,7 @@ const getPosts = asyncHandler(async (req, res) => {
 
 const getAllPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find()
-    .sort({ likes: 1 })
+    .sort({ likes: -1 })
     .populate(["post_img", "comments", "shares", "tagged", "likes"]);
 
   res.status(200).json(posts);

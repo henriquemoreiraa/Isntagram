@@ -56,7 +56,7 @@ function SearchUsers({ setSearch, user }: Props) {
                         alt=""
                       />
                     </div>
-                    <p>{user.name}</p>
+                    <p>{userS.name}</p>
                   </a>
                   {user?._id === userS._id ? (
                     "You"
