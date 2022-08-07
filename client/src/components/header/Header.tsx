@@ -9,6 +9,8 @@ import {
   IoHomeSharp,
   IoCompassSharp,
   IoSearchOutline,
+  IoPersonCircleOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { User } from "../../routes/home/types";
 import SearchUsers from "./SearchUsers";
@@ -24,6 +26,7 @@ function Header({ user, page }: Props) {
   const { handleLogout } = useContext(Context);
   const [search, setSearch] = useState(false);
   const [createPost, setCreatePost] = useState(false);
+  const [profileLogout, setProfileLogout] = useState(false);
   return (
     <header>
       {search && <SearchUsers setSearch={setSearch} user={user} />}
@@ -68,9 +71,26 @@ function Header({ user, page }: Props) {
               <li>
                 <div className="divImg2">
                   <img
+                    onClick={() => setProfileLogout(!profileLogout)}
                     src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
                     alt=""
                   />
+                  {profileLogout && (
+                    <div className="profileLogoutDiv">
+                      <Link className="divsPL" to={`/user/${user._id}`}>
+                        <IoPersonCircleOutline size={"1.5em"} />
+                        <p>Profile</p>
+                      </Link>
+                      <Link
+                        onClick={() => handleLogout()}
+                        to={"/login"}
+                        className="divsPL"
+                      >
+                        <IoLogOutOutline size={"1.5em"} />
+                        <p>Logout</p>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </li>
             ) : (

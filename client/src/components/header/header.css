@@ -14,6 +14,7 @@ header {
   background-color: #fff;
   display: flex;
   justify-content: center;
+  z-index: 2;
 }
 
 .headerItems {
@@ -53,6 +54,7 @@ li {
   height: 30px;
   margin-right: 0.9em;
   margin-bottom: 0.4em;
+  position: relative;
 }
 
 .divImg2 img {
@@ -127,7 +129,7 @@ li {
 
 .createPostDiv {
   width: 500px;
-  height: 90%;
+  height: 85%;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -137,7 +139,7 @@ li {
 
 .postDivContainer {
   width: 90%;
-  height: 90%;
+  height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -173,8 +175,8 @@ li {
 }
 
 .previewPostImg {
-  width: 400px;
-  height: 250px;
+  width: 300px;
+  height: 150px;
 }
 
 .previewPostImg img {
@@ -199,4 +201,38 @@ li {
   font-family: "Nunito", sans-serif;
   color: #fff;
   cursor: pointer;
+}
+
+.profileLogoutDiv {
+  width: 120px;
+  height: 80px;
+  background-color: #fff;
+  position: absolute;
+  right: 0em;
+  top: 2.2em;
+  box-shadow: 0px 0px 2px #777;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.divsPL {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+.divsPL:hover {
+  opacity: 0.8;
+}
+
+.profileLogoutDiv p {
+  margin: 0.4em;
+}
+
+@media only screen and (max-width: 600px) {
+  .close {
+    color: black;
+  }
 }

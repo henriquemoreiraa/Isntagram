@@ -30,7 +30,7 @@
 }
 
 .commentBtn:disabled {
-  opacity: 0;
+  opacity: 0.5;
   cursor: auto;
   z-index: -1;
 }

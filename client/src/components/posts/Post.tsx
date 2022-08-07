@@ -13,6 +13,7 @@ import { Context } from "../../context/AuthContext";
 import Comment from "../comment/Comment";
 import api from "../../api";
 import { Link } from "react-router-dom";
+import Delete from "../delete/Delete";
 
 type Props = {
   postId: string;
@@ -42,6 +43,8 @@ function Post({
   removeLike,
 }: Props) {
   const [post, setPost] = useState<PostsType>();
+  const [deleteP, setDeleteP] = useState(false);
+  const [deletePdata, setDeletePdata] = useState({ id: "", url: "" });
   const id = localStorage.getItem("userId");
   const { handleFollow, handleUnfollow, sendNotification } =
     useContext(Context);
@@ -83,6 +86,9 @@ function Post({
       <div className="closePost" onClick={() => setSinglePost(false)}>
         <IoClose size={"1.7em"} color={"fff"} />
       </div>
+      {deleteP && post && (
+        <Delete setDeleteP={setDeleteP} deletePdata={deletePdata} />
+      )}
       {post
         ? post.map((post) => (
             <div className="singlePostDiv">
@@ -143,9 +149,19 @@ function Post({
                       </>
                     </div>
 
-                    <div>
-                      <IoEllipsisHorizontalSharp size={"1.2em"} />
-                    </div>
+                    {id === post.user.user_id && (
+                      <div
+                        onClick={() => (
+                          setDeleteP(true),
+                          setDeletePdata({ id: post._id, url: "/posts" })
+                        )}
+                      >
+                        <IoEllipsisHorizontalSharp
+                          className="dots"
+                          size={"1.2em"}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -202,7 +218,19 @@ function Post({
                                 }
                               )}
                             </p>
-
+                            {comment.user.user_id === id && (
+                              <IoEllipsisHorizontalSharp
+                                onClick={() => (
+                                  setDeleteP(true),
+                                  setDeletePdata({
+                                    id: comment._id,
+                                    url: "/comments",
+                                  })
+                                )}
+                                className="dots"
+                                color="474747"
+                              />
+                            )}
                             <p className="commentLikes">
                               {comment.likes.length >= 1 &&
                                 `${comment.likes.length}

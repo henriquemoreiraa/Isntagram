@@ -1,0 +1,23 @@
+.deleteContainer {
+  width: 250px;
+  height: 20%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5em;
+  overflow-y: auto;
+}
+.deleteContainer p {
+  margin: 0em 0 0.5em 0;
+  cursor: pointer;
+}
+
+.pDelete {
+  border-bottom: 1px solid #d4d4d4;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 0.5em;
+  color: rgb(245, 53, 53);
+}

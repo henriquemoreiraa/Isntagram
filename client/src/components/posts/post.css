@@ -4,7 +4,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,6 +145,10 @@
 
 .userTitleComments::-webkit-scrollbar-track {
   background: transparent;
+}
+.dots {
+  cursor: pointer;
+  margin-left: 0.5em;
 }
 
 @media only screen and (max-width: 576px) {

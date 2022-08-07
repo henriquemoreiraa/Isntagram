@@ -92,6 +92,7 @@ strong {
   width: 300px;
   padding: 1em;
   margin-left: 1em;
+  z-index: 0;
 }
 
 .divImg {
@@ -132,6 +133,7 @@ strong {
   width: 320px;
   height: 84vh;
   overflow-y: auto;
+  z-index: 0;
 }
 
 .fixedUserFollowing::-webkit-scrollbar {

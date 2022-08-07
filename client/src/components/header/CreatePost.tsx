@@ -68,7 +68,7 @@ function CreatePost({ setCreatePost, user }: Props) {
   return (
     <div className="singlePostContainer">
       <div className="closePost" onClick={() => setCreatePost(false)}>
-        <IoClose size={"1.7em"} color={"fff"} />
+        <IoClose className="close" size={"1.7em"} color={"fff"} />
       </div>
       <div className="createPostDiv">
         <div className="postDivContainer">

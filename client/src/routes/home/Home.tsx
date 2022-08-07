@@ -46,16 +46,20 @@ function Home() {
             <div className="userFollowing">
               <div className="fixedUserFollowing">
                 <div className="user">
-                  <Link to={`/user/${user._id}`} className="userImg-name">
+                  <div className="userImg-name">
                     <div className="divImg">
-                      <img
-                        className=""
-                        src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
-                        alt=""
-                      />
+                      <Link to={`/user/${user._id}`}>
+                        <img
+                          className=""
+                          src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
+                          alt=""
+                        />
+                      </Link>
                     </div>
-                    <p className="userName">{user.name}</p>
-                  </Link>
+                    <Link to={`/user/${user._id}`}>
+                      <p className="userName">{user.name}</p>
+                    </Link>
+                  </div>
                 </div>
                 <div className="">
                   <p className="followedUsers">Your followed users</p>

@@ -34,6 +34,7 @@ function Posts({ user, id }: Props) {
     setCommentPost,
     setLike,
     like,
+    uploadData,
   } = useContext(Context);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function Posts({ user, id }: Props) {
         setPosts(data);
       })();
     }
-  }, [like, followUnfUser, commentPost]);
+  }, [like, followUnfUser, commentPost, uploadData]);
 
   return (
     <div>
@@ -81,9 +82,11 @@ function Posts({ user, id }: Props) {
                     <p>{post.user.name}</p>
                   </>
                 </Link>
-                <div>
-                  <IoEllipsisHorizontalSharp size={"1.2em"} />
-                </div>
+                {id === post.user.user_id && (
+                  <div>
+                    <IoEllipsisHorizontalSharp size={"1.2em"} />
+                  </div>
+                )}
               </div>
               <div
                 onClick={() => (setSinglePost(true), setPostId(post._id))}

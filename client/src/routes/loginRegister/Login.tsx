@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserForm, UserData } from "./types";
 import { Context } from "../../context/AuthContext";
 import api from "../../api";
+import "./loginRegister.css";
 
 function Login() {
   const { userForm, setUserForm, setAuthenticated, authenticated } =
@@ -46,7 +47,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login">
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <input
