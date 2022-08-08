@@ -212,7 +212,7 @@ function Posts({ user }: Props) {
               />
             </div>
           ))
-        : "ssdsfsdfs"}
+        : ""}
     </div>
   );
 }
