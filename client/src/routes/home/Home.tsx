@@ -1,7 +1,7 @@
 import api from "../../api";
 import "./home.css";
 import { useEffect, useContext, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../../context/Context";
 import Header from "../../components/header/Header";
 import { User } from "./types";
@@ -44,24 +44,24 @@ function Home() {
                 <div className="user">
                   <div className="userImg-name">
                     <div className="divImg">
-                      <Link to={`/user/${user._id}`}>
+                      <a href={`/user/${user._id}`}>
                         <img
                           className=""
                           src={`${process.env.REACT_APP_API_URL}${user.user_img}`}
                           alt=""
                         />
-                      </Link>
+                      </a>
                     </div>
-                    <Link to={`/user/${user._id}`}>
+                    <a href={`/user/${user._id}`}>
                       <p className="userName">{user.name}</p>
-                    </Link>
+                    </a>
                   </div>
                 </div>
                 <div className="">
                   <p className="followedUsers">Your followed users</p>
                   {user.following.map((user) => (
                     <div className="user">
-                      <Link className="userImg-name" to={`/user/${user._id}`}>
+                      <a className="userImg-name" href={`/user/${user._id}`}>
                         <>
                           <div className="divImg1">
                             <img
@@ -72,7 +72,7 @@ function Home() {
                           </div>
                           <p>{user.name}</p>
                         </>
-                      </Link>
+                      </a>
                       <p
                         onClick={() => handleUnfollow(user._id, id)}
                         className="unfollowFollow"
@@ -85,7 +85,7 @@ function Home() {
                 <p className="followedUsers">Your Followers</p>
                 {user.followers.map((userf) => (
                   <div className="user">
-                    <Link className="userImg-name" to={`/user/${userf._id}`}>
+                    <a className="userImg-name" href={`/user/${userf._id}`}>
                       <>
                         <div className="divImg1">
                           <img
@@ -96,7 +96,7 @@ function Home() {
                         </div>
                         <p>{userf.name}</p>
                       </>
-                    </Link>
+                    </a>
                     {user.following.length === 0 ? (
                       <p
                         onClick={() => handleFollow(userf._id, id)}

@@ -12,7 +12,6 @@ import Post from "./Post";
 import api from "../../api";
 import { Context } from "../../context/Context";
 import Comment from "../comment/Comment";
-import { Link } from "react-router-dom";
 
 type Props = {
   user: User | undefined;
@@ -63,7 +62,7 @@ function Posts({ user }: Props) {
         ? posts?.map((post) => (
             <div key={post._id} className="post">
               <div className="user">
-                <Link className="userImg-name" to={`/user/${post.user._id}`}>
+                <a className="userImg-name" href={`/user/${post.user._id}`}>
                   <>
                     <div className="divImg1">
                       <img
@@ -73,7 +72,7 @@ function Posts({ user }: Props) {
                     </div>
                     <p>{post.user.name}</p>
                   </>
-                </Link>
+                </a>
                 {userId === post.user._id && (
                   <div>
                     <IoEllipsisHorizontalSharp size={"1.2em"} />
@@ -154,9 +153,9 @@ function Posts({ user }: Props) {
                     <p>
                       Liked by{" "}
                       <strong>
-                        <Link to={`/user/${post.likes[0]._id}`}>
+                        <a href={`/user/${post.likes[0]._id}`}>
                           {post.likes[0].name}
-                        </Link>
+                        </a>
                       </strong>
                       {post.likes.length > 1 &&
                         `and ${post.likes.length - 1} more 
@@ -167,7 +166,7 @@ function Posts({ user }: Props) {
 
                 <p>
                   <strong>
-                    <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
+                    <a href={`/user/${post.user._id}`}>{post.user.name}</a>
                   </strong>
                   {post.title}
                 </p>

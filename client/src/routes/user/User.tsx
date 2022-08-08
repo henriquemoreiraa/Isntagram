@@ -33,7 +33,7 @@ function UserProfile() {
       navigate("/login");
       return;
     }
-    if (id === "62f121e7acbf1d857de14254") {
+    if (userId === "62f121e7acbf1d857de14254") {
       navigate("/");
       return;
     }

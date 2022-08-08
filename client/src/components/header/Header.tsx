@@ -81,10 +81,10 @@ function Header({ user, page }: Props) {
                   {profileLogout && (
                     <div className="profileLogoutDiv">
                       {user._id !== "62f121e7acbf1d857de14254" && (
-                        <Link className="divsPL" to={`/user/${user._id}`}>
+                        <a className="divsPL" href={`/user/${user._id}`}>
                           <IoPersonCircleOutline size={"1.5em"} />
                           <p>Profile</p>
-                        </Link>
+                        </a>
                       )}
                       <Link
                         onClick={() => handleLogout()}

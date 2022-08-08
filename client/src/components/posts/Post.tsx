@@ -13,7 +13,6 @@ import { BsDot } from "react-icons/bs";
 import { Context } from "../../context/Context";
 import Comment from "../comment/Comment";
 import api from "../../api";
-import { Link } from "react-router-dom";
 import Delete from "../delete/Delete";
 
 type Props = {
@@ -99,18 +98,16 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
                   <div className="user uimgName-comment">
                     <div className="userImg-name">
                       <div className="divImg1">
-                        <Link to={`/user/${post.user._id}`}>
+                        <a href={`/user/${post.user._id}`}>
                           <img
                             className=""
                             src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`}
                             alt=""
                           />
-                        </Link>
+                        </a>
                       </div>
                       <p>
-                        <Link to={`/user/${post.user._id}`}>
-                          {post.user.name}
-                        </Link>
+                        <a href={`/user/${post.user._id}`}>{post.user.name}</a>
                       </p>
                       <>
                         <BsDot size={"1.3em"} />
@@ -173,9 +170,9 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
                       </div>
                       <p>
                         <strong>
-                          <Link to={`/user/${post.user._id}`}>
+                          <a href={`/user/${post.user._id}`}>
                             {post.user.name}
-                          </Link>
+                          </a>
                         </strong>
                         {post.title}
                       </p>
@@ -185,18 +182,18 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
                         <div className="divCommentsOptions">
                           <div className="userImg-name">
                             <div className="divImg4">
-                              <Link to={`/user/${comment.user._id}`}>
+                              <a href={`/user/${comment.user._id}`}>
                                 <img
                                   src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`}
                                   alt=""
                                 />
-                              </Link>
+                              </a>
                             </div>
                             <p>
                               <strong>
-                                <Link to={`/user/${comment.user._id}`}>
+                                <a href={`/user/${comment.user._id}`}>
                                   {comment.user.name}
-                                </Link>
+                                </a>
                               </strong>
                               {comment.comment}
                             </p>

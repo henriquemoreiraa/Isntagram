@@ -40,9 +40,9 @@ function Notifications({ setNotification }: Props) {
       {notifications ? (
         <div className="notificationsDiv">
           {notifications.map((not) => (
-            <Link
+            <a
               key={not.userId._id}
-              to={`/user/${not.userId._id}`}
+              href={`/user/${not.userId._id}`}
               className="userImg-name2"
             >
               <div className="divImg1">
@@ -55,7 +55,7 @@ function Notifications({ setNotification }: Props) {
                 <strong>{not.userId.name}</strong>
               </p>
               <p>{not?.message}</p>
-            </Link>
+            </a>
           ))}
         </div>
       ) : (
