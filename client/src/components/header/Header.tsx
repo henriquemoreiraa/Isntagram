@@ -16,6 +16,7 @@ import { User } from "../../routes/home/types";
 import SearchUsers from "./SearchUsers";
 import CreatePost from "./CreatePost";
 import { BsPlusSquare } from "react-icons/bs";
+import Notifications from "./Notifications";
 
 type Props = {
   user: User | undefined;
@@ -26,11 +27,13 @@ function Header({ user, page }: Props) {
   const { handleLogout } = useContext(Context);
   const [search, setSearch] = useState(false);
   const [createPost, setCreatePost] = useState(false);
+  const [notification, setNotification] = useState(false);
   const [profileLogout, setProfileLogout] = useState(false);
   return (
     <header>
       {search && <SearchUsers setSearch={setSearch} user={user} />}
       {createPost && <CreatePost setCreatePost={setCreatePost} user={user} />}
+      {notification && <Notifications setNotification={setNotification} />}
       <div className="header">
         <div className="headerItems">
           <Link to={"/"} className="SiteName">
@@ -64,7 +67,7 @@ function Header({ user, page }: Props) {
                 )}
               </li>
             </Link>
-            <li>
+            <li onClick={() => setNotification(true)}>
               <Notification />
             </li>
             {user ? (

@@ -12,8 +12,7 @@ const io = new Server(serverHttp, {
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./database/connect");
 const path = require("path");
-const User = require("./modules/userModule");
-const ProfileImg = require("./modules/postImgModule");
+const Notification = require("./modules/notificationModule");
 
 app.use(cors());
 
@@ -21,7 +20,7 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use('files', express.static(path.resolve(__dirname, '..', 'client', 'public', 'test' )))
+
 app.use(errorHandler);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/users", require("./routes/userRoutes"));
@@ -32,13 +31,20 @@ io.on("connection", (socket) => {
   socket.on("notification", (data) => {
     socket.join(data);
   });
+
   socket.on("notification_send", async (data) => {
-    // const user = await User.findById(data.userId)
-    // const userImg = await ProfileImg.findById(user.user_img)
+    const notification = Notification.create({
+      user: data.id,
+      userName: data.userName,
+      userImg: data.userImg,
+      userId: data.userId,
+      message: data.message,
+    });
 
     socket.to(data.id).emit("send_notification", {
       userName: data.userName,
       userImg: data.userImg,
+      userId: data.userId,
       message: data.message,
     });
   });

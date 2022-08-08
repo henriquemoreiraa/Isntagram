@@ -10,6 +10,7 @@ type Props = {
   postUser: string;
   userName: string | undefined;
   userImg: string | undefined;
+  userId: string | undefined;
 };
 
 function Comment({
@@ -19,6 +20,7 @@ function Comment({
   postUser,
   userName,
   userImg,
+  userId,
 }: Props) {
   const [comment, setComment] = useState("");
   const id = localStorage.getItem("userId");
@@ -31,7 +33,13 @@ function Comment({
     });
     setCommentPost(!commentPost);
     setComment("");
-    sendNotification(postUser, userName, userImg, "commented your post");
+    sendNotification(
+      postUser,
+      userName,
+      userImg,
+      userId,
+      "commented your post"
+    );
   };
 
   return (

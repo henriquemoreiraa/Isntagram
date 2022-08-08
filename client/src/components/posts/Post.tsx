@@ -340,6 +340,7 @@ function Post({
                       postUser={post.user.user_id}
                       userName={user?.name}
                       userImg={user?.user_img.key}
+                      userId={user?._id}
                     />
                   </div>
                 </div>

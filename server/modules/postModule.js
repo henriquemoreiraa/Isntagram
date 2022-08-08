@@ -15,18 +15,6 @@ const postSchema = mongoose.Schema(
         ref: "User",
       },
     ],
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comments",
-      },
-    ],
-    tagged: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
     shares: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,11 +22,6 @@ const postSchema = mongoose.Schema(
       },
     ],
     user: {
-      name: { type: String, required: true },
-      user_img: { type: String, required: true },
-      user_id: { type: String, required: true },
-    },
-    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

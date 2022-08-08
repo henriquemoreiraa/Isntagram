@@ -9,6 +9,7 @@ const {
   followUser,
   unfollowUser,
   updateUserImg,
+  getUserNotification,
   getUsers,
 } = require("../controllers/userController");
 const multer = require("multer");
@@ -18,6 +19,7 @@ const { protect } = require("../middleware/authMiddleware");
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/user/:id").get(protect, getUser);
+router.route("/user/notification/:id").get(protect, getUserNotification);
 router.route("/").get(protect, getUsers);
 router.route("/:id").put(protect, updateUser).delete(protect, deleteUser);
 router.route("/follow/:id").put(protect, followUser);

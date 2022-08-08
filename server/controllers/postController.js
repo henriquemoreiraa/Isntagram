@@ -2,12 +2,10 @@ const asyncHandler = require("express-async-handler");
 const User = require("../modules/userModule");
 const Post = require("../modules/postModule");
 const PostImg = require("../modules/postImgModule");
-const ProfileImg = require("../modules/profileImgModule");
+const Comments = require("../modules/commentsModule");
 
 const createPost = asyncHandler(async (req, res) => {
   const userId = await User.findById(req.body.id);
-  const userImg = await ProfileImg.findById(userId.user_img);
-  const taggedUsers = await User.find({ name: req.body.tagged });
 
   if (!req.file) {
     res.status(400);
@@ -24,17 +22,10 @@ const createPost = asyncHandler(async (req, res) => {
     title: req.body.title,
     post_img: postImg._id,
     likes: [],
-    comments: [],
-    tagged: taggedUsers._id,
     shares: [],
-    user: {
-      name: userId.name,
-      user_img: userImg.key,
-      user_id: userId._id,
-    },
-    user_id: req.body.id,
+    user: req.body.id,
   });
-  console.log("req:", req.body.tagged, "mongo:", taggedUsers);
+
   res.status(200).json(post);
 });
 
@@ -45,13 +36,11 @@ const getPosts = asyncHandler(async (req, res) => {
     const posts = await Post.find();
     res.status(200).json(posts);
   }
-  const maptest = userId.following.map((t) => t.user_id);
+  const mapfol = userId.following.map((fol) => fol);
 
-  // shares: userId.following, $or
-  //         tagged: userId.following
-  const posts = await Post.find({ user_id: maptest })
+  const posts = await Post.find({ user: mapfol })
     .sort({ createdAt: -1 })
-    .populate(["post_img", "comments", "shares", "tagged", "likes"]);
+    .populate(["post_img", "likes"]);
 
   res.status(200).json(posts);
 });
@@ -59,23 +48,15 @@ const getPosts = asyncHandler(async (req, res) => {
 const getAllPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find()
     .sort({ likes: -1 })
-    .populate(["post_img", "comments", "shares", "tagged", "likes"]);
+    .populate(["post_img", "likes"]);
 
   res.status(200).json(posts);
 });
 
 const getUserPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user_id: req.params.id })
+  const posts = await Post.find({ user: req.params.id })
     .sort({ createdAt: -1 })
-    .populate(["post_img", "comments", "likes"]);
-
-  res.status(200).json(posts);
-});
-
-const getTaggedUserPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ tagged: req.params.id })
-    .sort({ createdAt: -1 })
-    .populate(["post_img", "comments", "likes"]);
+    .populate(["post_img", "likes"]);
 
   res.status(200).json(posts);
 });
@@ -83,7 +64,7 @@ const getTaggedUserPosts = asyncHandler(async (req, res) => {
 const getSharedPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ shares: req.params.id })
     .sort({ createdAt: -1 })
-    .populate(["post_img", "comments", "likes"]);
+    .populate(["post_img", "likes"]);
 
   res.status(200).json(posts);
 });
@@ -114,26 +95,6 @@ const removeLike = asyncHandler(async (req, res) => {
     (userId) => userId._id.toString() !== req.body.id
   );
   postId.likes = removeLike;
-
-  postId.save();
-  res.status(200).json(postId);
-});
-
-const tagUser = asyncHandler(async (req, res) => {
-  const postId = await Post.findById(req.params.id);
-  const taggedUser = await User.findOne({ name: req.body.userName });
-
-  if (!postId) {
-    res.status(400);
-    throw new Error("Post not found");
-  }
-
-  if (!taggedUser) {
-    res.status(400);
-    throw new Error("User not found");
-  }
-
-  await postId.tagged.push(taggedUser._id);
 
   postId.save();
   res.status(200).json(postId);
@@ -174,10 +135,6 @@ const postImg = asyncHandler(async (req, res) => {
   res.status(200).json(updatePostImg);
 });
 
-const updatePost = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "UPDATE POST" });
-});
-
 const deletePost = asyncHandler(async (req, res) => {
   if (!req.params.id) {
     res.status(400);
@@ -188,18 +145,29 @@ const deletePost = asyncHandler(async (req, res) => {
   res.status(200).json(req.params.id);
 });
 
+const getPostComment = asyncHandler(async (req, res) => {
+  if (!req.params.id) {
+    res.send(400);
+    throw new Error("Post not found");
+  }
+
+  const comment = await Comments.find({ post: req.params.id }).sort({
+    createdAt: -1,
+  });
+
+  res.status(200).json(comment);
+});
+
 module.exports = {
   createPost,
   getPosts,
-  updatePost,
   likePost,
   deletePost,
   sharePost,
-  tagUser,
   postImg,
   getAllPosts,
   getUserPosts,
-  getTaggedUserPosts,
   getSharedPosts,
   removeLike,
+  getPostComment,
 };

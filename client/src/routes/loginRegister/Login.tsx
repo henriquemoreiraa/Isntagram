@@ -36,6 +36,13 @@ function Login() {
       .catch((error) => alert(error.response.data));
   };
 
+  const loginAsGuest = () => {
+    localStorage.setItem("token", "guest");
+    localStorage.setItem("userId", "guest");
+    setAuthenticated(true);
+    navigate("/");
+  };
+
   const onSubmit = (e: any) => {
     e.preventDefault();
 
@@ -47,46 +54,71 @@ function Login() {
   };
 
   return (
-    <div className="login">
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="email"
-            className="email"
-            id="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={(e) =>
-              setUserForm((prevState: UserForm) => ({
-                ...prevState,
-                email: e.target.value,
-              }))
-            }
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            className="password"
-            id="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={(e) =>
-              setUserForm((prevState: UserForm) => ({
-                ...prevState,
-                password: e.target.value,
-              }))
-            }
-            required
-          />
-        </div>
-        <div className="form-group">
-          <button type="submit">Login</button>
-        </div>
-      </form>
+    <div className="loginregisterContainer">
+      <div className="loginregister">
+        <h1>Isn'tagram</h1>
+        <form onSubmit={onSubmit}>
+          <div className="form-group">
+            <input
+              type="email"
+              className="emailLogin"
+              id="email"
+              name="email"
+              value={email}
+              placeholder="Enter your email"
+              onChange={(e) =>
+                setUserForm((prevState: UserForm) => ({
+                  ...prevState,
+                  email: e.target.value,
+                }))
+              }
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              className="passwordLogin"
+              id="password"
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={(e) =>
+                setUserForm((prevState: UserForm) => ({
+                  ...prevState,
+                  password: e.target.value,
+                }))
+              }
+              required
+            />
+          </div>
+          <div className="form-group">
+            {password ? (
+              <button type="submit">Log in</button>
+            ) : (
+              <button disabled type="submit">
+                Log in
+              </button>
+            )}
+          </div>
+          <div className="or">
+            <p>OR</p>
+            <p className="lines line1"></p>
+            <p className="lines line2"></p>
+          </div>
+          <p onClick={loginAsGuest} className="guest">
+            Log in as guest
+          </p>
+        </form>
+      </div>
+      <div className="signup">
+        <p>
+          Don't have an account?{" "}
+          <a href="/register">
+            <span>Sign up</span>
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

@@ -3,16 +3,14 @@ const router = express.Router();
 const {
   createPost,
   getPosts,
-  updatePost,
   likePost,
   deletePost,
   sharePost,
-  tagUser,
   postImg,
   removeLike,
   getAllPosts,
   getUserPosts,
-  getTaggedUserPosts,
+  getPostComment,
   getSharedPosts,
 } = require("../controllers/postController");
 const multer = require("multer");
@@ -25,13 +23,12 @@ router
 router.route("/post/:id").get(protect, getPosts);
 router.route("/").get(protect, getAllPosts);
 router.route("/user/:id").get(protect, getUserPosts);
-router.route("/user/tagged/:id").get(protect, getTaggedUserPosts);
 router.route("/user/shared/:id").get(protect, getSharedPosts);
-router.route("/:id").put(protect, updatePost).delete(protect, deletePost);
+router.route("/comment/:id").get(protect, getPostComment);
+router.route("/:id").delete(protect, deletePost);
 router.route("/like/:id").put(protect, likePost);
 router.route("/removeLike/:id").put(protect, removeLike);
 router.route("/share/:id").put(protect, sharePost);
-router.route("/tagUser/:id").put(protect, tagUser);
 router
   .route("/post/:id")
   .put(protect, multer(multerConfig).single("file"), postImg);

@@ -66,6 +66,7 @@ function AuthContext({ children }: FormProviderProps) {
       followedId,
       user?.name,
       user?.user_img.key,
+      user?._id,
       "started following you"
     );
   };
@@ -83,6 +84,7 @@ function AuthContext({ children }: FormProviderProps) {
       postUserId,
       user?.name,
       user?.user_img.key,
+      user?._id,
       "liked your post"
     );
   };
@@ -98,6 +100,7 @@ function AuthContext({ children }: FormProviderProps) {
     postUserId: string,
     userName: string | undefined,
     userImg: string | undefined,
+    userId: string | undefined,
     message: string
   ) => {
     if (user?._id !== postUserId) {
@@ -106,6 +109,7 @@ function AuthContext({ children }: FormProviderProps) {
         id: postUserId,
         userName,
         userImg,
+        userId,
         message,
       });
     }
