@@ -24,8 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.6",
     "multer": "^1.4.5-lts.1",
-    "socket.io": "^4.5.1",
-    "styled-components": "^5.3.5"
+    "socket.io": "^4.5.1"
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.25",

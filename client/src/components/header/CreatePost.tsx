@@ -96,7 +96,7 @@ function CreatePost({ setCreatePost, user }: Props) {
                   type="file"
                   name="file"
                   id="file"
-                  accept="image/*"
+                  accept=".jpeg, .jpg, .png, .gif, .pjpeg"
                   onChange={handleChange}
                 />
               </div>
