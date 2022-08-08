@@ -21,7 +21,7 @@ function CreatePost({ setCreatePost, user }: Props) {
     id: user._id,
     title: "",
   });
-  const { setUploadData, uploadData } = useContext(Context);
+  const { setUpdateData, updateData } = useContext(Context);
 
   useEffect(() => {
     if (!file) {
@@ -58,7 +58,7 @@ function CreatePost({ setCreatePost, user }: Props) {
         console.log(response.data);
         setFile(undefined);
         setCreatePost(false);
-        setUploadData(!uploadData);
+        setUpdateData(!updateData);
       });
     } else {
       alert("Add a photo!");

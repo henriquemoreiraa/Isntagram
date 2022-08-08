@@ -2,17 +2,22 @@ import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import api from "../../api";
 import { Link } from "react-router-dom";
+import { Users } from "../../routes/home/types";
 
 type Props = {
   setNotification: (e: boolean) => void;
 };
 
+type User = {
+  name: string;
+  user_img: string;
+  _id: string;
+};
+
 type Notifications = {
   user: string;
-  userName: string;
-  userImg: string;
   message: string;
-  userId: string;
+  userId: User;
 }[];
 
 function Notifications({ setNotification }: Props) {
@@ -35,15 +40,19 @@ function Notifications({ setNotification }: Props) {
       {notifications ? (
         <div className="notificationsDiv">
           {notifications.map((not) => (
-            <Link to={`/user/${not.userId}`} className="userImg-name2">
+            <Link
+              key={not.userId._id}
+              to={`/user/${not.userId._id}`}
+              className="userImg-name2"
+            >
               <div className="divImg1">
                 <img
-                  src={`${process.env.REACT_APP_API_URL}${not?.userImg}`}
+                  src={`${process.env.REACT_APP_API_URL}${not.userId.user_img}`}
                   alt=""
                 />
               </div>
               <p>
-                <strong>{not?.userName}</strong>
+                <strong>{not.userId.name}</strong>
               </p>
               <p>{not?.message}</p>
             </Link>

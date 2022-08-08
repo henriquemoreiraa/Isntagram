@@ -7,16 +7,8 @@ const notificationSchema = mongoose.Schema(
       required: true,
     },
     userId: {
-      type: String,
-      required: true,
-    },
-    userImg: {
-      type: String,
-      required: true,
-    },
-    userName: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     message: {
       type: String,

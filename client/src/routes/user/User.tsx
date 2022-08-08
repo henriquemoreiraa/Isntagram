@@ -150,7 +150,9 @@ function UserProfile() {
             </div>
           </div>
         ) : (
-          ""
+          <div className="center">
+            <div className="spinner"></div>
+          </div>
         )}
         <div className="followersFollowing followersFollowingCel">
           <p>

@@ -56,17 +56,15 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
     userId: string | null,
     postUserId: string
   ) => {
-    await api.put(`/comments/like/${commentId}`, {
-      id: userId,
-    });
-    setUpdateData(!updateData);
-    sendNotification(
-      postUserId,
-      user?.name,
-      user?.user_img,
-      user?._id,
-      "liked your comment"
-    );
+    if (userId === "62f121e7acbf1d857de14254") {
+      alert("Create an account to like posts!");
+    } else {
+      await api.put(`/comments/like/${commentId}`, {
+        id: userId,
+      });
+      setUpdateData(!updateData);
+      sendNotification(postUserId, user?._id, "liked your comment");
+    }
   };
 
   const commentRemoveLike = async (
@@ -89,7 +87,7 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
       )}
       {post
         ? post.map((post) => (
-            <div className="singlePostDiv">
+            <div key={post._id} className="singlePostDiv">
               <div className="imgDiv3 imgSinglePostDiv">
                 <img
                   src={`${process.env.REACT_APP_API_URL}${post.post_img.key}`}
@@ -183,7 +181,7 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
                       </p>
                     </div>
                     {comments.map((comment) => (
-                      <div className="testeeeeeeeeee">
+                      <div key={comment._id} className="testeeeeeeeeee">
                         <div className="divCommentsOptions">
                           <div className="userImg-name">
                             <div className="divImg4">
@@ -305,7 +303,9 @@ function Post({ postId, posts, setSinglePost, user }: Props) {
                           )}
                         </div>
                         <div>
-                          {post.shares.length === 0 ? (
+                          {post.user._id === id ? (
+                            <IoPaperPlaneOutline size={"1.8em"} />
+                          ) : post.shares.length === 0 ? (
                             <IoPaperPlaneOutline
                               size={"1.8em"}
                               onClick={() =>

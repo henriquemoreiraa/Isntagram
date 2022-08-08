@@ -1,0 +1,11 @@
+.page404message {
+  font-size: 1.2em;
+  width: 95%;
+  text-align: center;
+  padding: 0.1em;
+}
+
+.page404message span {
+  color: #2ba3f3;
+  cursor: pointer;
+}

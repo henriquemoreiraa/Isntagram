@@ -190,9 +190,11 @@ const getUserNotification = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  const notification = await Notification.find({ user: req.params.id }).sort({
-    createdAt: -1,
-  });
+  const notification = await Notification.find({ user: req.params.id })
+    .sort({
+      createdAt: -1,
+    })
+    .populate("userId");
 
   res.status(200).json(notification);
 });
@@ -206,9 +208,6 @@ const deleteUser = asyncHandler(async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   const posts = await Post.find({ user: req.params.id }).remove();
   const comments = await Comments.find({ user: req.params.id }).remove();
-
-  // await comments.remove();
-  // await posts.remove();
 
   res.status(200).json(req.params.id);
 });

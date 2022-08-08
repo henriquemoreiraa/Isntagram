@@ -61,7 +61,7 @@ function Posts({ user }: Props) {
       )}
       {posts
         ? posts?.map((post) => (
-            <div className="post">
+            <div key={post._id} className="post">
               <div className="user">
                 <Link className="userImg-name" to={`/user/${post.user._id}`}>
                   <>
@@ -183,7 +183,7 @@ function Posts({ user }: Props) {
                     {comments.map(
                       (comm) =>
                         comm.user._id === userId && (
-                          <p>
+                          <p key={comm._id}>
                             <strong>{comm.user.name}</strong>
                             {comm.comment}
                           </p>

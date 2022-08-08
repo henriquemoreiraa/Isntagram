@@ -38,17 +38,15 @@ io.on("connection", (socket) => {
 
     const notification = await Notification.create({
       user: data.id,
-      userName: user.name,
-      userImg: user.user_img,
       userId: user._id,
       message: data.message,
     });
 
     socket.to(data.id).emit("send_notification", {
-      userName: notification.userName,
-      userImg: notification.userImg,
-      userId: notification.userId,
-      message: notification.message,
+      userName: user.name,
+      userImg: user.user_img,
+      userId: user._id,
+      message: data.message,
     });
   });
 });

@@ -50,7 +50,7 @@ function SearchUsers({ setSearch, user }: Props) {
         <div>
           {searchUser.length > 0
             ? filteredUsers.map((userS) => (
-                <div className="user">
+                <div key={userS._id} className="user">
                   <a className="userImg-name" href={`/user/${userS._id}`}>
                     <div className="divImg1">
                       <img

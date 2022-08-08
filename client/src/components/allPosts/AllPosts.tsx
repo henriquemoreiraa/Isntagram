@@ -27,6 +27,7 @@ function AllPosts({ posts, user }: Props) {
       {posts
         ? posts.map((post) => (
             <div
+              key={post._id}
               onClick={() => (setSinglePost(true), setPostId(post._id))}
               className="allPostsImgsDiv"
             >

@@ -126,7 +126,9 @@ function Home() {
               </div>
             </div>
           ) : (
-            ""
+            <div className="center">
+              <div className="spinner"></div>
+            </div>
           )}
         </div>
       </div>
