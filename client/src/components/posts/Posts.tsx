@@ -179,15 +179,6 @@ function Posts({ user }: Props) {
                     >
                       View all comments
                     </p>
-                    {comments.map(
-                      (comm) =>
-                        comm.user._id === userId && (
-                          <p key={comm._id}>
-                            <strong>{comm.user.name}</strong>
-                            {comm.comment}
-                          </p>
-                        )
-                    )}
                   </>
                 ) : (
                   ""
