@@ -69,13 +69,16 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  const userId = await User.findById(req.params.id);
+  const userId = await User.findById(req.params.id).populate([
+    "following",
+    "followers",
+  ]);
 
   res.status(200).json(userId);
 });
 
 const getUsers = asyncHandler(async (req, res) => {
-  const userId = await User.find();
+  const userId = await User.find().populate(["following", "followers"]);
 
   res.status(200).json(userId);
 });

@@ -10,11 +10,11 @@ import Register from "./routes/loginRegister/Register";
 import Home from "./routes/home/Home";
 import User from "./routes/user/User";
 import Explore from "./routes/explore/Explore";
-import { AuthContext } from "./context/AuthContext";
+import { Contexts } from "./context/Context";
 
 function App() {
   return (
-    <AuthContext>
+    <Contexts>
       <Router>
         <div className="container">
           <Routes>
@@ -26,7 +26,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </AuthContext>
+    </Contexts>
   );
 }
 

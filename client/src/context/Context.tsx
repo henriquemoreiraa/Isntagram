@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import api from "../api";
 import { User } from "../routes/home/types";
 import { UserForm } from "../routes/loginRegister/types";
@@ -12,19 +12,16 @@ type FormProviderProps = {
   children: ReactNode;
 };
 
-function AuthContext({ children }: FormProviderProps) {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+function Contexts({ children }: FormProviderProps) {
+  const [authenticated, setAuthenticated] = useState(false);
   const [userForm, setUserForm] = useState<UserForm>({
     name: "",
     email: "",
     password: "",
     password2: "",
   });
-  const [followUnfUser, setFollowUnfUser] = useState<boolean>(true);
-  const [commentPost, setCommentPost] = useState(false);
   const [user, setUser] = useState<User>();
-  const [like, setLike] = useState(false);
-  const [uploadData, setUploadData] = useState(false);
+  const [updateData, setUpdateData] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -42,30 +39,31 @@ function AuthContext({ children }: FormProviderProps) {
         setUser(data);
       })();
     }
-  }, [followUnfUser, uploadData]);
+  }, [updateData, authenticated]);
 
   const handleLogout = () => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    setUser(undefined);
   };
 
   const handleUnfollow = async (unfollowedId: string, unfollowerId: string) => {
     await api.put(`/users/unfollow/${unfollowedId}`, {
       id: unfollowerId,
     });
-    setFollowUnfUser(!followUnfUser);
+    setUpdateData(!updateData);
   };
 
   const handleFollow = async (followedId: string, followerId: string) => {
     await api.put(`/users/follow/${followedId}`, {
       id: followerId,
     });
-    setFollowUnfUser(!followUnfUser);
+    setUpdateData(!updateData);
     sendNotification(
       followedId,
       user?.name,
-      user?.user_img.key,
+      user?.user_img,
       user?._id,
       "started following you"
     );
@@ -79,11 +77,11 @@ function AuthContext({ children }: FormProviderProps) {
     await api.put(`/posts/like/${postId}`, {
       id: userId,
     });
-    setLike(!like);
+    setUpdateData(!updateData);
     sendNotification(
       postUserId,
       user?.name,
-      user?.user_img.key,
+      user?.user_img,
       user?._id,
       "liked your post"
     );
@@ -93,7 +91,7 @@ function AuthContext({ children }: FormProviderProps) {
     await api.put(`/posts/removeLike/${postId}`, {
       id: userId,
     });
-    setLike(!like);
+    setUpdateData(!updateData);
   };
 
   const sendNotification = (
@@ -125,17 +123,12 @@ function AuthContext({ children }: FormProviderProps) {
         handleLogout,
         handleUnfollow,
         handleFollow,
-        followUnfUser,
+        updateData,
         handleLike,
         removeLike,
-        commentPost,
-        setCommentPost,
-        setLike,
-        like,
         sendNotification,
         user,
-        uploadData,
-        setUploadData,
+        setUpdateData,
       }}
     >
       {children}
@@ -143,4 +136,4 @@ function AuthContext({ children }: FormProviderProps) {
   );
 }
 
-export { Context, AuthContext };
+export { Context, Contexts };

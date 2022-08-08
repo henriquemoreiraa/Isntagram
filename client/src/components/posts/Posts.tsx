@@ -9,69 +9,44 @@ import {
 import { useEffect, useState, useContext } from "react";
 import Post from "./Post";
 import api from "../../api";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import Comment from "../comment/Comment";
 import { Link } from "react-router-dom";
 
 type Props = {
   user: User | undefined;
-  id: string | null;
   page: string;
 };
 
-function Posts({ user, id }: Props) {
+function Posts({ user }: Props) {
   const [posts, setPosts] = useState<PostsType>([]);
   const [singlePost, setSinglePost] = useState(false);
   const [postId, setPostId] = useState("");
   const userId = localStorage.getItem("userId");
 
-  const {
-    followUnfUser,
-    authenticated,
-    handleLike,
-    removeLike,
-    commentPost,
-    setCommentPost,
-    setLike,
-    like,
-    uploadData,
-  } = useContext(Context);
+  const { authenticated, handleLike, removeLike, updateData } =
+    useContext(Context);
 
   useEffect(() => {
     if (authenticated) {
       (async () => {
-        const { data } = await api.get(`/posts/post/${id}`);
+        const { data } = await api.get(`/posts/post/${userId}`);
 
         setPosts(data);
       })();
     }
-  }, [like, followUnfUser, commentPost, uploadData]);
+  }, [updateData]);
 
   return (
     <div>
       {singlePost && (
-        <Post
-          postId={postId}
-          posts={posts}
-          user={user}
-          page={"home"}
-          setSinglePost={setSinglePost}
-          commentPost={commentPost}
-          setCommentPost={setCommentPost}
-          like={like}
-          setLike={setLike}
-          handleLike={handleLike}
-          removeLike={removeLike}
-        />
+        <Post postId={postId} posts={posts} setSinglePost={setSinglePost} />
       )}
       {posts
         ? posts?.map((post) => (
             <div className="post">
               <div className="user">
-                <Link
-                  className="userImg-name"
-                  to={`/user/${post.user.user_id}`}
-                >
+                <Link className="userImg-name" to={`/user/${post.user._id}`}>
                   <>
                     <div className="divImg1">
                       <img
@@ -82,7 +57,7 @@ function Posts({ user, id }: Props) {
                     <p>{post.user.name}</p>
                   </>
                 </Link>
-                {id === post.user.user_id && (
+                {userId === post.user._id && (
                   <div>
                     <IoEllipsisHorizontalSharp size={"1.2em"} />
                   </div>
@@ -104,21 +79,22 @@ function Posts({ user, id }: Props) {
                       <IoHeartOutline
                         size={"1.9em"}
                         onClick={() =>
-                          handleLike(post._id, id, post.user.user_id)
+                          handleLike(post._id, userId, post.user._id)
                         }
                       />
-                    ) : post?.likes.some((postLike) => postLike._id === id) ===
-                      true ? (
+                    ) : post?.likes.some(
+                        (postLike) => postLike._id === userId
+                      ) === true ? (
                       <IoHeartSharp
                         size={"1.9em"}
                         color={"e84040"}
-                        onClick={() => removeLike(post._id, id)}
+                        onClick={() => removeLike(post._id, userId)}
                       />
                     ) : (
                       <IoHeartOutline
                         size={"1.9em"}
                         onClick={() =>
-                          handleLike(post._id, id, post.user.user_id)
+                          handleLike(post._id, userId, post.user._id)
                         }
                       />
                     )}
@@ -152,14 +128,12 @@ function Posts({ user, id }: Props) {
 
                 <p>
                   <strong>
-                    <Link to={`/user/${post.user.user_id}`}>
-                      {post.user.name}
-                    </Link>
+                    <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
                   </strong>
                   {post.title}
                 </p>
 
-                {post.comments.length > 0 && (
+                {/* {post.comments.length > 0 && (
                   <p
                     className="viewComments"
                     onClick={() => (setSinglePost(true), setPostId(post._id))}
@@ -170,7 +144,7 @@ function Posts({ user, id }: Props) {
                 )}
 
                 {post.comments.map((comment) =>
-                  comment.user.user_id === id ? (
+                  comment.user._id === userId ? (
                     <p>
                       <strong>{comment.user.name}</strong>
                       {comment.comment}
@@ -178,7 +152,7 @@ function Posts({ user, id }: Props) {
                   ) : (
                     ""
                   )
-                )}
+                )} */}
 
                 <p className="postDate">
                   {new Date(post.createdAt).toLocaleString("en-US", {
@@ -191,11 +165,9 @@ function Posts({ user, id }: Props) {
 
               <Comment
                 postId={post._id}
-                commentPost={commentPost}
-                setCommentPost={setCommentPost}
-                postUser={post.user.user_id}
+                postUser={post.user._id}
                 userName={user?.name}
-                userImg={user?.user_img.key}
+                userImg={user?.user_img}
                 userId={user?._id}
               />
             </div>

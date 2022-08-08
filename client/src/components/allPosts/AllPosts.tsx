@@ -2,44 +2,20 @@ import { useState, useContext } from "react";
 import { PostsType, User } from "../../routes/home/types";
 import "./allPosts.css";
 import Post from "../posts/Post";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 
 type Props = {
   posts: PostsType;
-  user: User | undefined;
 };
 
-function AllPosts({ posts, user }: Props) {
+function AllPosts({ posts }: Props) {
   const [singlePost, setSinglePost] = useState(false);
   const [postId, setPostId] = useState("");
-
-  const {
-    followUnfUser,
-    authenticated,
-    handleLike,
-    removeLike,
-    commentPost,
-    setCommentPost,
-    setLike,
-    like,
-  } = useContext(Context);
 
   return (
     <div className="allPostsImgs">
       {singlePost && (
-        <Post
-          postId={postId}
-          posts={posts}
-          user={user}
-          page={"explore"}
-          setSinglePost={setSinglePost}
-          commentPost={commentPost}
-          setCommentPost={setCommentPost}
-          like={like}
-          setLike={setLike}
-          handleLike={handleLike}
-          removeLike={removeLike}
-        />
+        <Post postId={postId} posts={posts} setSinglePost={setSinglePost} />
       )}
 
       {posts

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import io from "socket.io-client";
 import { BsDot } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";

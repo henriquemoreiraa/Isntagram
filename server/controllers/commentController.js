@@ -1,13 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Comments = require("../modules/commentsModule");
-const Answers = require("../modules/answerModule");
 const Post = require("../modules/postModule");
-const User = require("../modules/userModule");
-const ProfileImg = require("../modules/profileImgModule");
 
 const createComment = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
-
   if (!req.body.comment || !req.body.id) {
     res.status(400);
     throw new Error("Please add a comment");

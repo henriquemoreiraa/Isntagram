@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserForm, UserData } from "./types";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import api from "../../api";
 import "./loginRegister.css";
 

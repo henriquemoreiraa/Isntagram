@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import api from "../../api";
 import { PostsType, User } from "../home/types";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import AllPosts from "../../components/allPosts/AllPosts";
 import Header from "../../components/header/Header";
 
 function Explore() {
   const [posts, setPosts] = useState<PostsType>([]);
-  // const [user, setUser] = useState<User>()
-  const { authenticated, commentPost, like, user } = useContext(Context);
+  const [user, setUser] = useState<User>();
+  const { authenticated, updateData } = useContext(Context);
   const id = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -17,14 +17,20 @@ function Explore() {
         const { data } = await api.get(`/posts/`);
         setPosts(data);
       })();
+
+      (async () => {
+        const { data } = await api.get(`/users/user/${id}`);
+
+        setUser(data);
+      })();
     }
-  }, [authenticated, commentPost, like]);
+  }, [authenticated, updateData]);
 
   return (
     <div className="container">
       <Header user={user} page={"explore"} />
 
-      <AllPosts user={user} posts={posts} />
+      <AllPosts posts={posts} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { IoClose } from "react-icons/io5";
 import api from "../../api";
 import { PostsType } from "../../routes/home/types";
 import "./delete.css";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 
 type Props = {
   setDeleteP: (e: boolean) => void;
@@ -13,11 +13,11 @@ type Props = {
 function Delete({ setDeleteP, deletePdata }: Props) {
   const handleDelete = () => {
     api.delete(`${deletePdata.url}/${deletePdata.id}`);
-    setUploadData(!uploadData);
+    setUpdateData(!updateData);
     setDeleteP(false);
   };
 
-  const { setUploadData, uploadData } = useContext(Context);
+  const { setUpdateData, updateData } = useContext(Context);
 
   return (
     <div className="singlePostContainer">

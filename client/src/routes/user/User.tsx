@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import api from "../../api";
-import { PostsType, User, FollowersFollowing } from "../home/types";
+import { PostsType, User, Users } from "../home/types";
 import AllPosts from "../../components/allPosts/AllPosts";
 import FollowingFollowers from "../../components/followingFollowers/FollowingFollowers";
 import EditProfile from "../../components/editProfile/EditProfile";
@@ -17,22 +17,15 @@ import {
 function UserProfile() {
   const [userProfileData, setUserProfileData] = useState<User>();
   const [posts, setPosts] = useState<PostsType>([]);
+  const [user, setUser] = useState<User>();
   const [userFol, setUserFol] = useState(false);
-  const [folUsers, setFolUsers] = useState<FollowersFollowing>([]);
+  const [folUsers, setFolUsers] = useState<Users>([]);
   const [isFolwedWers, setIsFolwedWers] = useState("");
   const [editProfile, setEditProfile] = useState(false);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
-  const {
-    user,
-    authenticated,
-    commentPost,
-    like,
-    handleUnfollow,
-    handleFollow,
-    followUnfUser,
-    uploadData,
-  } = useContext(Context);
+  const { authenticated, handleUnfollow, handleFollow, updateData } =
+    useContext(Context);
 
   useEffect(() => {
     if (authenticated) {
@@ -47,8 +40,14 @@ function UserProfile() {
 
         setPosts(data);
       })();
+
+      (async () => {
+        const { data } = await api.get(`/users/user/${userId}`);
+
+        setUser(data);
+      })();
     }
-  }, [authenticated, commentPost, like, followUnfUser, uploadData]);
+  }, [authenticated, updateData]);
 
   const getPosts = async (url: string) => {
     const { data } = await api.get(`${url}${id}`);
@@ -77,7 +76,7 @@ function UserProfile() {
             <div className="userImgDiv">
               <img
                 className="userImg5"
-                src={`${process.env.REACT_APP_API_URL}${userProfileData?.user_img.key}`}
+                src={`${process.env.REACT_APP_API_URL}${userProfileData?.user_img}`}
                 alt=""
               />
             </div>
@@ -178,7 +177,7 @@ function UserProfile() {
             <p>SHARED</p>
           </div>
         </div>
-        {posts ? <AllPosts user={user} posts={posts} /> : ""}
+        {posts ? <AllPosts posts={posts} /> : ""}
       </div>
     </div>
   );

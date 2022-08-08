@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import api from "../../api";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import { Users } from "../../routes/home/types";
 
 type Props = {
@@ -52,7 +52,7 @@ function SearchUsers({ setSearch, user }: Props) {
                   <a className="userImg-name" href={`/user/${userS._id}`}>
                     <div className="divImg1">
                       <img
-                        src={`${process.env.REACT_APP_API_URL}${userS.user_img.key}`}
+                        src={`${process.env.REACT_APP_API_URL}${userS.user_img}`}
                         alt=""
                       />
                     </div>

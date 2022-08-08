@@ -2,18 +2,15 @@ import api from "../../api";
 import "./home.css";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import Header from "../../components/header/Header";
-import { PostsType, User } from "./types";
+import { User } from "./types";
 import Posts from "../../components/posts/Posts";
 
-// post.post_img.key
-
 function Home() {
-  const [posts, setPosts] = useState<PostsType>([]);
   const [user, setUser] = useState<User>();
 
-  const { authenticated, handleUnfollow, handleFollow, followUnfUser } =
+  const { authenticated, handleUnfollow, handleFollow, updateData } =
     useContext(Context);
   const navigate = useNavigate();
   const id = localStorage.getItem("userId");
@@ -26,7 +23,7 @@ function Home() {
         setUser(data);
       })();
     }
-  }, [followUnfUser]);
+  }, [updateData]);
 
   useEffect(() => {
     if (authenticated === false) {
@@ -38,9 +35,8 @@ function Home() {
     <>
       <div className="container">
         <Header user={user} page={"home"} />
-        {/* <button onClick={sendNotification}>AQUI</button> */}
         <div className="containerPosts-userFollowing">
-          <Posts user={user} id={id} page={"home"} />
+          <Posts user={user} page={"home"} />
 
           {user ? (
             <div className="userFollowing">
@@ -51,7 +47,7 @@ function Home() {
                       <Link to={`/user/${user._id}`}>
                         <img
                           className=""
-                          src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
+                          src={`${process.env.REACT_APP_API_URL}${user.user_img}`}
                           alt=""
                         />
                       </Link>
@@ -65,10 +61,7 @@ function Home() {
                   <p className="followedUsers">Your followed users</p>
                   {user.following.map((user) => (
                     <div className="user">
-                      <Link
-                        className="userImg-name"
-                        to={`/user/${user.user_id}`}
-                      >
+                      <Link className="userImg-name" to={`/user/${user._id}`}>
                         <>
                           <div className="divImg1">
                             <img
@@ -81,7 +74,7 @@ function Home() {
                         </>
                       </Link>
                       <p
-                        onClick={() => handleUnfollow(user.user_id, id)}
+                        onClick={() => handleUnfollow(user._id, id)}
                         className="unfollowFollow"
                       >
                         Unfollow
@@ -92,10 +85,7 @@ function Home() {
                 <p className="followedUsers">Your Followers</p>
                 {user.followers.map((userf) => (
                   <div className="user">
-                    <Link
-                      className="userImg-name"
-                      to={`/user/${userf.user_id}`}
-                    >
+                    <Link className="userImg-name" to={`/user/${userf._id}`}>
                       <>
                         <div className="divImg1">
                           <img
@@ -109,23 +99,23 @@ function Home() {
                     </Link>
                     {user.following.length === 0 ? (
                       <p
-                        onClick={() => handleFollow(userf.user_id, id)}
+                        onClick={() => handleFollow(userf._id, id)}
                         className="unfollowFollow"
                       >
                         Follow
                       </p>
                     ) : user.following.some(
-                        (userfo) => userfo.user_id === userf.user_id
+                        (userfo) => userfo._id === userf._id
                       ) === true ? (
                       <p
-                        onClick={() => handleUnfollow(userf.user_id, id)}
+                        onClick={() => handleUnfollow(userf._id, id)}
                         className="unfollowFollow"
                       >
                         Following
                       </p>
                     ) : (
                       <p
-                        onClick={() => handleFollow(userf.user_id, id)}
+                        onClick={() => handleFollow(userf._id, id)}
                         className="unfollowFollow"
                       >
                         Follow

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import { useContext, useState } from "react";
 import Notification from "./Notification";
 import "./header.css";
@@ -75,7 +75,7 @@ function Header({ user, page }: Props) {
                 <div className="divImg2">
                   <img
                     onClick={() => setProfileLogout(!profileLogout)}
-                    src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
+                    src={`${process.env.REACT_APP_API_URL}${user.user_img}`}
                     alt=""
                   />
                   {profileLogout && (

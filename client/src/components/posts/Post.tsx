@@ -9,7 +9,7 @@ import {
   IoPaperPlaneOutline,
 } from "react-icons/io5";
 import { BsDot } from "react-icons/bs";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 import Comment from "../comment/Comment";
 import api from "../../api";
 import { Link } from "react-router-dom";
@@ -18,35 +18,17 @@ import Delete from "../delete/Delete";
 type Props = {
   postId: string;
   posts: PostsType | undefined;
-  user: User | undefined;
-  page: string;
   setSinglePost: (e: boolean) => void;
-  commentPost: boolean;
-  setCommentPost: (e: boolean) => void;
-  setLike: (e: boolean) => void;
-  like: boolean;
-  handleLike: (e: string, a: string | null, c: string) => void;
-  removeLike: (e: string, a: string | null) => void;
 };
 
-function Post({
-  postId,
-  posts,
-  user,
-  page,
-  commentPost,
-  setCommentPost,
-  setSinglePost,
-  setLike,
-  like,
-  handleLike,
-  removeLike,
-}: Props) {
+function Post({ postId, posts, setSinglePost }: Props) {
   const [post, setPost] = useState<PostsType>();
   const [deleteP, setDeleteP] = useState(false);
   const [deletePdata, setDeletePdata] = useState({ id: "", url: "" });
   const id = localStorage.getItem("userId");
   const { handleFollow, handleUnfollow, sendNotification } =
+    useContext(Context);
+  const { handleLike, removeLike, updateData, setUpdateData, user } =
     useContext(Context);
 
   useEffect(() => {
@@ -62,11 +44,12 @@ function Post({
     await api.put(`/comments/like/${commentId}`, {
       id: userId,
     });
-    setLike(!like);
+    setUpdateData(!updateData);
     sendNotification(
       postUserId,
       user?.name,
-      user?.user_img.key,
+      user?.user_img,
+      user?._id,
       "liked your comment"
     );
   };
@@ -78,7 +61,7 @@ function Post({
     await api.put(`/comments/removeLike/${commentId}`, {
       id: userId,
     });
-    setLike(!like);
+    setUpdateData(!updateData);
   };
 
   return (
@@ -103,7 +86,7 @@ function Post({
                   <div className="user uimgName-comment">
                     <div className="userImg-name">
                       <div className="divImg1">
-                        <Link to={`/user/${post.user.user_id}`}>
+                        <Link to={`/user/${post.user._id}`}>
                           <img
                             className=""
                             src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`}
@@ -112,35 +95,33 @@ function Post({
                         </Link>
                       </div>
                       <p>
-                        <Link to={`/user/${post.user.user_id}`}>
+                        <Link to={`/user/${post.user._id}`}>
                           {post.user.name}
                         </Link>
                       </p>
                       <>
                         <BsDot size={"1.3em"} />
-                        {user?._id === post.user.user_id ? (
+                        {user?._id === post.user._id ? (
                           "You"
                         ) : user?.following.length === 0 ? (
                           <p
-                            onClick={() => handleFollow(post.user.user_id, id)}
+                            onClick={() => handleFollow(post.user._id, id)}
                             className="unfollowFollow"
                           >
                             Follow
                           </p>
                         ) : user?.following.some(
-                            (userfo) => userfo.user_id === post.user.user_id
+                            (userfo: User) => userfo._id === post.user._id
                           ) === true ? (
                           <p
-                            onClick={() =>
-                              handleUnfollow(post.user.user_id, id)
-                            }
+                            onClick={() => handleUnfollow(post.user._id, id)}
                             className="unfollowFollow"
                           >
                             Following
                           </p>
                         ) : (
                           <p
-                            onClick={() => handleFollow(post.user.user_id, id)}
+                            onClick={() => handleFollow(post.user._id, id)}
                             className="unfollowFollow"
                           >
                             Follow
@@ -149,7 +130,7 @@ function Post({
                       </>
                     </div>
 
-                    {id === post.user.user_id && (
+                    {id === post.user._id && (
                       <div
                         onClick={() => (
                           setDeleteP(true),
@@ -170,7 +151,7 @@ function Post({
                   <div className="userTitleComments">
                     <div className="userImg-name postUser">
                       <div className="divImg4">
-                        <a href={`/user/${post.user.user_id}`}>
+                        <a href={`/user/${post.user._id}`}>
                           <img
                             src={`${process.env.REACT_APP_API_URL}${post.user.user_img}`}
                             alt=""
@@ -179,19 +160,19 @@ function Post({
                       </div>
                       <p>
                         <strong>
-                          <Link to={`/user/${post.user.user_id}`}>
+                          <Link to={`/user/${post.user._id}`}>
                             {post.user.name}
                           </Link>
                         </strong>
                         {post.title}
                       </p>
                     </div>
-                    {post.comments.map((comment) => (
+                    {/* {post.comments.map((comment) => (
                       <div className="testeeeeeeeeee">
                         <div className="divCommentsOptions">
                           <div className="userImg-name">
                             <div className="divImg4">
-                              <Link to={`/user/${comment.user.user_id}`}>
+                              <Link to={`/user/${comment.user._id}`}>
                                 <img
                                   src={`${process.env.REACT_APP_API_URL}${comment.user.user_img}`}
                                   alt=""
@@ -200,7 +181,7 @@ function Post({
                             </div>
                             <p>
                               <strong>
-                                <Link to={`/user/${comment.user.user_id}`}>
+                                <Link to={`/user/${comment.user._id}`}>
                                   {comment.user.name}
                                 </Link>
                               </strong>
@@ -218,7 +199,7 @@ function Post({
                                 }
                               )}
                             </p>
-                            {comment.user.user_id === id && (
+                            {comment.user._id === id && (
                               <IoEllipsisHorizontalSharp
                                 onClick={() => (
                                   setDeleteP(true),
@@ -250,7 +231,7 @@ function Post({
                                 commentHandleLike(
                                   comment._id,
                                   id,
-                                  comment.user.user_id
+                                  comment.user._id
                                 )
                               }
                             />
@@ -261,7 +242,7 @@ function Post({
                                   commentHandleLike(
                                     comment._id,
                                     id,
-                                    comment.user.user_id
+                                    comment.user._id
                                   )
                                 }
                               />
@@ -278,7 +259,7 @@ function Post({
                           )}
                         </div>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                   <div className="postLikeComment SinglePostplc">
                     <div className="postTitle">
@@ -288,7 +269,7 @@ function Post({
                             <IoHeartOutline
                               size={"1.9em"}
                               onClick={() =>
-                                handleLike(post._id, id, post.user.user_id)
+                                handleLike(post._id, id, post.user._id)
                               }
                             />
                           ) : post?.likes.some(
@@ -303,7 +284,7 @@ function Post({
                             <IoHeartOutline
                               size={"1.9em"}
                               onClick={() =>
-                                handleLike(post._id, id, post.user.user_id)
+                                handleLike(post._id, id, post.user._id)
                               }
                             />
                           )}
@@ -335,9 +316,7 @@ function Post({
                     </div>
                     <Comment
                       postId={post._id}
-                      commentPost={commentPost}
-                      setCommentPost={setCommentPost}
-                      postUser={post.user.user_id}
+                      postUser={post.user._id}
                       userName={user?.name}
                       userImg={user?.user_img.key}
                       userId={user?._id}

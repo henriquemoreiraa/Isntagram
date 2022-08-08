@@ -1,37 +1,27 @@
 import { useState, useContext } from "react";
 import "./comment.css";
 import api from "../../api";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 
 type Props = {
   postId: string;
-  commentPost: boolean;
-  setCommentPost: (e: boolean) => void;
   postUser: string;
   userName: string | undefined;
   userImg: string | undefined;
   userId: string | undefined;
 };
 
-function Comment({
-  postId,
-  commentPost,
-  setCommentPost,
-  postUser,
-  userName,
-  userImg,
-  userId,
-}: Props) {
+function Comment({ postId, postUser, userName, userImg, userId }: Props) {
   const [comment, setComment] = useState("");
   const id = localStorage.getItem("userId");
-  const { sendNotification } = useContext(Context);
+  const { sendNotification, updateData, setUpdateData } = useContext(Context);
 
   const handleComment = async () => {
     await api.post(`/comments/post/${postId}`, {
       id,
       comment,
     });
-    setCommentPost(!commentPost);
+    setUpdateData(!updateData);
     setComment("");
     sendNotification(
       postUser,

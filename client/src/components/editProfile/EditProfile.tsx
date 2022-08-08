@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import api from "../../api";
 import "./editProfile.css";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 
 type Props = {
   setEditProfile: (e: boolean) => void;
@@ -30,7 +30,7 @@ function EditProfile({ setEditProfile, user }: Props) {
     confirNewPass: "",
   });
 
-  const { setUploadData, uploadData } = useContext(Context);
+  const { setUpdateData, updateData } = useContext(Context);
 
   function handleChange(e: any) {
     setFile(e.target.files[0]);
@@ -48,7 +48,7 @@ function EditProfile({ setEditProfile, user }: Props) {
     };
     api.put(`/users/img/${user._id}`, formData, config).then((response) => {
       console.log(response.data);
-      setUploadData(!uploadData);
+      setUpdateData(!updateData);
       setFile(undefined);
     });
   }
@@ -69,7 +69,7 @@ function EditProfile({ setEditProfile, user }: Props) {
           })
           .then((response) => {
             console.log(response.data);
-            setUploadData(!uploadData);
+            setUpdateData(!updateData);
           });
       }
     } else {
@@ -81,7 +81,7 @@ function EditProfile({ setEditProfile, user }: Props) {
         })
         .then((response) => {
           console.log(response.data);
-          setUploadData(!uploadData);
+          setUpdateData(!updateData);
         });
     }
   }
@@ -96,7 +96,7 @@ function EditProfile({ setEditProfile, user }: Props) {
           <div className="userImg-name1">
             <div className="divImg3">
               <img
-                src={`${process.env.REACT_APP_API_URL}${user.user_img.key}`}
+                src={`${process.env.REACT_APP_API_URL}${user.user_img}`}
                 alt=""
               />
             </div>

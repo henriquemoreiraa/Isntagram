@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
-import { Context } from "../../context/AuthContext";
+import { Context } from "../../context/Context";
 
 type Props = {
   setCreatePost: (e: boolean) => void;

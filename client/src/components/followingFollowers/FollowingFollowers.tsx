@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { FollowersFollowing } from "../../routes/home/types";
+import { Users } from "../../routes/home/types";
 import "./folwingWers.css";
 
 type Props = {
   userFol: boolean;
   setUserFol: (e: boolean) => void;
-  folUsers: FollowersFollowing;
+  folUsers: Users;
   user: string | undefined;
   isFolwedWers: string;
 };
@@ -28,7 +28,7 @@ function FollowingFollowers({
         </div>
         {folUsers.map((user) => (
           <div className="user">
-            <a className="userImg-name" href={`/user/${user.user_id}`}>
+            <a className="userImg-name" href={`/user/${user._id}`}>
               <div className="divImg1">
                 <img
                   src={`${process.env.REACT_APP_API_URL}${user.user_img}`}
