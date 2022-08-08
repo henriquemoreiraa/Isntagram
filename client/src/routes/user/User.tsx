@@ -29,11 +29,7 @@ function UserProfile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authenticated) {
-      navigate("/login");
-      return;
-    }
-    if (userId === "62f121e7acbf1d857de14254") {
+    if (id === "62f121e7acbf1d857de14254") {
       navigate("/");
       return;
     }
