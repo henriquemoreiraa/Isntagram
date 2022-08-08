@@ -36,11 +36,23 @@ function Login() {
       .catch((error) => alert(error.response.data));
   };
 
-  const loginAsGuest = () => {
-    localStorage.setItem("token", "guest");
-    localStorage.setItem("userId", "guest");
-    setAuthenticated(true);
-    navigate("/");
+  const loginAsGuest = async () => {
+    await api
+      .post("/users/login", {
+        email: "isntagramguest@gmail.com",
+        password: "123456",
+      })
+      .then((res) => {
+        const data: UserData = res.data;
+
+        localStorage.setItem("token", JSON.stringify(data.token));
+        localStorage.setItem("userId", data._id);
+        api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        setAuthenticated(true);
+
+        navigate("/");
+      })
+      .catch((error) => alert(error.response.data));
   };
 
   const onSubmit = (e: any) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { PostsType, User } from "../../routes/home/types";
+import { Comments, PostsType, User } from "../../routes/home/types";
 import "./post.css";
 import {
   IoEllipsisHorizontalSharp,
@@ -7,6 +7,7 @@ import {
   IoHeartOutline,
   IoHeartSharp,
   IoPaperPlaneOutline,
+  IoPaperPlaneSharp,
 } from "react-icons/io5";
 import { BsDot } from "react-icons/bs";
 import { Context } from "../../context/Context";
@@ -19,21 +20,35 @@ type Props = {
   postId: string;
   posts: PostsType | undefined;
   setSinglePost: (e: boolean) => void;
+  user: User | undefined;
 };
 
-function Post({ postId, posts, setSinglePost }: Props) {
+function Post({ postId, posts, setSinglePost, user }: Props) {
   const [post, setPost] = useState<PostsType>();
+  const [comments, setComments] = useState<Comments>([]);
   const [deleteP, setDeleteP] = useState(false);
   const [deletePdata, setDeletePdata] = useState({ id: "", url: "" });
   const id = localStorage.getItem("userId");
   const { handleFollow, handleUnfollow, sendNotification } =
     useContext(Context);
-  const { handleLike, removeLike, updateData, setUpdateData, user } =
-    useContext(Context);
+  const {
+    handleLike,
+    removeLike,
+    updateData,
+    setUpdateData,
+    handleShare,
+    removeShare,
+  } = useContext(Context);
 
   useEffect(() => {
     const filterPost = posts?.filter((post) => post._id === postId);
     setPost(filterPost);
+
+    (async () => {
+      const { data } = await api.get(`/posts/comment/${postId}`);
+
+      setComments(data);
+    })();
   }, [posts]);
 
   const commentHandleLike = async (
@@ -167,7 +182,7 @@ function Post({ postId, posts, setSinglePost }: Props) {
                         {post.title}
                       </p>
                     </div>
-                    {/* {post.comments.map((comment) => (
+                    {comments.map((comment) => (
                       <div className="testeeeeeeeeee">
                         <div className="divCommentsOptions">
                           <div className="userImg-name">
@@ -259,7 +274,7 @@ function Post({ postId, posts, setSinglePost }: Props) {
                           )}
                         </div>
                       </div>
-                    ))} */}
+                    ))}
                   </div>
                   <div className="postLikeComment SinglePostplc">
                     <div className="postTitle">
@@ -290,7 +305,29 @@ function Post({ postId, posts, setSinglePost }: Props) {
                           )}
                         </div>
                         <div>
-                          <IoPaperPlaneOutline size={"1.8em"} />
+                          {post.shares.length === 0 ? (
+                            <IoPaperPlaneOutline
+                              size={"1.8em"}
+                              onClick={() =>
+                                handleShare(post._id, id, post.user._id)
+                              }
+                            />
+                          ) : post.shares.some(
+                              (postShare) => postShare._id === id
+                            ) === true ? (
+                            <IoPaperPlaneSharp
+                              color="212121"
+                              size={"1.8em"}
+                              onClick={() => removeShare(post._id, id)}
+                            />
+                          ) : (
+                            <IoPaperPlaneOutline
+                              size={"1.8em"}
+                              onClick={() =>
+                                handleShare(post._id, id, post.user._id)
+                              }
+                            />
+                          )}
                         </div>
                       </div>
                       {post.likes.length > 0 && (
@@ -318,7 +355,7 @@ function Post({ postId, posts, setSinglePost }: Props) {
                       postId={post._id}
                       postUser={post.user._id}
                       userName={user?.name}
-                      userImg={user?.user_img.key}
+                      userImg={user?.user_img}
                       userId={user?._id}
                     />
                   </div>

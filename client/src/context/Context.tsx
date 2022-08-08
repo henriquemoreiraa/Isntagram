@@ -56,17 +56,15 @@ function Contexts({ children }: FormProviderProps) {
   };
 
   const handleFollow = async (followedId: string, followerId: string) => {
-    await api.put(`/users/follow/${followedId}`, {
-      id: followerId,
-    });
-    setUpdateData(!updateData);
-    sendNotification(
-      followedId,
-      user?.name,
-      user?.user_img,
-      user?._id,
-      "started following you"
-    );
+    if (followerId === "62f121e7acbf1d857de14254") {
+      alert("Create an account to follow users!");
+    } else {
+      await api.put(`/users/follow/${followedId}`, {
+        id: followerId,
+      });
+      setUpdateData(!updateData);
+      sendNotification(followedId, user?._id, "started following you");
+    }
   };
 
   const handleLike = async (
@@ -74,17 +72,15 @@ function Contexts({ children }: FormProviderProps) {
     userId: string | null,
     postUserId: string
   ) => {
-    await api.put(`/posts/like/${postId}`, {
-      id: userId,
-    });
-    setUpdateData(!updateData);
-    sendNotification(
-      postUserId,
-      user?.name,
-      user?.user_img,
-      user?._id,
-      "liked your post"
-    );
+    if (userId === "62f121e7acbf1d857de14254") {
+      alert("Create an account to like posts!");
+    } else {
+      await api.put(`/posts/like/${postId}`, {
+        id: userId,
+      });
+      setUpdateData(!updateData);
+      sendNotification(postUserId, user?._id, "liked your post");
+    }
   };
 
   const removeLike = async (postId: string, userId: string | null) => {
@@ -94,10 +90,31 @@ function Contexts({ children }: FormProviderProps) {
     setUpdateData(!updateData);
   };
 
+  const handleShare = async (
+    postId: string,
+    userId: string | null,
+    postUserId: string
+  ) => {
+    if (userId === "62f121e7acbf1d857de14254") {
+      alert("Create an account to share posts!");
+    } else {
+      await api.put(`/posts/share/${postId}`, {
+        id: userId,
+      });
+      setUpdateData(!updateData);
+      sendNotification(postUserId, user?._id, "shared your post");
+    }
+  };
+
+  const removeShare = async (postId: string, userId: string | null) => {
+    await api.put(`/posts/removeShare/${postId}`, {
+      id: userId,
+    });
+    setUpdateData(!updateData);
+  };
+
   const sendNotification = (
     postUserId: string,
-    userName: string | undefined,
-    userImg: string | undefined,
     userId: string | undefined,
     message: string
   ) => {
@@ -105,8 +122,6 @@ function Contexts({ children }: FormProviderProps) {
       socket.emit("notification", postUserId);
       socket.emit("notification_send", {
         id: postUserId,
-        userName,
-        userImg,
         userId,
         message,
       });
@@ -129,6 +144,8 @@ function Contexts({ children }: FormProviderProps) {
         sendNotification,
         user,
         setUpdateData,
+        handleShare,
+        removeShare,
       }}
     >
       {children}

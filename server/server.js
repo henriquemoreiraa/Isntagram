@@ -13,6 +13,7 @@ const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./database/connect");
 const path = require("path");
 const Notification = require("./modules/notificationModule");
+const User = require("./modules/userModule");
 
 app.use(cors());
 
@@ -33,19 +34,21 @@ io.on("connection", (socket) => {
   });
 
   socket.on("notification_send", async (data) => {
-    const notification = Notification.create({
+    const user = await User.findById(data.userId);
+
+    const notification = await Notification.create({
       user: data.id,
-      userName: data.userName,
-      userImg: data.userImg,
-      userId: data.userId,
+      userName: user.name,
+      userImg: user.user_img,
+      userId: user._id,
       message: data.message,
     });
 
     socket.to(data.id).emit("send_notification", {
-      userName: data.userName,
-      userImg: data.userImg,
-      userId: data.userId,
-      message: data.message,
+      userName: notification.userName,
+      userImg: notification.userImg,
+      userId: notification.userId,
+      message: notification.message,
     });
   });
 });

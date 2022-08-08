@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import api from "../../api";
 import "./editProfile.css";
 import { Context } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   setEditProfile: (e: boolean) => void;
@@ -21,6 +22,7 @@ type UserData = {
 function EditProfile({ setEditProfile, user }: Props) {
   const [file, setFile] = useState<any>();
   const [changePass, setChangePass] = useState(false);
+  const [deleteAcc, setDeleteAcc] = useState(false);
   const [userData, setUserData] = useState<UserData>({
     name: user.name,
     email: user.email,
@@ -30,13 +32,14 @@ function EditProfile({ setEditProfile, user }: Props) {
     confirNewPass: "",
   });
 
-  const { setUpdateData, updateData } = useContext(Context);
+  const navigate = useNavigate();
+  const { setUpdateData, updateData, handleLogout } = useContext(Context);
 
-  function handleChange(e: any) {
+  const handleChange = (e: any) => {
     setFile(e.target.files[0]);
-  }
+  };
 
-  function handleSubmitPhoto(e: any) {
+  const handleSubmitPhoto = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
@@ -51,9 +54,9 @@ function EditProfile({ setEditProfile, user }: Props) {
       setUpdateData(!updateData);
       setFile(undefined);
     });
-  }
+  };
 
-  function handleSubmit(e: any) {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     if (userData.newPassword) {
@@ -84,7 +87,13 @@ function EditProfile({ setEditProfile, user }: Props) {
           setUpdateData(!updateData);
         });
     }
-  }
+  };
+
+  const handleDeleteAcc = async () => {
+    await api.delete(`/users/${user._id}`);
+    handleLogout();
+    navigate("/login");
+  };
 
   return (
     <div className="singlePostContainer">
@@ -112,7 +121,7 @@ function EditProfile({ setEditProfile, user }: Props) {
                   type="file"
                   name="file"
                   id="file"
-                  accept="image/*"
+                  accept=".png, .jpg, .jpeg"
                   onChange={handleChange}
                 />
                 {file && (
@@ -175,6 +184,24 @@ function EditProfile({ setEditProfile, user }: Props) {
                 }
               ></textarea>
             </div>
+            {!deleteAcc && (
+              <p onClick={() => setDeleteAcc(true)} className="deleteAccount">
+                Delete acoount
+              </p>
+            )}
+            {deleteAcc && (
+              <div className="surediv">
+                <p>Are you sure you want to delete your account?</p>{" "}
+                <div className="deleteaccorcancel">
+                  <p onClick={handleDeleteAcc} className="deletep">
+                    Delete
+                  </p>{" "}
+                  <p onClick={() => setDeleteAcc(false)} className="cancelp">
+                    Cancel
+                  </p>
+                </div>
+              </div>
+            )}
             {!changePass && (
               <p onClick={() => setChangePass(true)} className="changePass">
                 Change password?

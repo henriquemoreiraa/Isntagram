@@ -6,16 +6,22 @@ import { Context } from "../../context/Context";
 
 type Props = {
   posts: PostsType;
+  user: User | undefined;
 };
 
-function AllPosts({ posts }: Props) {
+function AllPosts({ posts, user }: Props) {
   const [singlePost, setSinglePost] = useState(false);
   const [postId, setPostId] = useState("");
 
   return (
     <div className="allPostsImgs">
       {singlePost && (
-        <Post postId={postId} posts={posts} setSinglePost={setSinglePost} />
+        <Post
+          postId={postId}
+          posts={posts}
+          setSinglePost={setSinglePost}
+          user={user}
+        />
       )}
 
       {posts

@@ -1,10 +1,11 @@
-import { PostsType, User } from "../../routes/home/types";
+import { Comments, PostsType, User } from "../../routes/home/types";
 import {
   IoEllipsisHorizontalSharp,
   IoHeartOutline,
   IoHeartSharp,
   IoChatbubbleOutline,
   IoPaperPlaneOutline,
+  IoPaperPlaneSharp,
 } from "react-icons/io5";
 import { useEffect, useState, useContext } from "react";
 import Post from "./Post";
@@ -19,20 +20,31 @@ type Props = {
 };
 
 function Posts({ user }: Props) {
-  const [posts, setPosts] = useState<PostsType>([]);
+  const [posts, setPosts] = useState<PostsType>();
+  const [comments, setComments] = useState<Comments>([]);
   const [singlePost, setSinglePost] = useState(false);
   const [postId, setPostId] = useState("");
   const userId = localStorage.getItem("userId");
 
-  const { authenticated, handleLike, removeLike, updateData } =
-    useContext(Context);
+  const {
+    authenticated,
+    handleLike,
+    removeLike,
+    updateData,
+    handleShare,
+    removeShare,
+  } = useContext(Context);
 
   useEffect(() => {
     if (authenticated) {
       (async () => {
         const { data } = await api.get(`/posts/post/${userId}`);
-
         setPosts(data);
+      })();
+      (async () => {
+        const { data } = await api.get(`/comments`);
+
+        setComments(data);
       })();
     }
   }, [updateData]);
@@ -40,7 +52,12 @@ function Posts({ user }: Props) {
   return (
     <div>
       {singlePost && (
-        <Post postId={postId} posts={posts} setSinglePost={setSinglePost} />
+        <Post
+          postId={postId}
+          posts={posts}
+          setSinglePost={setSinglePost}
+          user={user}
+        />
       )}
       {posts
         ? posts?.map((post) => (
@@ -105,7 +122,29 @@ function Posts({ user }: Props) {
                     <IoChatbubbleOutline size={"1.8em"} />
                   </div>
                   <div>
-                    <IoPaperPlaneOutline size={"1.8em"} />
+                    {post.shares.length === 0 ? (
+                      <IoPaperPlaneOutline
+                        size={"1.8em"}
+                        onClick={() =>
+                          handleShare(post._id, userId, post.user._id)
+                        }
+                      />
+                    ) : post.shares.some(
+                        (postShare) => postShare._id === userId
+                      ) === true ? (
+                      <IoPaperPlaneSharp
+                        color="212121"
+                        size={"1.8em"}
+                        onClick={() => removeShare(post._id, userId)}
+                      />
+                    ) : (
+                      <IoPaperPlaneOutline
+                        size={"1.8em"}
+                        onClick={() =>
+                          handleShare(post._id, userId, post.user._id)
+                        }
+                      />
+                    )}
                   </div>
                 </div>
                 {post.likes.length > 0 && (
@@ -133,26 +172,27 @@ function Posts({ user }: Props) {
                   {post.title}
                 </p>
 
-                {/* {post.comments.length > 0 && (
-                  <p
-                    className="viewComments"
-                    onClick={() => (setSinglePost(true), setPostId(post._id))}
-                  >
-                    View {post.comments.length}{" "}
-                    {post.comments.length > 1 ? "comments" : "comment"}
-                  </p>
-                )}
-
-                {post.comments.map((comment) =>
-                  comment.user._id === userId ? (
-                    <p>
-                      <strong>{comment.user.name}</strong>
-                      {comment.comment}
+                {comments.some((comm) => comm.post === post._id) === true ? (
+                  <>
+                    <p
+                      className="viewComments"
+                      onClick={() => (setSinglePost(true), setPostId(post._id))}
+                    >
+                      View all comments
                     </p>
-                  ) : (
-                    ""
-                  )
-                )} */}
+                    {comments.map(
+                      (comm) =>
+                        comm.user._id === userId && (
+                          <p>
+                            <strong>{comm.user.name}</strong>
+                            {comm.comment}
+                          </p>
+                        )
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
 
                 <p className="postDate">
                   {new Date(post.createdAt).toLocaleString("en-US", {
@@ -172,8 +212,7 @@ function Posts({ user }: Props) {
               />
             </div>
           ))
-        : ""}
-      OLA
+        : "ssdsfsdfs"}
     </div>
   );
 }

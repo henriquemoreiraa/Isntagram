@@ -12,15 +12,17 @@ type Props = {
 function SearchUsers({ setSearch, user }: Props) {
   const [users, setUsers] = useState<Users>([]);
   const [searchUser, setSearchUser] = useState("");
-  const { handleFollow, handleUnfollow, followUnfUser } = useContext(Context);
+  const { handleFollow, handleUnfollow, updateData } = useContext(Context);
 
   useEffect(() => {
     (async () => {
       const { data } = await api.get("/users");
-
-      setUsers(data);
+      const withoGuest = await data.filter(
+        (user: any) => user._id !== "62f121e7acbf1d857de14254"
+      );
+      setUsers(withoGuest);
     })();
-  }, [followUnfUser]);
+  }, [updateData]);
 
   const filteredUsers =
     searchUser.length > 0
@@ -68,7 +70,7 @@ function SearchUsers({ setSearch, user }: Props) {
                       Follow
                     </p>
                   ) : user?.following.some(
-                      (userfo: any) => userfo.user_id === userS._id
+                      (userfo: any) => userfo._id === userS._id
                     ) === true ? (
                     <p
                       onClick={() => handleUnfollow(userS._id, user._id)}

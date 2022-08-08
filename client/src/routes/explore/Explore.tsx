@@ -30,7 +30,7 @@ function Explore() {
     <div className="container">
       <Header user={user} page={"explore"} />
 
-      <AllPosts posts={posts} />
+      <AllPosts posts={posts} user={user} />
     </div>
   );
 }

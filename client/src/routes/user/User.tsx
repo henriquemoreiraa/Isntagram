@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
 import { Context } from "../../context/Context";
 import api from "../../api";
@@ -26,8 +26,18 @@ function UserProfile() {
   const userId = localStorage.getItem("userId");
   const { authenticated, handleUnfollow, handleFollow, updateData } =
     useContext(Context);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!authenticated) {
+      navigate("/login");
+      return;
+    }
+    if (id === "62f121e7acbf1d857de14254") {
+      navigate("/");
+      return;
+    }
+
     if (authenticated) {
       (async () => {
         const { data } = await api.get(`/users/user/${id}`);
@@ -94,7 +104,7 @@ function UserProfile() {
                     Follow
                   </button>
                 ) : userProfileData?.followers.some(
-                    (userfo: any) => userfo.user_id === userId
+                    (userfo: any) => userfo._id === userId
                   ) === true ? (
                   <button
                     onClick={() => handleUnfollow(userProfileData._id, userId)}
@@ -163,13 +173,6 @@ function UserProfile() {
             <p>POSTS</p>
           </div>
           <div
-            onClick={() => getPosts("/posts/user/tagged/")}
-            className="filteroptions"
-          >
-            {<IoIdCardOutline size={"1.5em"} />}
-            <p>TAGGED</p>
-          </div>
-          <div
             onClick={() => getPosts("/posts/user/shared/")}
             className="filteroptions"
           >
@@ -177,7 +180,7 @@ function UserProfile() {
             <p>SHARED</p>
           </div>
         </div>
-        {posts ? <AllPosts posts={posts} /> : ""}
+        {posts ? <AllPosts posts={posts} user={user} /> : ""}
       </div>
     </div>
   );

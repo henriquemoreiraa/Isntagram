@@ -5,6 +5,7 @@ const User = require("../modules/userModule");
 const ProfileImg = require("../modules/profileImgModule");
 const Comments = require("../modules/commentsModule");
 const Notification = require("../modules/notificationModule");
+const Post = require("../modules/postModule");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -203,6 +204,12 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 
   await User.findByIdAndDelete(req.params.id);
+  const posts = await Post.find({ user: req.params.id }).remove();
+  const comments = await Comments.find({ user: req.params.id }).remove();
+
+  // await comments.remove();
+  // await posts.remove();
+
   res.status(200).json(req.params.id);
 });
 

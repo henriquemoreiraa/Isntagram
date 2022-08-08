@@ -5,6 +5,7 @@ const commentsSchema = mongoose.Schema(
     post: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
+      required: true,
     },
     comment: {
       type: String,
@@ -13,6 +14,7 @@ const commentsSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     likes: [
       {

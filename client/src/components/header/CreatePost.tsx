@@ -117,7 +117,11 @@ function CreatePost({ setCreatePost, user }: Props) {
                 ></textarea>
               </div>
               <div className="btnSubmitDiv2">
-                <button type="submit">SHARE</button>
+                {user._id !== "62f121e7acbf1d857de14254" ? (
+                  <button type="submit">SHARE</button>
+                ) : (
+                  ""
+                )}
               </div>
             </form>
           </div>

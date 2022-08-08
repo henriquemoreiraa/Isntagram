@@ -8,6 +8,7 @@ export type PostImg = {
 };
 
 export type Comments = {
+  post: string;
   comment: string;
   createdAt: string;
   likes: string[];
@@ -28,7 +29,7 @@ export type PostsType = {
   createdAt: string;
   likes: Likes;
   post_img: PostImg;
-  shares: string[];
+  shares: Likes;
   updatedAt: string;
   user: User;
   _id: string;

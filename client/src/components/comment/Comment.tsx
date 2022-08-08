@@ -17,19 +17,17 @@ function Comment({ postId, postUser, userName, userImg, userId }: Props) {
   const { sendNotification, updateData, setUpdateData } = useContext(Context);
 
   const handleComment = async () => {
-    await api.post(`/comments/post/${postId}`, {
-      id,
-      comment,
-    });
-    setUpdateData(!updateData);
-    setComment("");
-    sendNotification(
-      postUser,
-      userName,
-      userImg,
-      userId,
-      "commented your post"
-    );
+    if (id === "62f121e7acbf1d857de14254") {
+      alert("Create an account to comment on posts!");
+    } else {
+      await api.post(`/comments/post/${postId}`, {
+        id,
+        comment,
+      });
+      setUpdateData(!updateData);
+      setComment("");
+      sendNotification(postUser, userId, "commented your post");
+    }
   };
 
   return (

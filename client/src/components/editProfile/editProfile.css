@@ -23,6 +23,35 @@
   text-align: center;
 }
 
+.deleteAccount {
+  color: #e92323;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+}
+
+.deleteaccorcancel {
+  display: flex;
+  justify-content: center;
+}
+
+.deleteaccorcancel p {
+  margin: 0 1em 0.5em;
+  cursor: pointer;
+}
+.surediv {
+  border: 1px solid #e9232345;
+  padding: 0.3em;
+  border-radius: 0.3em;
+  text-align: center;
+  margin-bottom: 1em;
+  width: 100%;
+}
+.deletep {
+  color: #e92323;
+  font-weight: 700;
+}
+
 .btnSubmitDiv {
   text-align: center;
   margin: 0.2em 0 1em;

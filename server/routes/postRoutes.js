@@ -12,6 +12,7 @@ const {
   getUserPosts,
   getPostComment,
   getSharedPosts,
+  removeShare,
 } = require("../controllers/postController");
 const multer = require("multer");
 const multerConfig = require("../config/multer");
@@ -28,6 +29,7 @@ router.route("/comment/:id").get(protect, getPostComment);
 router.route("/:id").delete(protect, deletePost);
 router.route("/like/:id").put(protect, likePost);
 router.route("/removeLike/:id").put(protect, removeLike);
+router.route("/removeShare/:id").put(protect, removeShare);
 router.route("/share/:id").put(protect, sharePost);
 router
   .route("/post/:id")
